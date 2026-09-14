@@ -83,11 +83,6 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <button id="userSearchNavBtn" type="button" class="text-xs font-semibold px-3 py-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all flex items-center gap-2 backdrop-blur-sm">
-          <i class="fa-solid fa-magnifying-glass text-amber-400"></i>
-          <span>Consultar Estado</span>
-        </button>
-
         <button id="adminBtn" type="button" class="text-xs font-semibold px-3 py-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-all flex items-center gap-2 backdrop-blur-sm">
           <i class="fa-solid fa-lock text-rose-500"></i>
           <span class="hidden sm:inline">Panel Admin</span>
@@ -99,52 +94,17 @@
   <!-- CONTENIDO PRINCIPAL -->
   <main class="max-w-4xl w-full mx-auto px-4 py-8 flex-1 flex flex-col justify-center relative z-10">
 
-    <!-- SECCIÓN 1: FORMULARIO DE DATOS INICIALES Y TIPO DE WHITELIST -->
+    <!-- SECCIÓN 1: FORMULARIO DE DATOS INICIALES -->
     <div id="sectionUserInfo" class="space-y-6">
       <div class="bg-slate-900/85 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-md shadow-2xl relative overflow-hidden">
         <div class="absolute -top-24 -right-24 w-48 h-48 bg-rose-600/10 rounded-full blur-3xl pointer-events-none"></div>
         
         <div class="text-center max-w-xl mx-auto mb-8 space-y-2">
           <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Proceso de Whitelist</h2>
-          <p class="text-slate-400 text-sm">Completa tus datos y selecciona la modalidad de rol a la cual deseas postularte en Caracas Vibes2.</p>
+          <p class="text-slate-400 text-sm">Completa tus datos de contacto para vincular tu postulación de Roleplay en Caracas Vibes2.</p>
         </div>
 
         <form id="userForm" class="space-y-5 max-w-md mx-auto">
-          <!-- Selección de Categoría de Whitelist -->
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
-              <i class="fa-solid fa-layer-group text-rose-500 mr-1.5"></i> Tipo de Whitelist
-            </label>
-            <div class="grid grid-cols-3 gap-2">
-              <label class="cursor-pointer">
-                <input type="radio" name="wlCategory" value="general" checked class="peer hidden">
-                <div class="p-3 rounded-xl border border-slate-800 bg-slate-950 text-center peer-checked:border-rose-500 peer-checked:bg-rose-950/40 transition-all">
-                  <i class="fa-solid fa-shield-halved text-rose-400 text-lg block mb-1"></i>
-                  <span class="text-xs font-bold block text-white">General</span>
-                  <span class="text-[10px] text-slate-400">Rol Base</span>
-                </div>
-              </label>
-
-              <label class="cursor-pointer">
-                <input type="radio" name="wlCategory" value="legal" class="peer hidden">
-                <div class="p-3 rounded-xl border border-slate-800 bg-slate-950 text-center peer-checked:border-emerald-500 peer-checked:bg-emerald-950/40 transition-all">
-                  <i class="fa-solid fa-scale-balanced text-emerald-400 text-lg block mb-1"></i>
-                  <span class="text-xs font-bold block text-white">Legal</span>
-                  <span class="text-[10px] text-slate-400">Policía / EMT</span>
-                </div>
-              </label>
-
-              <label class="cursor-pointer">
-                <input type="radio" name="wlCategory" value="delictiva" class="peer hidden">
-                <div class="p-3 rounded-xl border border-slate-800 bg-slate-950 text-center peer-checked:border-amber-500 peer-checked:bg-amber-950/40 transition-all">
-                  <i class="fa-solid fa-gun text-amber-400 text-lg block mb-1"></i>
-                  <span class="text-xs font-bold block text-white">Delictiva</span>
-                  <span class="text-[10px] text-slate-400">Bandas / Mafias</span>
-                </div>
-              </label>
-            </div>
-          </div>
-
           <div>
             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
               <i class="fa-solid fa-user text-rose-500 mr-1.5"></i> Nombre Completo / Nombre IC
@@ -185,48 +145,13 @@
       </div>
     </div>
 
-    <!-- SECCIÓN DE BÚSQUEDA PÚBLICA PARA USUARIOS -->
-    <div id="sectionUserSearch" class="hidden space-y-6">
-      <div class="bg-slate-900/85 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-md shadow-2xl space-y-6 max-w-xl mx-auto">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-          <div>
-            <h2 class="text-xl font-bold text-white flex items-center gap-2">
-              <i class="fa-solid fa-magnifying-glass text-amber-400"></i>
-              Consultar Estado de Whitelist
-            </h2>
-            <p class="text-xs text-slate-400">Ingresa tus datos para ver si fuiste Aprobado o Denegado.</p>
-          </div>
-          <button id="closeSearchBtn" type="button" class="text-slate-400 hover:text-white text-xs font-semibold bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
-            <i class="fa-solid fa-xmark mr-1"></i> Volver
-          </button>
-        </div>
-
-        <form id="searchForm" class="space-y-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Usuario de Discord o Correo Electrónico</label>
-            <div class="flex gap-2">
-              <input type="text" id="searchQueryInput" required placeholder="Ej. @carlitos_rp o tuemail@ejemplo.com" 
-                class="w-full bg-slate-950/90 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-2.5 text-xs text-slate-100 outline-none">
-              <button type="submit" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap">
-                <i class="fa-solid fa-magnifying-glass"></i> Buscar
-              </button>
-            </div>
-          </div>
-        </form>
-
-        <div id="searchResultsContainer" class="hidden space-y-4 pt-2 border-t border-slate-800/80">
-          <!-- Resultados inyectados por JS -->
-        </div>
-      </div>
-    </div>
-
     <!-- SECCIÓN 2: CUESTIONARIO Y BARRA DE PROGRESO -->
     <div id="sectionQuestionnaire" class="hidden space-y-6">
       <div class="bg-slate-900/85 border border-slate-800/80 rounded-2xl p-4 sm:p-5 backdrop-blur-md shadow-xl">
         <div class="flex items-center justify-between text-xs sm:text-sm font-semibold mb-2">
           <span class="text-slate-300 flex items-center gap-2">
             <i class="fa-solid fa-list-check text-rose-500"></i>
-            Progreso de Evaluación (<span id="activeWlBadge" class="uppercase font-bold text-rose-400">General</span>)
+            Progreso de Evaluación
           </span>
           <span id="progressText" class="text-rose-400 font-bold">0% (0 respondidas)</span>
         </div>
@@ -281,7 +206,6 @@
         <div class="bg-slate-950/90 border border-slate-800/80 rounded-xl p-4 max-w-md mx-auto text-left text-xs space-y-2">
           <p class="text-slate-400"><strong class="text-slate-200">Postulante:</strong> <span id="sumName">---</span></p>
           <p class="text-slate-400"><strong class="text-slate-200">Discord:</strong> <span id="sumDiscord" class="text-rose-400 font-mono">---</span></p>
-          <p class="text-slate-400"><strong class="text-slate-200">Tipo de Whitelist:</strong> <span id="sumCategory" class="text-amber-400 font-bold uppercase">---</span></p>
           <p class="text-slate-400"><strong class="text-slate-200">Preguntas Respondidas:</strong> <span id="sumScore" class="text-emerald-400 font-bold">100%</span></p>
         </div>
 
@@ -327,23 +251,13 @@
       <!-- PESTAÑA 1: POSTULACIONES -->
       <div id="tabSubmissionsContent" class="space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="text-[10px] uppercase font-bold text-slate-500 mr-1">Estado:</span>
+          <div class="flex items-center gap-2">
             <button data-filter="all" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600 text-white transition-all">Todos</button>
             <button data-filter="pending" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-all">Pendientes</button>
             <button data-filter="approved" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-all">Aprobados</button>
             <button data-filter="rejected" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-all">Rechazados</button>
           </div>
-
-          <div class="flex items-center gap-2">
-            <span class="text-[10px] uppercase font-bold text-slate-500 mr-1">Categoría:</span>
-            <select id="adminCatFilter" class="bg-slate-950 border border-slate-800 text-slate-200 text-xs rounded-lg px-2.5 py-1.5 outline-none">
-              <option value="all">Todas las Categorías</option>
-              <option value="general">General</option>
-              <option value="legal">Legal</option>
-              <option value="delictiva">Delictiva</option>
-            </select>
-          </div>
+          <span id="submissionCount" class="text-xs text-slate-400 font-mono">0 postulaciones</span>
         </div>
 
         <div id="submissionsList" class="space-y-4">
@@ -359,7 +273,7 @@
         <div class="flex justify-between items-center bg-slate-900/60 p-4 rounded-xl border border-slate-800">
           <div>
             <h3 class="text-sm font-bold text-white">Preguntas Activas</h3>
-            <p class="text-xs text-slate-400">Edita, elimina o agrega preguntas asignadas a cada tipo de Whitelist.</p>
+            <p class="text-xs text-slate-400">Edita, elimina o agrega nuevas preguntas para el formulario.</p>
           </div>
           <button id="addQuestionBtn" type="button" class="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition-all flex items-center gap-2">
             <i class="fa-solid fa-plus"></i> Nueva Pregunta
@@ -381,6 +295,7 @@
             <p class="text-xs text-slate-400 mt-1">Cambia la imagen principal y ajusta el nivel de oscurecimiento.</p>
           </div>
 
+          <!-- Medidas Recomendadas -->
           <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-start gap-3">
             <i class="fa-solid fa-circle-info text-rose-400 text-lg mt-0.5"></i>
             <div class="text-xs space-y-1">
@@ -388,7 +303,7 @@
               <ul class="list-disc list-inside text-slate-400 space-y-0.5">
                 <li><strong>Resolución Ideal:</strong> <code>1920 x 1080 px</code> (Full HD) o <code>3840 x 2160 px</code> (4K).</li>
                 <li><strong>Relación de Aspecto:</strong> Horizontal 16:9.</li>
-                <li><strong>Formatos Soportados:</strong> PNG, JPG, WEBP (&lt; 2MB).</li>
+                <li><strong>Formatos Soportados:</strong> PNG, JPG, WEBP. (Formatos ligeros &lt; 2MB aseguran carga ultra rápida).</li>
               </ul>
             </div>
           </div>
@@ -412,6 +327,7 @@
                 class="block w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700">
             </div>
 
+            <!-- Ajuste de Opacidad de la Capa Oscura -->
             <div class="space-y-2 pt-2">
               <div class="flex justify-between items-center text-xs">
                 <label class="font-semibold text-slate-300">Nivel de Opacidad Oscura (Overlay)</label>
@@ -419,8 +335,10 @@
               </div>
               <input type="range" id="opacitySlider" min="10" max="95" value="80" 
                 class="w-full accent-rose-600 cursor-pointer">
+              <p class="text-[11px] text-slate-500">Aumenta el porcentaje si las letras se dificultan de leer con la imagen elegida.</p>
             </div>
 
+            <!-- Vista Previa -->
             <div class="space-y-2">
               <label class="block text-xs font-semibold text-slate-300">Vista Previa de la Imagen</label>
               <div class="w-full h-40 rounded-xl overflow-hidden border border-slate-800 bg-slate-950 relative">
@@ -460,17 +378,8 @@
         <input type="hidden" id="editQuestionId">
 
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Tipo de Whitelist Asignada</label>
-          <select id="modalTargetWl" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-rose-500">
-            <option value="general">Whitelist General</option>
-            <option value="legal">Whitelist Legal</option>
-            <option value="delictiva">Whitelist Delictiva</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Categoría / Tema</label>
-          <input type="text" id="modalCategory" required placeholder="Ej. Reglamento General o Normativa Ilegal" 
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Categoría</label>
+          <input type="text" id="modalCategory" required placeholder="Ej. Reglamento General" 
             class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-rose-500">
         </div>
 
@@ -524,8 +433,6 @@
       onSnapshot, 
       updateDoc, 
       deleteDoc, 
-      where,
-      getDocs,
       serverTimestamp 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
@@ -557,11 +464,9 @@
       console.warn("Firebase no configurado o usando claves de demostración.", e);
     }
 
-    // BASE DE PREGUNTAS INICIALES POR CATEGORÍA
     let defaultQuestions = [
       {
         id: "q1",
-        targetWl: "general",
         category: "Conceptos Fundamentales",
         title: "¿Qué es el In Character (IC) y Out Of Character (OOC)?",
         type: "choice",
@@ -574,40 +479,75 @@
       },
       {
         id: "q2",
-        targetWl: "general",
         category: "Reglamento General",
         title: "¿Qué entiendes por MetaGaming (MG)? Proporciona un ejemplo breve.",
         type: "text"
       },
       {
         id: "q3",
-        targetWl: "legal",
-        category: "Entorno Legal",
-        title: "Si perteneces a una facción legal (LSPD/EMT), ¿cuál es tu conducta ante una agresión verbal de un ciudadano?",
-        type: "text"
+        category: "Reglamento General",
+        title: "¿Qué es el PowerGaming (PG)? Selecciona la opción correcta:",
+        type: "choice",
+        options: [
+          "Realizar acciones que serían físicamente imposibles en la vida real o forzar el rol de otros jugadores sin darles opción a responder.",
+          "Tener un vehículo de alta gama y conducir a máxima velocidad por la autopista.",
+          "Usar armas pesadas durante un tiroteo con la policía.",
+          "Rol de hablar con acento extranjero durante una conversación."
+        ]
       },
       {
         id: "q4",
-        targetWl: "delictiva",
-        category: "Entorno Delictivo",
-        title: "¿Cuáles son los límites de robos y secuestros a ciudadanos según la normativa de Caracas Vibes2?",
+        category: "Normativa de Vida",
+        title: "¿En qué consiste la regla de Valorar la Vida (NVHQ/VLV)?",
         type: "text"
+      },
+      {
+        id: "q5",
+        category: "Entorno y Zonas",
+        title: "¿Cómo definirías el concepto de 'Zona Segura' en Caracas Vibes2?",
+        type: "choice",
+        options: [
+          "Lugares donde está prohibido iniciar actos delictivos, agresiones o robos (ej. Hospitales, Comisaría, Banco Central).",
+          "Cualquier zona del mapa donde no haya policías cerca.",
+          "Tu casa o propiedad privada comprada en el servidor.",
+          "Lugares donde la velocidad de los coches está limitada automáticamente."
+        ]
+      },
+      {
+        id: "q6",
+        category: "Normativa de Muerte",
+        title: "¿Qué consecuencias tiene un Player Kill (PK) y en qué se diferencia de un Character Kill (CK)?",
+        type: "text"
+      },
+      {
+        id: "q7",
+        category: "Interpretación de Personaje",
+        title: "Describe brevemente la historia de tu personaje, su personalidad y sus metas en Caracas Vibes2:",
+        type: "text"
+      },
+      {
+        id: "q8",
+        category: "Comandos de Rol",
+        title: "¿Para qué sirve el comando /me y el comando /do en FiveM?",
+        type: "choice",
+        options: [
+          "/me se utiliza para describir acciones físicas de tu personaje; /do se usa para describir el entorno o responder preguntas sobre la situación.",
+          "/me es para enviar mensajes privados y /do para hablar por radio.",
+          "/me es para llamar a un admin y /do para pedir auxilio médico.",
+          "Ambos sirven exactamente para lo mismo."
+        ]
       }
     ];
 
-    let allQuestions = [...defaultQuestions];
-    let activeCategoryQuestions = [];
-    
-    let userData = { fullName: "", email: "", discordUser: "", age: "", category: "general" };
+    let questions = [...defaultQuestions];
+    let userData = { fullName: "", email: "", discordUser: "", age: "" };
     let userAnswers = {};
     let currentQuestionIndex = 0;
     let allSubmissions = [];
     let currentFilter = "all";
-    let currentCatFilter = "all";
     let unsubscribeAdminListener = null;
 
     const sectionUserInfo = document.getElementById('sectionUserInfo');
-    const sectionUserSearch = document.getElementById('sectionUserSearch');
     const sectionQuestionnaire = document.getElementById('sectionQuestionnaire');
     const sectionSummary = document.getElementById('sectionSummary');
     const sectionAdmin = document.getElementById('sectionAdmin');
@@ -615,7 +555,6 @@
     const userForm = document.getElementById('userForm');
     const progressBar = document.getElementById('progressBar');
     const progressText = document.getElementById('progressText');
-    const activeWlBadge = document.getElementById('activeWlBadge');
 
     const questionCategory = document.getElementById('questionCategory');
     const questionCounter = document.getElementById('questionCounter');
@@ -628,12 +567,6 @@
     const nextBtn = document.getElementById('nextBtn');
     const adminBtn = document.getElementById('adminBtn');
     const closeAdminBtn = document.getElementById('closeAdminBtn');
-
-    const userSearchNavBtn = document.getElementById('userSearchNavBtn');
-    const closeSearchBtn = document.getElementById('closeSearchBtn');
-    const searchForm = document.getElementById('searchForm');
-    const searchQueryInput = document.getElementById('searchQueryInput');
-    const searchResultsContainer = document.getElementById('searchResultsContainer');
 
     // Capas de Fondo
     const bgLayer = document.getElementById('bgLayer');
@@ -657,6 +590,7 @@
       setupEvents();
     });
 
+    // Escuchar cambios de configuración de Fondo
     function listenSettingsRealtime() {
       if (firebaseReady && db) {
         onSnapshot(doc(db, "whitelist_settings", "theme"), (docSnap) => {
@@ -684,10 +618,13 @@
       if (firebaseReady && db) {
         onSnapshot(collection(db, "whitelist_questions"), (snapshot) => {
           if (!snapshot.empty) {
-            allQuestions = [];
+            questions = [];
             snapshot.forEach((docSnap) => {
-              allQuestions.push({ id: docSnap.id, ...docSnap.data() });
+              questions.push({ id: docSnap.id, ...docSnap.data() });
             });
+          }
+          if (currentQuestionIndex >= questions.length) {
+            currentQuestionIndex = Math.max(0, questions.length - 1);
           }
           renderQuestionsEditor();
         });
@@ -695,45 +632,18 @@
     }
 
     function setupEvents() {
-      // Formulario de Usuario Inicial
       userForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const catRadio = document.querySelector('input[name="wlCategory"]:checked');
-        userData.category = catRadio ? catRadio.value : 'general';
         userData.fullName = document.getElementById('inputFullName').value.trim();
         userData.email = document.getElementById('inputEmail').value.trim();
         userData.discordUser = document.getElementById('inputDiscord').value.trim();
         userData.age = document.getElementById('inputAge').value.trim();
 
-        // Filtrar preguntas para la categoría elegida
-        activeCategoryQuestions = allQuestions.filter(q => (q.targetWl || 'general') === userData.category);
-        if (activeCategoryQuestions.length === 0) {
-          activeCategoryQuestions = allQuestions; // fallback
-        }
-
-        activeWlBadge.textContent = userData.category;
-        showToast(`Iniciando Examen de Whitelist ${userData.category.toUpperCase()}`, "success");
-
+        showToast("Perfil registrado. ¡Comenzando examen!", "success");
         sectionUserInfo.classList.add('hidden');
         sectionQuestionnaire.classList.remove('hidden');
         loadQuestion(0);
       });
-
-      // Búsqueda Pública de Usuario
-      userSearchNavBtn.addEventListener('click', () => {
-        sectionUserInfo.classList.add('hidden');
-        sectionQuestionnaire.classList.add('hidden');
-        sectionSummary.classList.add('hidden');
-        sectionAdmin.classList.add('hidden');
-        sectionUserSearch.classList.remove('hidden');
-      });
-
-      closeSearchBtn.addEventListener('click', () => {
-        sectionUserSearch.classList.add('hidden');
-        sectionUserInfo.classList.remove('hidden');
-      });
-
-      searchForm.addEventListener('submit', handleUserSearch);
 
       prevBtn.addEventListener('click', () => {
         saveCurrentAnswer();
@@ -744,7 +654,7 @@
 
       nextBtn.addEventListener('click', () => {
         saveCurrentAnswer();
-        if (currentQuestionIndex < activeCategoryQuestions.length - 1) {
+        if (currentQuestionIndex < questions.length - 1) {
           loadQuestion(currentQuestionIndex + 1);
         } else {
           finishQuestionnaire();
@@ -752,8 +662,8 @@
       });
 
       openAnswerInput.addEventListener('input', () => {
-        if (!activeCategoryQuestions[currentQuestionIndex]) return;
-        const q = activeCategoryQuestions[currentQuestionIndex];
+        if (!questions[currentQuestionIndex]) return;
+        const q = questions[currentQuestionIndex];
         const val = openAnswerInput.value.trim();
         if (val) userAnswers[q.id] = val;
         else delete userAnswers[q.id];
@@ -784,12 +694,16 @@
       const tabQuestionsContent = document.getElementById('tabQuestionsContent');
       const tabBgContent = document.getElementById('tabBgContent');
 
-      tabSubmissionsBtn.addEventListener('click', () => setTabActive(tabSubmissionsBtn, tabSubmissionsContent));
+      tabSubmissionsBtn.addEventListener('click', () => {
+        setTabActive(tabSubmissionsBtn, tabSubmissionsContent);
+      });
       tabQuestionsBtn.addEventListener('click', () => {
         setTabActive(tabQuestionsBtn, tabQuestionsContent);
         renderQuestionsEditor();
       });
-      tabBgBtn.addEventListener('click', () => setTabActive(tabBgBtn, tabBgContent));
+      tabBgBtn.addEventListener('click', () => {
+        setTabActive(tabBgBtn, tabBgContent);
+      });
 
       function setTabActive(activeBtn, activeContent) {
         [tabSubmissionsBtn, tabQuestionsBtn, tabBgBtn].forEach(b => {
@@ -801,7 +715,7 @@
         activeContent.classList.remove('hidden');
       }
 
-      // Eventos de Fondo Admin
+      // Eventos del Formulario de Fondo
       opacitySlider.addEventListener('input', () => {
         const val = opacitySlider.value;
         opacityValDisplay.textContent = `${val}%`;
@@ -846,7 +760,7 @@
         showToast("Fondo restaurado", "info");
       });
 
-      // Modal de Preguntas Admin
+      // Modal de Preguntas
       document.getElementById('addQuestionBtn').addEventListener('click', () => openQuestionModal());
       document.getElementById('closeModalBtn').addEventListener('click', closeQuestionModal);
       document.getElementById('cancelModalBtn').addEventListener('click', closeQuestionModal);
@@ -878,97 +792,6 @@
           renderSubmissions(allSubmissions);
         });
       });
-
-      document.getElementById('adminCatFilter').addEventListener('change', (e) => {
-        currentCatFilter = e.target.value;
-        renderSubmissions(allSubmissions);
-      });
-    }
-
-    async function handleUserSearch(e) {
-      e.preventDefault();
-      const queryVal = searchQueryInput.value.trim().toLowerCase();
-      if (!queryVal) return;
-
-      searchResultsContainer.classList.remove('hidden');
-      searchResultsContainer.innerHTML = `
-        <div class="text-center py-6 text-slate-400">
-          <i class="fa-solid fa-circle-notch fa-spin text-2xl mb-2 text-rose-500"></i>
-          <p class="text-xs">Buscando postulación...</p>
-        </div>`;
-
-      let matches = [];
-
-      if (firebaseReady && db) {
-        try {
-          const qSnap = await getDocs(collection(db, "whitelist_submissions"));
-          qSnap.forEach(docSnap => {
-            const data = docSnap.data();
-            const u = data.userInfo || {};
-            const discordMatch = (u.discordUser || '').toLowerCase().includes(queryVal);
-            const emailMatch = (u.email || '').toLowerCase().includes(queryVal);
-            if (discordMatch || emailMatch) {
-              matches.push({ id: docSnap.id, ...data });
-            }
-          });
-        } catch (err) {
-          console.error("Error buscando:", err);
-        }
-      } else {
-        if (userData.discordUser.toLowerCase().includes(queryVal) || userData.email.toLowerCase().includes(queryVal)) {
-          matches.push({
-            id: 'local_1',
-            userInfo: userData,
-            status: 'pending',
-            scorePercentage: 100,
-            createdAt: new Date().toISOString()
-          });
-        }
-      }
-
-      if (matches.length === 0) {
-        searchResultsContainer.innerHTML = `
-          <div class="bg-slate-950 p-4 rounded-xl text-center border border-slate-800 space-y-1">
-            <i class="fa-solid fa-folder-open text-slate-500 text-xl"></i>
-            <p class="text-xs font-semibold text-slate-300">No se encontraron postulaciones</p>
-            <p class="text-[11px] text-slate-500">Verifica que tu usuario de Discord o correo esté bien escrito.</p>
-          </div>`;
-        return;
-      }
-
-      searchResultsContainer.innerHTML = '';
-      matches.forEach(item => {
-        const u = item.userInfo || {};
-        const cat = u.category || 'general';
-        const isApproved = item.status === 'approved';
-        const isRejected = item.status === 'rejected';
-
-        const statusBg = isApproved ? 'bg-emerald-950/60 border-emerald-500/50' :
-                         isRejected ? 'bg-rose-950/60 border-rose-500/50' :
-                         'bg-amber-950/60 border-amber-500/50';
-
-        const statusBadge = isApproved ? '<span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/40 text-xs">¡APROBADO!</span>' :
-                            isRejected ? '<span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 font-bold border border-rose-500/40 text-xs">DENEGADO / RECHAZADO</span>' :
-                            '<span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 font-bold border border-amber-500/40 text-xs">EN REVISIÓN (PENDIENTE)</span>';
-
-        const div = document.createElement('div');
-        div.className = `p-4 rounded-xl border ${statusBg} space-y-3`;
-        div.innerHTML = `
-          <div class="flex items-center justify-between border-b border-slate-800/60 pb-2">
-            <div>
-              <h4 class="font-bold text-white text-sm">${u.fullName || 'Postulante'}</h4>
-              <p class="text-[11px] text-slate-400 font-mono">Discord: ${u.discordUser} • Whitelist <strong class="uppercase text-amber-400">${cat}</strong></p>
-            </div>
-            ${statusBadge}
-          </div>
-          <p class="text-xs text-slate-300">
-            ${isApproved ? '🎉 ¡Felicidades! Has sido aprobado. Revisa nuestro Discord oficial para obtener tu rol de ingreso al servidor.' : 
-              isRejected ? '❌ Lamentablemente tu postulación no superó nuestros estándares. Puedes intentar nuevamente en 48 horas.' : 
-              '⏳ Tu prueba está siendo evaluada por nuestro equipo administrativo. Mantente atento a Discord.'}
-          </p>
-        `;
-        searchResultsContainer.appendChild(div);
-      });
     }
 
     async function saveBgSettings(url, opacity) {
@@ -979,7 +802,7 @@
           showToast("¡Fondo guardado en Firebase!", "success");
         } catch (err) {
           console.error("Error guardando fondo:", err);
-          showToast("Fondo aplicado localmente", "info");
+          showToast("Fondo aplicado en este navegador", "info");
         }
       } else {
         showToast("Fondo aplicado localmente", "info");
@@ -987,12 +810,12 @@
     }
 
     function loadQuestion(index) {
-      if (!activeCategoryQuestions[index]) return;
+      if (!questions[index]) return;
       currentQuestionIndex = index;
-      const q = activeCategoryQuestions[index];
+      const q = questions[index];
 
-      questionCategory.textContent = `${q.category} (${userData.category.toUpperCase()})`;
-      questionCounter.textContent = `Pregunta ${index + 1} de ${activeCategoryQuestions.length}`;
+      questionCategory.textContent = q.category;
+      questionCounter.textContent = `Pregunta ${index + 1} de ${questions.length}`;
       questionTitle.textContent = q.title;
       optionsContainer.innerHTML = '';
       
@@ -1032,7 +855,7 @@
       }
 
       prevBtn.disabled = index === 0;
-      if (index === activeCategoryQuestions.length - 1) {
+      if (index === questions.length - 1) {
         nextBtn.innerHTML = `<span>Finalizar Postulación</span> <i class="fa-solid fa-paper-plane"></i>`;
       } else {
         nextBtn.innerHTML = `<span>Siguiente</span> <i class="fa-solid fa-chevron-right"></i>`;
@@ -1042,8 +865,8 @@
     }
 
     function saveCurrentAnswer() {
-      if (!activeCategoryQuestions[currentQuestionIndex]) return;
-      const q = activeCategoryQuestions[currentQuestionIndex];
+      if (!questions[currentQuestionIndex]) return;
+      const q = questions[currentQuestionIndex];
       if (q.type === 'text') {
         const val = openAnswerInput.value.trim();
         if (val) userAnswers[q.id] = val;
@@ -1054,7 +877,7 @@
 
     function updateProgressBar() {
       const answeredCount = Object.keys(userAnswers).length;
-      const total = activeCategoryQuestions.length || 1;
+      const total = questions.length || 1;
       const percentage = Math.round((answeredCount / total) * 100);
 
       progressBar.style.width = `${percentage}%`;
@@ -1064,12 +887,11 @@
     async function finishQuestionnaire() {
       saveCurrentAnswer();
       const answeredCount = Object.keys(userAnswers).length;
-      const total = activeCategoryQuestions.length || 1;
+      const total = questions.length || 1;
       const scorePercentage = Math.round((answeredCount / total) * 100);
 
       document.getElementById('sumName').textContent = userData.fullName || 'N/A';
       document.getElementById('sumDiscord').textContent = userData.discordUser || 'N/A';
-      document.getElementById('sumCategory').textContent = userData.category || 'general';
       document.getElementById('sumScore').textContent = `${scorePercentage}% (${answeredCount}/${total})`;
 
       sectionQuestionnaire.classList.add('hidden');
@@ -1117,7 +939,6 @@
       }
 
       sectionUserInfo.classList.add('hidden');
-      sectionUserSearch.classList.add('hidden');
       sectionQuestionnaire.classList.add('hidden');
       sectionSummary.classList.add('hidden');
       sectionAdmin.classList.remove('hidden');
@@ -1168,10 +989,8 @@
     function renderSubmissions(list) {
       const container = document.getElementById('submissionsList');
       const filtered = list.filter(item => {
-        const u = item.userInfo || {};
-        const matchStatus = currentFilter === 'all' || item.status === currentFilter;
-        const matchCat = currentCatFilter === 'all' || (u.category || 'general') === currentCatFilter;
-        return matchStatus && matchCat;
+        if (currentFilter === 'all') return true;
+        return item.status === currentFilter;
       });
 
       document.getElementById('submissionCount').textContent = `${filtered.length} postulaciones`;
@@ -1200,15 +1019,14 @@
         const answers = item.answers || {};
 
         let answersHtml = '';
-        allQuestions.forEach(q => {
-          if (answers[q.id]) {
-            answersHtml += `
-              <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800/80 text-xs space-y-1">
-                <p class="font-semibold text-rose-400">${q.title}</p>
-                <p class="text-slate-300 leading-relaxed">${answers[q.id]}</p>
-              </div>
-            `;
-          }
+        questions.forEach(q => {
+          const ans = answers[q.id] || '<em class="text-slate-600">Sin responder</em>';
+          answersHtml += `
+            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800/80 text-xs space-y-1">
+              <p class="font-semibold text-rose-400">${q.title}</p>
+              <p class="text-slate-300 leading-relaxed">${ans}</p>
+            </div>
+          `;
         });
 
         card.innerHTML = `
@@ -1217,7 +1035,6 @@
               <h3 class="font-bold text-white text-base flex items-center gap-2">
                 ${u.fullName || 'Usuario'}
                 <span class="text-xs font-normal text-slate-400">(${u.age || '?'} años)</span>
-                <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">${u.category || 'general'}</span>
               </h3>
               <p class="text-xs text-slate-400 font-mono flex items-center gap-2 mt-0.5">
                 <i class="fa-brands fa-discord text-rose-500"></i> ${u.discordUser || 'N/A'} 
@@ -1239,7 +1056,7 @@
               Ver Formulario y Respuestas
             </summary>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3 pt-2">
-              ${answersHtml || '<p class="text-xs text-slate-500 col-span-2">Sin respuestas detalladas.</p>'}
+              ${answersHtml}
             </div>
           </details>
 
@@ -1284,12 +1101,12 @@
       const container = document.getElementById('questionsEditorList');
       container.innerHTML = '';
 
-      if (allQuestions.length === 0) {
+      if (questions.length === 0) {
         container.innerHTML = '<p class="text-center text-xs text-slate-500 py-6">No hay preguntas creadas.</p>';
         return;
       }
 
-      allQuestions.forEach((q, idx) => {
+      questions.forEach((q, idx) => {
         const item = document.createElement('div');
         item.className = "bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm";
 
@@ -1297,10 +1114,11 @@
           <div class="space-y-1">
             <div class="flex items-center gap-2">
               <span class="text-xs font-mono font-bold text-rose-400">#${idx + 1}</span>
-              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800/60">${q.targetWl || 'general'}</span>
               <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-950 text-slate-400 border border-slate-800">${q.category}</span>
+              <span class="text-[10px] font-semibold px-2 py-0.5 rounded ${q.type === 'choice' ? 'bg-amber-500/20 text-amber-300' : 'bg-sky-500/20 text-sky-300'}">${q.type === 'choice' ? 'Selección Múltiple' : 'Texto Abierto'}</span>
             </div>
             <h4 class="text-sm font-semibold text-white">${q.title}</h4>
+            ${q.type === 'choice' && q.options ? `<p class="text-xs text-slate-400">${q.options.length} opciones configuradas</p>` : ''}
           </div>
 
           <div class="flex items-center gap-2 self-end sm:self-center">
@@ -1323,7 +1141,6 @@
     function openQuestionModal(q = null) {
       document.getElementById('editQuestionId').value = q ? q.id : '';
       document.getElementById('modalTitle').textContent = q ? 'Editar Pregunta' : 'Agregar Nueva Pregunta';
-      document.getElementById('modalTargetWl').value = q ? (q.targetWl || 'general') : 'general';
       document.getElementById('modalCategory').value = q ? q.category : '';
       document.getElementById('modalTitleInput').value = q ? q.title : '';
       modalType.value = q ? q.type : 'text';
@@ -1360,7 +1177,6 @@
     async function handleSaveQuestion(e) {
       e.preventDefault();
       const id = document.getElementById('editQuestionId').value || 'q_' + Date.now();
-      const targetWl = document.getElementById('modalTargetWl').value;
       const category = document.getElementById('modalCategory').value.trim();
       const title = document.getElementById('modalTitleInput').value.trim();
       const type = modalType.value;
@@ -1377,7 +1193,7 @@
         }
       }
 
-      const questionObj = { id, targetWl, category, title, type };
+      const questionObj = { id, category, title, type };
       if (type === 'choice') questionObj.options = optionsArray;
 
       if (firebaseReady && db) {
@@ -1388,9 +1204,9 @@
           console.error("Error al guardar pregunta:", err);
         }
       } else {
-        const existingIdx = allQuestions.findIndex(item => item.id === id);
-        if (existingIdx >= 0) allQuestions[existingIdx] = questionObj;
-        else allQuestions.push(questionObj);
+        const existingIdx = questions.findIndex(item => item.id === id);
+        if (existingIdx >= 0) questions[existingIdx] = questionObj;
+        else questions.push(questionObj);
         showToast("Pregunta guardada localmente", "info");
       }
 
@@ -1409,7 +1225,7 @@
           console.error("Error al eliminar pregunta:", err);
         }
       } else {
-        allQuestions = allQuestions.filter(item => item.id !== q.id);
+        questions = questions.filter(item => item.id !== q.id);
         showToast("Pregunta eliminada localmente", "info");
       }
       renderQuestionsEditor();
@@ -1431,7 +1247,10 @@
 
       container.appendChild(toast);
 
-      setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      }, 10);
+
       setTimeout(() => {
         toast.classList.add('opacity-0', 'translate-y-2');
         setTimeout(() => toast.remove(), 300);
