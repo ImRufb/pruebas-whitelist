@@ -79,7 +79,7 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <button id="adminBtn" class="text-xs font-semibold px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-all flex items-center gap-2">
+        <button id="adminBtn" type="button" class="text-xs font-semibold px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-all flex items-center gap-2">
           <i class="fa-solid fa-lock text-rose-500"></i>
           <span class="hidden sm:inline">Panel Admin</span>
         </button>
@@ -151,7 +151,7 @@
             <i class="fa-solid fa-list-check text-rose-500"></i>
             Progreso de Evaluación
           </span>
-          <span id="progressText" class="text-rose-400 font-bold">0% (0/8 respondidas)</span>
+          <span id="progressText" class="text-rose-400 font-bold">0% (0 respondidas)</span>
         </div>
         <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden p-0.5 border border-slate-800">
           <div id="progressBar" class="bg-gradient-to-r from-rose-600 to-amber-500 h-full rounded-full transition-all duration-300 w-0"></div>
@@ -162,7 +162,7 @@
       <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-xl relative">
         <div class="flex items-center justify-between text-xs font-semibold text-rose-400 uppercase tracking-wider mb-2">
           <span id="questionCategory">Conceptos Roleplay</span>
-          <span id="questionCounter">Pregunta 1 de 8</span>
+          <span id="questionCounter">Pregunta 1</span>
         </div>
 
         <h3 id="questionTitle" class="text-lg sm:text-xl font-bold text-white mb-6 leading-relaxed">
@@ -231,34 +231,109 @@
             <i class="fa-solid fa-user-shield text-rose-500"></i>
             Panel de Whitelist
           </h2>
-          <p class="text-xs text-slate-400">Gestión e inspección de solicitudes en tiempo real (Firestore)</p>
+          <p class="text-xs text-slate-400">Gestión de solicitudes y configuración del cuestionario</p>
         </div>
         <button id="closeAdminBtn" type="button" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700">
           <i class="fa-solid fa-xmark mr-1"></i> Cerrar
         </button>
       </div>
 
-      <!-- Filtros -->
-      <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-        <div class="flex items-center gap-2">
-          <button data-filter="all" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600 text-white transition-all">Todos</button>
-          <button data-filter="pending" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-all">Pendientes</button>
-          <button data-filter="approved" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-all">Aprobados</button>
-          <button data-filter="rejected" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-all">Rechazados</button>
-        </div>
-        <span id="submissionCount" class="text-xs text-slate-400 font-mono">0 postulaciones</span>
+      <!-- Pestañas de Navegación Admin -->
+      <div class="flex border-b border-slate-800 gap-4">
+        <button id="tabSubmissionsBtn" type="button" class="py-2.5 px-4 font-semibold text-xs border-b-2 border-rose-500 text-rose-400 transition-all flex items-center gap-2">
+          <i class="fa-solid fa-inbox"></i> Postulaciones Recibidas
+        </button>
+        <button id="tabQuestionsBtn" type="button" class="py-2.5 px-4 font-semibold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-2">
+          <i class="fa-solid fa-pen-to-square"></i> Gestor de Preguntas
+        </button>
       </div>
 
-      <!-- Lista de Postulaciones -->
-      <div id="submissionsList" class="space-y-4">
-        <div class="text-center py-12 text-slate-400">
-          <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-rose-500"></i>
-          <p class="text-sm">Conectando a base de datos de Caracas Vibes2...</p>
+      <!-- CONTENIDO PESTAÑA 1: POSTULACIONES -->
+      <div id="tabSubmissionsContent" class="space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+          <div class="flex items-center gap-2">
+            <button data-filter="all" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600 text-white transition-all">Todos</button>
+            <button data-filter="pending" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-all">Pendientes</button>
+            <button data-filter="approved" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-all">Aprobados</button>
+            <button data-filter="rejected" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-all">Rechazados</button>
+          </div>
+          <span id="submissionCount" class="text-xs text-slate-400 font-mono">0 postulaciones</span>
+        </div>
+
+        <div id="submissionsList" class="space-y-4">
+          <div class="text-center py-12 text-slate-400">
+            <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-rose-500"></i>
+            <p class="text-sm">Cargando postulaciones...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTENIDO PESTAÑA 2: GESTOR DE PREGUNTAS -->
+      <div id="tabQuestionsContent" class="hidden space-y-6">
+        <div class="flex justify-between items-center bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+          <div>
+            <h3 class="text-sm font-bold text-white">Preguntas Activas</h3>
+            <p class="text-xs text-slate-400">Edita, elimina o agrega nuevas preguntas para el formulario.</p>
+          </div>
+          <button id="addQuestionBtn" type="button" class="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition-all flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> Nueva Pregunta
+          </button>
+        </div>
+
+        <div id="questionsEditorList" class="space-y-4">
+          <!-- Lista de preguntas editable -->
         </div>
       </div>
     </div>
 
   </main>
+
+  <!-- MODAL: CREAR / EDITAR PREGUNTA -->
+  <div id="questionModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 id="modalTitle" class="text-lg font-bold text-white">Agregar Pregunta</h3>
+        <button id="closeModalBtn" type="button" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="questionForm" class="space-y-4">
+        <input type="hidden" id="editQuestionId">
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Categoría</label>
+          <input type="text" id="modalCategory" required placeholder="Ej. Reglamento General" 
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-rose-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Enunciado / Pregunta</label>
+          <input type="text" id="modalTitleInput" required placeholder="Ej. ¿Qué entiendes por MetaGaming (MG)?" 
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-rose-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Tipo de Respuesta</label>
+          <select id="modalType" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-rose-500">
+            <option value="text">Texto Abierto (Larga)</option>
+            <option value="choice">Opción Múltiple (Selección)</option>
+          </select>
+        </div>
+
+        <div id="modalOptionsWrapper" class="hidden space-y-2">
+          <label class="block text-xs font-semibold text-slate-300">Opciones de Selección</label>
+          <div id="modalOptionsList" class="space-y-2"></div>
+          <button id="addOptionInputBtn" type="button" class="text-xs text-rose-400 hover:underline font-semibold flex items-center gap-1 mt-1">
+            <i class="fa-solid fa-plus text-[10px]"></i> Añadir Opción
+          </button>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+          <button id="cancelModalBtn" type="button" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700">Cancelar</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-rose-600 text-white text-xs font-bold hover:bg-rose-500">Guardar Pregunta</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- PIE DE PÁGINA -->
   <footer class="border-t border-slate-800/80 bg-slate-950 py-4 text-center text-xs text-slate-500">
@@ -272,6 +347,7 @@
       getFirestore, 
       collection, 
       addDoc, 
+      setDoc,
       query, 
       orderBy, 
       limit, 
@@ -283,7 +359,7 @@
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     // -------------------------------------------------------------
-    // CONFIGURACIÓN DE FIREBASE (Reemplaza tus claves aquí)
+    // CONFIGURACIÓN DE FIREBASE (Reemplaza con tus claves reales)
     // -------------------------------------------------------------
     const firebaseConfig = {
       apiKey: "AIzaSyC4MsYStfYJCfScNY3UuDz9zfnb_JN5Q6I",
@@ -309,7 +385,8 @@
       console.warn("Firebase no configurado o usando claves de demostración.", e);
     }
 
-    const questions = [
+    // LISTA DE PREGUNTAS DEFAULT
+    let defaultQuestions = [
       {
         id: "q1",
         category: "Conceptos Fundamentales",
@@ -384,6 +461,8 @@
       }
     ];
 
+    let questions = [...defaultQuestions];
+
     let userData = { fullName: "", email: "", discordUser: "", age: "" };
     let userAnswers = {};
     let currentQuestionIndex = 0;
@@ -412,9 +491,37 @@
     const adminBtn = document.getElementById('adminBtn');
     const closeAdminBtn = document.getElementById('closeAdminBtn');
 
+    // Modal de preguntas
+    const questionModal = document.getElementById('questionModal');
+    const questionForm = document.getElementById('questionForm');
+    const modalType = document.getElementById('modalType');
+    const modalOptionsWrapper = document.getElementById('modalOptionsWrapper');
+    const modalOptionsList = document.getElementById('modalOptionsList');
+
     window.addEventListener('DOMContentLoaded', () => {
+      listenQuestionsRealtime();
       setupEvents();
     });
+
+    // Escuchar cambios de preguntas en Firestore
+    function listenQuestionsRealtime() {
+      if (firebaseReady && db) {
+        onSnapshot(collection(db, "whitelist_questions"), (snapshot) => {
+          if (!snapshot.empty) {
+            questions = [];
+            snapshot.forEach((docSnap) => {
+              questions.push({ id: docSnap.id, ...docSnap.data() });
+            });
+          }
+          if (currentQuestionIndex >= questions.length) {
+            currentQuestionIndex = Math.max(0, questions.length - 1);
+          }
+          renderQuestionsEditor();
+        }, (err) => {
+          console.warn("Error cargando preguntas de Firestore:", err);
+        });
+      }
+    }
 
     function setupEvents() {
       userForm.addEventListener('submit', (e) => {
@@ -447,6 +554,7 @@
       });
 
       openAnswerInput.addEventListener('input', () => {
+        if (!questions[currentQuestionIndex]) return;
         const q = questions[currentQuestionIndex];
         const val = openAnswerInput.value.trim();
         if (val) userAnswers[q.id] = val;
@@ -470,6 +578,48 @@
         sectionUserInfo.classList.remove('hidden');
       });
 
+      // Pestañas Admin
+      const tabSubmissionsBtn = document.getElementById('tabSubmissionsBtn');
+      const tabQuestionsBtn = document.getElementById('tabQuestionsBtn');
+      const tabSubmissionsContent = document.getElementById('tabSubmissionsContent');
+      const tabQuestionsContent = document.getElementById('tabQuestionsContent');
+
+      tabSubmissionsBtn.addEventListener('click', () => {
+        tabSubmissionsBtn.className = "py-2.5 px-4 font-semibold text-xs border-b-2 border-rose-500 text-rose-400 transition-all flex items-center gap-2";
+        tabQuestionsBtn.className = "py-2.5 px-4 font-semibold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-2";
+        tabSubmissionsContent.classList.remove('hidden');
+        tabQuestionsContent.classList.add('hidden');
+      });
+
+      tabQuestionsBtn.addEventListener('click', () => {
+        tabQuestionsBtn.className = "py-2.5 px-4 font-semibold text-xs border-b-2 border-rose-500 text-rose-400 transition-all flex items-center gap-2";
+        tabSubmissionsBtn.className = "py-2.5 px-4 font-semibold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-2";
+        tabQuestionsContent.classList.remove('hidden');
+        tabSubmissionsContent.classList.add('hidden');
+        renderQuestionsEditor();
+      });
+
+      // Eventos del Modal de Preguntas
+      document.getElementById('addQuestionBtn').addEventListener('click', () => openQuestionModal());
+      document.getElementById('closeModalBtn').addEventListener('click', closeQuestionModal);
+      document.getElementById('cancelModalBtn').addEventListener('click', closeQuestionModal);
+
+      modalType.addEventListener('change', () => {
+        if (modalType.value === 'choice') {
+          modalOptionsWrapper.classList.remove('hidden');
+          if (modalOptionsList.children.length === 0) {
+            addOptionInputField();
+            addOptionInputField();
+          }
+        } else {
+          modalOptionsWrapper.classList.add('hidden');
+        }
+      });
+
+      document.getElementById('addOptionInputBtn').addEventListener('click', () => addOptionInputField());
+
+      questionForm.addEventListener('submit', handleSaveQuestion);
+
       document.querySelectorAll('.admin-filter-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           document.querySelectorAll('.admin-filter-btn').forEach(b => {
@@ -485,6 +635,7 @@
     }
 
     function loadQuestion(index) {
+      if (!questions[index]) return;
       currentQuestionIndex = index;
       const q = questions[index];
 
@@ -497,7 +648,7 @@
         optionsContainer.classList.remove('hidden');
         textContainer.classList.add('hidden');
 
-        q.options.forEach((optText) => {
+        (q.options || []).forEach((optText) => {
           const isSelected = userAnswers[q.id] === optText;
           const btn = document.createElement('button');
           btn.type = 'button';
@@ -522,7 +673,7 @@
 
           optionsContainer.appendChild(btn);
         });
-      } else if (q.type === 'text') {
+      } else {
         optionsContainer.classList.add('hidden');
         textContainer.classList.remove('hidden');
         openAnswerInput.value = userAnswers[q.id] || '';
@@ -539,6 +690,7 @@
     }
 
     function saveCurrentAnswer() {
+      if (!questions[currentQuestionIndex]) return;
       const q = questions[currentQuestionIndex];
       if (q.type === 'text') {
         const val = openAnswerInput.value.trim();
@@ -550,27 +702,26 @@
 
     function updateProgressBar() {
       const answeredCount = Object.keys(userAnswers).length;
-      const percentage = Math.round((answeredCount / questions.length) * 100);
+      const total = questions.length || 1;
+      const percentage = Math.round((answeredCount / total) * 100);
 
       progressBar.style.width = `${percentage}%`;
-      progressText.textContent = `${percentage}% (${answeredCount}/${questions.length} respondidas)`;
+      progressText.textContent = `${percentage}% (${answeredCount}/${total} respondidas)`;
     }
 
     async function finishQuestionnaire() {
       saveCurrentAnswer();
       const answeredCount = Object.keys(userAnswers).length;
+      const total = questions.length || 1;
+      const scorePercentage = Math.round((answeredCount / total) * 100);
 
-      const scorePercentage = Math.round((answeredCount / questions.length) * 100);
-
-      // Renderizar Resumen Final de inmediato
       document.getElementById('sumName').textContent = userData.fullName || 'N/A';
       document.getElementById('sumDiscord').textContent = userData.discordUser || 'N/A';
-      document.getElementById('sumScore').textContent = `${scorePercentage}% (${answeredCount}/${questions.length})`;
+      document.getElementById('sumScore').textContent = `${scorePercentage}% (${answeredCount}/${total})`;
 
       sectionQuestionnaire.classList.add('hidden');
       sectionSummary.classList.remove('hidden');
 
-      // Intentar enviar a Firestore en segundo plano
       if (firebaseReady && db) {
         try {
           const payload = {
@@ -584,7 +735,7 @@
           showToast("¡Postulación guardada en Firebase!", "success");
         } catch (err) {
           console.error("Error enviando a Firestore:", err);
-          showToast("Guardado completado (Respuesta local)", "info");
+          showToast("Guardado completado (Local)", "info");
         }
       } else {
         showToast("Postulación completada localmente", "info");
@@ -618,6 +769,7 @@
       sectionAdmin.classList.remove('hidden');
 
       loadSubmissionsRealtime();
+      renderQuestionsEditor();
     }
 
     function loadSubmissionsRealtime() {
@@ -625,7 +777,7 @@
       container.innerHTML = `
         <div class="text-center py-12 text-slate-400">
           <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-rose-500"></i>
-          <p class="text-sm">Cargando postulaciones en tiempo real desde Firestore...</p>
+          <p class="text-sm">Cargando postulaciones en tiempo real...</p>
         </div>`;
 
       if (!firebaseReady || !db) {
@@ -634,7 +786,7 @@
             <i class="fa-solid fa-triangle-exclamation text-amber-400 text-3xl"></i>
             <h4 class="font-bold text-amber-200">Firebase no configurado</h4>
             <p class="text-xs text-amber-300/80 max-w-md mx-auto">
-              Para ver las postulaciones de tus usuarios en tiempo real, reemplaza la variable <code>firebaseConfig</code> con las claves de tu proyecto Firebase.
+              Reemplaza la variable <code>firebaseConfig</code> con las claves de tu proyecto de Firebase.
             </p>
           </div>`;
         return;
@@ -656,10 +808,6 @@
         renderSubmissions(allSubmissions);
       }, (error) => {
         console.error("Error al escuchar postulaciones:", error);
-        container.innerHTML = `
-          <div class="bg-rose-950/40 border border-rose-800 p-6 rounded-2xl text-center text-rose-300 text-xs">
-            Error al consultar Firestore. Revisa las Reglas de Seguridad en tu consola de Firebase.
-          </div>`;
       });
     }
 
@@ -675,7 +823,7 @@
       if (filtered.length === 0) {
         container.innerHTML = `
           <div class="bg-slate-900/40 border border-slate-800 p-8 rounded-2xl text-center text-slate-500 text-sm">
-            No hay postulaciones registradas en esta categoría.
+            No hay postulaciones en esta categoría.
           </div>`;
         return;
       }
@@ -757,12 +905,12 @@
 
             if (action === 'approve') {
               await updateDoc(doc(db, "whitelist_submissions", docId), { status: "approved" });
-              showToast("Postulación marcada como APROBADA", "success");
+              showToast("Postulación APROBADA", "success");
             } else if (action === 'reject') {
               await updateDoc(doc(db, "whitelist_submissions", docId), { status: "rejected" });
-              showToast("Postulación marcada como RECHAZADA", "info");
+              showToast("Postulación RECHAZADA", "info");
             } else if (action === 'delete') {
-              if (confirm("¿Estás seguro de eliminar esta postulación permanentemente?")) {
+              if (confirm("¿Eliminar esta postulación permanentemente?")) {
                 await deleteDoc(doc(db, "whitelist_submissions", docId));
                 showToast("Postulación eliminada", "info");
               }
@@ -772,6 +920,141 @@
 
         container.appendChild(card);
       });
+    }
+
+    // GESTOR DE PREGUNTAS (ADMIN)
+    function renderQuestionsEditor() {
+      const container = document.getElementById('questionsEditorList');
+      container.innerHTML = '';
+
+      if (questions.length === 0) {
+        container.innerHTML = '<p class="text-center text-xs text-slate-500 py-6">No hay preguntas creadas.</p>';
+        return;
+      }
+
+      questions.forEach((q, idx) => {
+        const item = document.createElement('div');
+        item.className = "bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm";
+
+        item.innerHTML = `
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono font-bold text-rose-400">#${idx + 1}</span>
+              <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-950 text-slate-400 border border-slate-800">${q.category}</span>
+              <span class="text-[10px] font-semibold px-2 py-0.5 rounded ${q.type === 'choice' ? 'bg-amber-500/20 text-amber-300' : 'bg-sky-500/20 text-sky-300'}">${q.type === 'choice' ? 'Selección Múltiple' : 'Texto Abierto'}</span>
+            </div>
+            <h4 class="text-sm font-semibold text-white">${q.title}</h4>
+            ${q.type === 'choice' && q.options ? `<p class="text-xs text-slate-400">${q.options.length} opciones configuradas</p>` : ''}
+          </div>
+
+          <div class="flex items-center gap-2 self-end sm:self-center">
+            <button data-idx="${idx}" class="edit-q-btn px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition-all flex items-center gap-1.5">
+              <i class="fa-solid fa-pen"></i> Editar
+            </button>
+            <button data-idx="${idx}" class="delete-q-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-950 text-xs text-slate-400 hover:text-rose-400 transition-all">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        `;
+
+        item.querySelector('.edit-q-btn').addEventListener('click', () => openQuestionModal(q));
+        item.querySelector('.delete-q-btn').addEventListener('click', () => deleteQuestion(q));
+
+        container.appendChild(item);
+      });
+    }
+
+    function openQuestionModal(q = null) {
+      document.getElementById('editQuestionId').value = q ? q.id : '';
+      document.getElementById('modalTitle').textContent = q ? 'Editar Pregunta' : 'Agregar Nueva Pregunta';
+      document.getElementById('modalCategory').value = q ? q.category : '';
+      document.getElementById('modalTitleInput').value = q ? q.title : '';
+      modalType.value = q ? q.type : 'text';
+
+      modalOptionsList.innerHTML = '';
+      if (q && q.type === 'choice' && q.options) {
+        modalOptionsWrapper.classList.remove('hidden');
+        q.options.forEach(opt => addOptionInputField(opt));
+      } else {
+        modalOptionsWrapper.classList.add('hidden');
+      }
+
+      questionModal.classList.remove('hidden');
+    }
+
+    function closeQuestionModal() {
+      questionForm.reset();
+      modalOptionsList.innerHTML = '';
+      questionModal.classList.add('hidden');
+    }
+
+    function addOptionInputField(value = '') {
+      const div = document.createElement('div');
+      div.className = "flex items-center gap-2";
+      div.innerHTML = `
+        <input type="text" value="${value}" placeholder="Texto de la opción" required
+          class="modal-option-val w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500">
+        <button type="button" class="text-slate-500 hover:text-rose-400 text-xs p-1"><i class="fa-solid fa-xmark"></i></button>
+      `;
+      div.querySelector('button').addEventListener('click', () => div.remove());
+      modalOptionsList.appendChild(div);
+    }
+
+    async function handleSaveQuestion(e) {
+      e.preventDefault();
+      const id = document.getElementById('editQuestionId').value || 'q_' + Date.now();
+      const category = document.getElementById('modalCategory').value.trim();
+      const title = document.getElementById('modalTitleInput').value.trim();
+      const type = modalType.value;
+
+      let optionsArray = [];
+      if (type === 'choice') {
+        const optionInputs = modalOptionsList.querySelectorAll('.modal-option-val');
+        optionInputs.forEach(input => {
+          if (input.value.trim()) optionsArray.push(input.value.trim());
+        });
+        if (optionsArray.length < 2) {
+          showToast("Debes añadir al menos 2 opciones", "error");
+          return;
+        }
+      }
+
+      const questionObj = { id, category, title, type };
+      if (type === 'choice') questionObj.options = optionsArray;
+
+      if (firebaseReady && db) {
+        try {
+          await setDoc(doc(db, "whitelist_questions", id), questionObj);
+          showToast("Pregunta guardada en Firebase", "success");
+        } catch (err) {
+          console.error("Error al guardar pregunta:", err);
+        }
+      } else {
+        const existingIdx = questions.findIndex(item => item.id === id);
+        if (existingIdx >= 0) questions[existingIdx] = questionObj;
+        else questions.push(questionObj);
+        showToast("Pregunta guardada localmente", "info");
+      }
+
+      closeQuestionModal();
+      renderQuestionsEditor();
+    }
+
+    async function deleteQuestion(q) {
+      if (!confirm(`¿Deseas borrar la pregunta "${q.title}"?`)) return;
+
+      if (firebaseReady && db) {
+        try {
+          await deleteDoc(doc(db, "whitelist_questions", q.id));
+          showToast("Pregunta eliminada de Firebase", "info");
+        } catch (err) {
+          console.error("Error al eliminar pregunta:", err);
+        }
+      } else {
+        questions = questions.filter(item => item.id !== q.id);
+        showToast("Pregunta eliminada localmente", "info");
+      }
+      renderQuestionsEditor();
     }
 
     function showToast(message, type = "info") {
