@@ -75,6 +75,7 @@
         ::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.4); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-purple); }
 
+        /* Navbar */
         header {
             position: sticky;
             top: 0;
@@ -136,6 +137,7 @@
             gap: 0.75rem;
         }
 
+        /* Botones */
         .btn {
             padding: 0.75rem 1.5rem;
             border-radius: 12px;
@@ -244,6 +246,7 @@
             margin-top: 4px;
         }
 
+        /* Main Container */
         main {
             max-width: 900px;
             width: 100%;
@@ -257,6 +260,7 @@
             z-index: 10;
         }
 
+        /* Card Container */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-glow);
@@ -288,6 +292,7 @@
             font-size: 0.95rem;
         }
 
+        /* Form Controls */
         .form-group {
             margin-bottom: 1.25rem;
         }
@@ -324,6 +329,7 @@
             box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
         }
 
+        /* Progress Bar */
         .progress-box {
             background: var(--bg-card);
             border: 1px solid var(--border-glow);
@@ -358,6 +364,7 @@
             width: 0%;
         }
 
+        /* Option Buttons */
         .option-btn {
             width: 100%;
             text-align: left;
@@ -403,6 +410,7 @@
             background: var(--accent-purple);
         }
 
+        /* Tabs Admin */
         .admin-tabs {
             display: flex;
             gap: 1rem;
@@ -429,6 +437,7 @@
             border-bottom-color: var(--accent-purple);
         }
 
+        /* Toast notifications */
         #toastContainer {
             position: fixed;
             bottom: 20px;
@@ -456,6 +465,7 @@
             transition: all 0.3s ease;
         }
 
+        /* Modal */
         .modal {
             position: fixed;
             inset: 0;
@@ -509,6 +519,7 @@
     <!-- NOTIFICACIONES TOAST -->
     <div id="toastContainer"></div>
 
+    <!-- HEADER / NAVBAR -->
     <header>
         <div class="nav-container">
             <a href="#" class="logo">
@@ -531,6 +542,7 @@
         </div>
     </header>
 
+    <!-- CONTENIDO PRINCIPAL -->
     <main>
 
         <!-- SECCIÓN 1: FORMULARIO INICIAL DE DATOS & SELECCIÓN DE WHITELIST -->
@@ -710,9 +722,6 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                         <h3 style="font-size: 1.1rem; font-weight: 700;">Preguntas Activas</h3>
                         <div style="display: flex; gap: 0.5rem;">
-                            <button id="resetDefaultQuestionsBtn" type="button" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-                                <i class="fa-solid fa-rotate-left"></i> Restaurar Predeterminadas
-                            </button>
                             <button id="addQuestionBtn" type="button" class="btn btn-purple" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
                                 <i class="fa-solid fa-plus"></i> Nueva Pregunta
                             </button>
@@ -727,11 +736,6 @@
                         <div class="form-group">
                             <label class="form-label">URL de Imagen de Fondo</label>
                             <input type="url" id="bgUrlInput" placeholder="https://ejemplo.com/mi-imagen.jpg" class="form-input">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">O Cargar Archivo Local</label>
-                            <input type="file" id="bgFileInput" accept="image/*" class="form-input" style="padding: 0.5rem;">
                         </div>
 
                         <div class="form-group">
@@ -753,7 +757,7 @@
                         </div>
 
                         <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem;">
-                            <button id="resetBgBtn" type="button" class="btn btn-outline">Restaurar</button>
+                            <button id="resetBgBtn" type="button" class="btn btn-outline">Restaurar Predeterminado</button>
                             <button type="submit" class="btn btn-purple"><i class="fa-solid fa-floppy-disk"></i> Guardar Fondo</button>
                         </div>
                     </form>
@@ -844,7 +848,7 @@
         <p>© 2026 Caracas Vibes2 RP. Todos los derechos reservados. Plataforma oficial Whitelist.</p>
     </footer>
 
-    <!-- FIREBASE SDK & APP LOGIC -->
+    <!-- FIREBASE SDK & APP LOGIC (SOLO TIEMPO REAL - SÍNCRONO CON FIRESTORE) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { 
@@ -866,6 +870,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyC4MsYStfYJCfScNY3UuDz9zfnb_JN5Q6I",
             authDomain: "carasvibes-whitelist.firebaseapp.com",
+            databaseURL: "https://carasvibes-whitelist-default-rtdb.firebaseio.com",
             projectId: "carasvibes-whitelist",
             storageBucket: "carasvibes-whitelist.firebasestorage.app",
             messagingSenderId: "208939321301",
@@ -874,73 +879,17 @@
 
         const ADMIN_PASSWORD = "CaracasVibes2026";
         const DEFAULT_BG = "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80";
-        const LOCAL_STORAGE_QUESTIONS_KEY = "caracas_vibes_questions_v1";
-        const LOCAL_STORAGE_SUBMISSIONS_KEY = "caracas_vibes_submissions_v1";
 
-        let app, db;
-        let firebaseReady = false;
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-        try {
-            if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("YOUR_API_KEY")) {
-                app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                firebaseReady = true;
-            }
-        } catch (e) {
-            console.warn("Firebase operando en modo fallback local.", e);
-        }
-
-        let defaultQuestions = [
-            {
-                id: "q1",
-                wlScope: "all",
-                category: "Conceptos Fundamentales",
-                title: "¿Qué es el In Character (IC) y Out Of Character (OOC)?",
-                type: "choice",
-                options: [
-                    "IC es todo lo que ocurre con tu personaje dentro del juego; OOC es todo lo relativo a tu persona real fuera del juego.",
-                    "IC es cuando hablas por Discord y OOC cuando hablas por el micrófono de FiveM.",
-                    "IC significa hacer trucos en el juego y OOC es respetar a los administradores.",
-                    "No hay diferencia, ambos términos significan lo mismo dentro del servidor."
-                ]
-            },
-            {
-                id: "q2",
-                wlScope: "all",
-                category: "Reglamento General",
-                title: "¿Qué entiendes por MetaGaming (MG)? Proporciona un ejemplo breve.",
-                type: "text"
-            },
-            {
-                id: "q3",
-                wlScope: "delictivo",
-                category: "Rol Delictivo",
-                title: "¿Cómo debes actuar en un secuestro a un funcionario policial o civil siendo una banda?",
-                type: "text"
-            },
-            {
-                id: "q4",
-                wlScope: "legal",
-                category: "Rol Legal / Servicios",
-                title: "¿Cuál es el protocolo prioritario al atender un aviso de emergencia estando en servicio?",
-                type: "text"
-            },
-            {
-                id: "q5",
-                wlScope: "all",
-                category: "Normativa de Vida",
-                title: "¿En qué consiste la regla de Valorar la Vida (NVHQ/VLV)?",
-                type: "text"
-            }
-        ];
-
-        let questions = loadSavedQuestions();
+        let questions = [];
         let activeExamQuestions = [];
         let selectedWlType = "general";
         let userData = { fullName: "", email: "", discordUser: "", age: "", wlType: "general" };
         let userAnswers = {};
         let currentQuestionIndex = 0;
-        let allSubmissions = loadSavedSubmissions();
+        let allSubmissions = [];
         let currentFilter = "all";
         let currentWlFilter = "all";
         let unsubscribeAdminListener = null;
@@ -969,7 +918,6 @@
         const bgLayer = document.getElementById('bgLayer');
         const bgOverlay = document.getElementById('bgOverlay');
         const bgUrlInput = document.getElementById('bgUrlInput');
-        const bgFileInput = document.getElementById('bgFileInput');
         const opacitySlider = document.getElementById('opacitySlider');
         const opacityValDisplay = document.getElementById('opacityValDisplay');
         const bgPreviewImg = document.getElementById('bgPreviewImg');
@@ -987,48 +935,6 @@
         const searchStatusForm = document.getElementById('searchStatusForm');
         const statusResultContainer = document.getElementById('statusResultContainer');
 
-        function loadSavedQuestions() {
-            try {
-                const stored = localStorage.getItem(LOCAL_STORAGE_QUESTIONS_KEY);
-                if (stored) {
-                    const parsed = JSON.parse(stored);
-                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-                }
-            } catch (e) {
-                console.warn("No se pudieron cargar las preguntas del LocalStorage", e);
-            }
-            return [...defaultQuestions];
-        }
-
-        function persistQuestionsLocally() {
-            try {
-                localStorage.setItem(LOCAL_STORAGE_QUESTIONS_KEY, JSON.stringify(questions));
-            } catch (e) {
-                console.error("Error guardando preguntas en LocalStorage", e);
-            }
-        }
-
-        function loadSavedSubmissions() {
-            try {
-                const stored = localStorage.getItem(LOCAL_STORAGE_SUBMISSIONS_KEY);
-                if (stored) {
-                    const parsed = JSON.parse(stored);
-                    if (Array.isArray(parsed)) return parsed;
-                }
-            } catch (e) {
-                console.warn("No se pudieron cargar postulaciones del LocalStorage", e);
-            }
-            return [];
-        }
-
-        function persistSubmissionsLocally() {
-            try {
-                localStorage.setItem(LOCAL_STORAGE_SUBMISSIONS_KEY, JSON.stringify(allSubmissions));
-            } catch (e) {
-                console.error("Error guardando postulaciones en LocalStorage", e);
-            }
-        }
-
         window.selectWhitelistType = function(type, element) {
             selectedWlType = type;
             document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
@@ -1041,24 +947,23 @@
             setupEvents();
         });
 
+        // 1. CONFIGURACIÓN DE FONDO EN TIEMPO REAL DESDE FIREBASE
         function listenSettingsRealtime() {
-            if (firebaseReady && db) {
-                onSnapshot(doc(db, "whitelist_settings", "theme"), (docSnap) => {
-                    if (docSnap.exists()) {
-                        const data = docSnap.data();
-                        applyBackground(data.bgUrl || DEFAULT_BG, data.opacity || 82);
-                    }
-                }, (err) => {
-                    console.warn("Error en oyente de configuraciones de Firebase:", err);
-                });
-            }
+            onSnapshot(doc(db, "whitelist_settings", "theme"), (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    applyBackground(data.bgUrl || DEFAULT_BG, data.opacity || 82);
+                } else {
+                    applyBackground(DEFAULT_BG, 82);
+                }
+            }, (err) => console.error("Error cargando configuración de tema:", err));
         }
 
         function applyBackground(url, opacity) {
             bgLayer.style.backgroundImage = `url('${url}')`;
             bgOverlay.style.backgroundColor = `rgba(7, 8, 16, ${opacity / 100})`;
             
-            bgUrlInput.value = url.startsWith('data:') ? '' : url;
+            bgUrlInput.value = url;
             opacitySlider.value = opacity;
             opacityValDisplay.textContent = `${opacity}%`;
 
@@ -1066,29 +971,15 @@
             bgPreviewOverlay.style.backgroundColor = `rgba(7, 8, 16, ${opacity / 100})`;
         }
 
+        // 2. ESCUCHA DE PREGUNTAS EN TIEMPO REAL DESDE FIREBASE
         function listenQuestionsRealtime() {
-            if (firebaseReady && db) {
-                onSnapshot(collection(db, "whitelist_questions"), (snapshot) => {
-                    if (!snapshot.empty) {
-                        questions = [];
-                        snapshot.forEach((docSnap) => {
-                            questions.push({ id: docSnap.id, ...docSnap.data() });
-                        });
-                        persistQuestionsLocally();
-                    } else {
-                        // Si Firebase está vacío pero hay datos locales, no los borres
-                        questions = loadSavedQuestions();
-                    }
-                    renderQuestionsEditor();
-                }, (err) => {
-                    console.warn("Firestore inalcanzable, usando LocalStorage:", err);
-                    questions = loadSavedQuestions();
-                    renderQuestionsEditor();
+            onSnapshot(collection(db, "whitelist_questions"), (snapshot) => {
+                questions = [];
+                snapshot.forEach((docSnap) => {
+                    questions.push({ id: docSnap.id, ...docSnap.data() });
                 });
-            } else {
-                questions = loadSavedQuestions();
                 renderQuestionsEditor();
-            }
+            }, (err) => console.error("Error escuchando preguntas de Firestore:", err));
         }
 
         function setupEvents() {
@@ -1103,40 +994,29 @@
                 statusModal.classList.add('hidden');
             });
 
+            // CONSULTA EN TIEMPO REAL DE POSTULACIONES DE USUARIO
             searchStatusForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const queryVal = document.getElementById('statusSearchQuery').value.trim().toLowerCase();
                 if (!queryVal) return;
 
                 statusResultContainer.classList.remove('hidden');
-                statusResultContainer.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 0.85rem;"><i class="fa-solid fa-spin fa-circle-notch" style="color: var(--accent-purple);"></i> Buscando tu solicitud...</div>`;
+                statusResultContainer.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 0.85rem;"><i class="fa-solid fa-spin fa-circle-notch" style="color: var(--accent-purple);"></i> Buscando tu solicitud en Firebase...</div>`;
 
                 let matches = [];
-
-                if (firebaseReady && db) {
-                    try {
-                        const snapshot = await getDocs(collection(db, "whitelist_submissions"));
-                        snapshot.forEach(docSnap => {
-                            const data = docSnap.data();
-                            const u = data.userInfo || {};
-                            if ((u.discordUser && u.discordUser.toLowerCase().includes(queryVal)) || 
-                                (u.email && u.email.toLowerCase().includes(queryVal))) {
-                                matches.push({ id: docSnap.id, ...data });
-                            }
-                        });
-                    } catch (err) {
-                        console.error("Error buscando estatus en Firebase:", err);
-                    }
-                }
-                
-                if (matches.length === 0) {
-                    allSubmissions.forEach(item => {
-                        const u = item.userInfo || {};
+                try {
+                    const snapshot = await getDocs(collection(db, "whitelist_submissions"));
+                    snapshot.forEach(docSnap => {
+                        const data = docSnap.data();
+                        const u = data.userInfo || {};
                         if ((u.discordUser && u.discordUser.toLowerCase().includes(queryVal)) || 
                             (u.email && u.email.toLowerCase().includes(queryVal))) {
-                            matches.push(item);
+                            matches.push({ id: docSnap.id, ...data });
                         }
                     });
+                } catch (err) {
+                    console.error("Error consultando estatus:", err);
+                    showToast("Error consultando la base de datos", "error");
                 }
 
                 renderUserStatusResult(matches);
@@ -1158,7 +1038,7 @@
                 });
 
                 if (activeExamQuestions.length === 0) {
-                    showToast("No hay preguntas disponibles para esta modalidad", "error");
+                    showToast("No hay preguntas registradas en Firebase para esta modalidad", "error");
                     return;
                 }
 
@@ -1241,48 +1121,34 @@
                 bgPreviewImg.style.backgroundImage = `url('${url}')`;
             });
 
-            bgFileInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (evt) => {
-                        bgPreviewImg.style.backgroundImage = `url('${evt.target.result}')`;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
             document.getElementById('bgConfigForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
-                let targetUrl = bgUrlInput.value.trim();
-                const file = bgFileInput.files[0];
+                const targetUrl = bgUrlInput.value.trim() || DEFAULT_BG;
+                const targetOpacity = opacitySlider.value;
 
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = async (evt) => {
-                        await saveBgSettings(evt.target.result, opacitySlider.value);
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    await saveBgSettings(targetUrl || DEFAULT_BG, opacitySlider.value);
+                try {
+                    await setDoc(doc(db, "whitelist_settings", "theme"), { 
+                        bgUrl: targetUrl, 
+                        opacity: Number(targetOpacity) 
+                    });
+                    showToast("Fondo guardado en Firebase", "success");
+                } catch (err) {
+                    console.error(err);
+                    showToast("Error guardando el fondo en Firebase", "error");
                 }
             });
 
             document.getElementById('resetBgBtn').addEventListener('click', async () => {
-                await saveBgSettings(DEFAULT_BG, 82);
-                showToast("Fondo restaurado", "info");
-            });
-
-            document.getElementById('addQuestionBtn').addEventListener('click', () => openQuestionModal());
-            document.getElementById('resetDefaultQuestionsBtn').addEventListener('click', () => {
-                if (confirm("¿Restaurar las preguntas predeterminadas de fábrica? Esto sobrescribirá tus preguntas guardadas.")) {
-                    questions = [...defaultQuestions];
-                    persistQuestionsLocally();
-                    renderQuestionsEditor();
-                    showToast("Preguntas restauradas por defecto", "info");
+                try {
+                    await setDoc(doc(db, "whitelist_settings", "theme"), { bgUrl: DEFAULT_BG, opacity: 82 });
+                    showToast("Fondo restaurado en Firebase", "info");
+                } catch (err) {
+                    console.error(err);
+                    showToast("Error restaurando fondo", "error");
                 }
             });
 
+            document.getElementById('addQuestionBtn').addEventListener('click', () => openQuestionModal());
             document.getElementById('closeModalBtn').addEventListener('click', closeQuestionModal);
             document.getElementById('cancelModalBtn').addEventListener('click', closeQuestionModal);
 
@@ -1381,20 +1247,6 @@
             statusResultContainer.innerHTML = html;
         }
 
-        async function saveBgSettings(url, opacity) {
-            applyBackground(url, opacity);
-            if (firebaseReady && db) {
-                try {
-                    await setDoc(doc(db, "whitelist_settings", "theme"), { bgUrl: url, opacity: Number(opacity) });
-                    showToast("¡Fondo sincronizado en Firebase!", "success");
-                } catch (err) {
-                    showToast("Fondo aplicado localmente", "info");
-                }
-            } else {
-                showToast("Fondo aplicado localmente", "info");
-            }
-        }
-
         function loadQuestion(index) {
             if (!activeExamQuestions[index]) return;
             currentQuestionIndex = index;
@@ -1464,6 +1316,7 @@
             progressText.textContent = `${percentage}% (${answeredCount}/${total} respondidas)`;
         }
 
+        // 3. ENVÍO DIRECTO A FIRESTORE
         async function finishQuestionnaire() {
             saveCurrentAnswer();
             const answeredCount = Object.keys(userAnswers).length;
@@ -1478,31 +1331,19 @@
             sectionQuestionnaire.classList.add('hidden');
             sectionSummary.classList.remove('hidden');
 
-            const payload = {
-                id: 'sub_' + Date.now(),
-                userInfo: userData,
-                answers: userAnswers,
-                scorePercentage: scorePercentage,
-                status: "pending",
-                createdAt: new Date().toISOString()
-            };
-
-            if (firebaseReady && db) {
-                try {
-                    await addDoc(collection(db, "whitelist_submissions"), {
-                        ...payload,
-                        createdAt: serverTimestamp ? serverTimestamp() : new Date().toISOString()
-                    });
-                    showToast("¡Postulación enviada con éxito!", "success");
-                } catch (err) {
-                    showToast("Postulación guardada localmente", "info");
-                }
-            } else {
-                showToast("Postulación guardada localmente", "info");
+            try {
+                await addDoc(collection(db, "whitelist_submissions"), {
+                    userInfo: userData,
+                    answers: userAnswers,
+                    scorePercentage: scorePercentage,
+                    status: "pending",
+                    createdAt: serverTimestamp()
+                });
+                showToast("¡Postulación enviada con éxito a Firebase!", "success");
+            } catch (err) {
+                console.error("Error guardando postulación en Firebase:", err);
+                showToast("Error de conexión al enviar la postulación", "error");
             }
-
-            allSubmissions.unshift(payload);
-            persistSubmissionsLocally();
         }
 
         function downloadJSON() {
@@ -1535,52 +1376,25 @@
             renderQuestionsEditor();
         }
 
+        // 4. SUSCRIPCIÓN EN TIEMPO REAL AL PANEL ADMIN PARA SUBMISSIONS
         function loadSubmissionsRealtime() {
             const container = document.getElementById('submissionsList');
-            container.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--text-muted);"><i class="fa-solid fa-spin fa-circle-notch" style="color: var(--accent-purple);"></i> Cargando...</div>`;
-
-            if (!firebaseReady || !db) {
-                renderSubmissions(allSubmissions);
-                return;
-            }
+            container.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--text-muted);"><i class="fa-solid fa-spin fa-circle-notch" style="color: var(--accent-purple);"></i> Cargando solicitudes en tiempo real...</div>`;
 
             if (unsubscribeAdminListener) unsubscribeAdminListener();
 
-            try {
-                const q = query(collection(db, "whitelist_submissions"), orderBy("createdAt", "desc"), limit(50));
+            const q = query(collection(db, "whitelist_submissions"), orderBy("createdAt", "desc"), limit(50));
 
-                unsubscribeAdminListener = onSnapshot(q, (snapshot) => {
-                    if (!snapshot.empty) {
-                        const remoteSubmissions = [];
-                        snapshot.forEach((docSnap) => {
-                            remoteSubmissions.push({ id: docSnap.id, ...docSnap.data() });
-                        });
-
-                        // Fusionar manteniendo estados locales recien modificados si difieren de Firebase por latencia
-                        allSubmissions = remoteSubmissions;
-                        persistSubmissionsLocally();
-                    } else if (allSubmissions.length === 0) {
-                        allSubmissions = loadSavedSubmissions();
-                    }
-                    renderSubmissions(allSubmissions);
-                }, (err) => {
-                    console.warn("Firestore inaccesible o error de reglas, usando LocalStorage:", err);
-                    allSubmissions = loadSavedSubmissions();
-                    renderSubmissions(allSubmissions);
+            unsubscribeAdminListener = onSnapshot(q, (snapshot) => {
+                allSubmissions = [];
+                snapshot.forEach((docSnap) => {
+                    allSubmissions.push({ id: docSnap.id, ...docSnap.data() });
                 });
-            } catch (err) {
-                console.warn("Error al inicializar consulta en tiempo real:", err);
-                allSubmissions = loadSavedSubmissions();
                 renderSubmissions(allSubmissions);
-            }
-        }
-
-        // Promesa con tiempo límite (Timeout) para evitar que peticiones de Firebase queden colgadas indefinidamente
-        function timeoutPromise(promise, ms = 3000) {
-            return Promise.race([
-                promise,
-                new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout de conexión a Firebase")), ms))
-            ]);
+            }, (err) => {
+                console.error("Error obteniendo solicitudes en tiempo real:", err);
+                container.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--accent-pink);">Error al conectar con Firestore. Comprueba las reglas de tu base de datos.</div>`;
+            });
         }
 
         function renderSubmissions(list) {
@@ -1658,46 +1472,28 @@
                     </div>
                 `;
 
+                // 5. OPERACIONES EXCLUSIVAMENTE SÍNCRONAS CON FIRESTORE
                 card.querySelectorAll('.action-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const docId = btn.dataset.id;
                         const action = btn.dataset.action;
 
-                        if (action === 'delete' && !confirm("¿Deseas borrar esta postulación permanentemente?")) {
-                            return;
-                        }
-
-                        // 1. ACTUALIZACIÓN INMEDIATA EN MEMORIA LOCAL Y LOCALSTORAGE (Sin bloqueos)
-                        const idx = allSubmissions.findIndex(s => s.id === docId);
-                        if (idx >= 0) {
+                        try {
                             if (action === 'approve') {
-                                allSubmissions[idx].status = 'approved';
-                                showToast("Postulación APROBADA", "success");
+                                await updateDoc(doc(db, "whitelist_submissions", docId), { status: "approved" });
+                                showToast("Postulación APROBADA en Firebase", "success");
                             } else if (action === 'reject') {
-                                allSubmissions[idx].status = 'rejected';
-                                showToast("Postulación RECHAZADA", "info");
+                                await updateDoc(doc(db, "whitelist_submissions", docId), { status: "rejected" });
+                                showToast("Postulación RECHAZADA en Firebase", "info");
                             } else if (action === 'delete') {
-                                allSubmissions.splice(idx, 1);
-                                showToast("Postulación eliminada", "info");
-                            }
-
-                            persistSubmissionsLocally();
-                            renderSubmissions(allSubmissions);
-                        }
-
-                        // 2. SINCRONIZACIÓN ASÍNCRONA CON FIREBASE CON CONTROL DE ERRORES Y TIMEOUT
-                        if (firebaseReady && db) {
-                            try {
-                                if (action === 'approve') {
-                                    await timeoutPromise(updateDoc(doc(db, "whitelist_submissions", docId), { status: "approved" }));
-                                } else if (action === 'reject') {
-                                    await timeoutPromise(updateDoc(doc(db, "whitelist_submissions", docId), { status: "rejected" }));
-                                } else if (action === 'delete') {
-                                    await timeoutPromise(deleteDoc(doc(db, "whitelist_submissions", docId)));
+                                if (confirm("¿Borrar permanentemente esta postulación de la base de datos?")) {
+                                    await deleteDoc(doc(db, "whitelist_submissions", docId));
+                                    showToast("Postulación eliminada de Firebase", "info");
                                 }
-                            } catch (err) {
-                                console.warn("Firebase inaccesible o bloqueado por permisos. Los cambios se mantienen guardados localmente:", err.message);
                             }
+                        } catch (err) {
+                            console.error("Error al actualizar estado en Firestore:", err);
+                            showToast("Error ejecutando acción en Firestore", "error");
                         }
                     });
                 });
@@ -1711,7 +1507,7 @@
             container.innerHTML = '';
 
             if (questions.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">No hay preguntas creadas.</p>';
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">No hay preguntas creadas en Firebase.</p>';
                 return;
             }
 
@@ -1778,6 +1574,7 @@
             modalOptionsList.appendChild(div);
         }
 
+        // 6. CREACIÓN / EDICIÓN EXCLUSIVA EN FIRESTORE
         async function handleSaveQuestion(e) {
             e.preventDefault();
             const id = document.getElementById('editQuestionId').value || 'q_' + Date.now();
@@ -1798,53 +1595,30 @@
                 }
             }
 
-            const questionObj = { id, wlScope, category, title, type };
+            const questionObj = { wlScope, category, title, type };
             if (type === 'choice') questionObj.options = optionsArray;
 
-            // Actualización inmediata en memoria y LocalStorage
-            const existingIdx = questions.findIndex(item => item.id === id);
-            if (existingIdx >= 0) {
-                questions[existingIdx] = questionObj;
-            } else {
-                questions.push(questionObj);
+            try {
+                await setDoc(doc(db, "whitelist_questions", id), questionObj);
+                showToast("Pregunta guardada en Firebase", "success");
+                closeQuestionModal();
+            } catch (err) {
+                console.error("Error guardando pregunta en Firestore:", err);
+                showToast("Error al guardar en Firebase", "error");
             }
-
-            persistQuestionsLocally();
-
-            if (firebaseReady && db) {
-                try {
-                    await timeoutPromise(setDoc(doc(db, "whitelist_questions", id), questionObj));
-                    showToast("Pregunta guardada en Firebase y Local Storage", "success");
-                } catch (err) {
-                    console.warn("Firestore inaccesible, guardado en LocalStorage:", err);
-                    showToast("Pregunta guardada localmente", "success");
-                }
-            } else {
-                showToast("Pregunta guardada en navegador (Local Storage)", "success");
-            }
-
-            closeQuestionModal();
-            renderQuestionsEditor();
         }
 
+        // 7. ELIMINACIÓN EXCLUSIVA EN FIRESTORE
         async function deleteQuestion(q) {
-            if (!confirm(`¿Borrar la pregunta "${q.title}"?`)) return;
+            if (!confirm(`¿Borrar permanentemente la pregunta "${q.title}" de Firebase?`)) return;
 
-            questions = questions.filter(item => item.id !== q.id);
-            persistQuestionsLocally();
-
-            if (firebaseReady && db) {
-                try {
-                    await timeoutPromise(deleteDoc(doc(db, "whitelist_questions", q.id)));
-                    showToast("Pregunta eliminada de Firebase", "info");
-                } catch (err) {
-                    console.warn("Firestore inaccesible, borrado local:", err);
-                    showToast("Pregunta eliminada del almacenamiento local", "info");
-                }
-            } else {
-                showToast("Pregunta eliminada localmente", "info");
+            try {
+                await deleteDoc(doc(db, "whitelist_questions", q.id));
+                showToast("Pregunta eliminada de Firebase", "info");
+            } catch (err) {
+                console.error("Error eliminando pregunta de Firestore:", err);
+                showToast("Error al eliminar la pregunta en Firebase", "error");
             }
-            renderQuestionsEditor();
         }
 
         function showToast(message, type = "info") {
