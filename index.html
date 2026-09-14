@@ -57,13 +57,17 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between custom-scrollbar bg-slate-950 text-slate-100 antialiased selection:bg-rose-600 selection:text-white">
+<body class="min-h-screen flex flex-col justify-between custom-scrollbar text-slate-100 antialiased selection:bg-rose-600 selection:text-white relative bg-slate-950">
+
+  <!-- CAPA DE FONDO DINÁMICO Y OVERLAY -->
+  <div id="bgLayer" class="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat transition-all duration-500" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80');"></div>
+  <div id="bgOverlay" class="fixed inset-0 z-0 bg-slate-950/80 backdrop-blur-sm transition-all duration-300"></div>
 
   <!-- CAPA DE NOTIFICACIÓN TOAST -->
   <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
   <!-- ENCABEZADO PRINCIPAL -->
-  <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-30">
+  <header class="border-b border-slate-800/80 bg-slate-900/70 backdrop-blur-md sticky top-0 z-30">
     <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-amber-500 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-rose-950/50">
@@ -79,7 +83,7 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <button id="adminBtn" type="button" class="text-xs font-semibold px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-all flex items-center gap-2">
+        <button id="adminBtn" type="button" class="text-xs font-semibold px-3 py-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-all flex items-center gap-2 backdrop-blur-sm">
           <i class="fa-solid fa-lock text-rose-500"></i>
           <span class="hidden sm:inline">Panel Admin</span>
         </button>
@@ -88,11 +92,11 @@
   </header>
 
   <!-- CONTENIDO PRINCIPAL -->
-  <main class="max-w-4xl w-full mx-auto px-4 py-8 flex-1 flex flex-col justify-center">
+  <main class="max-w-4xl w-full mx-auto px-4 py-8 flex-1 flex flex-col justify-center relative z-10">
 
     <!-- SECCIÓN 1: FORMULARIO DE DATOS INICIALES -->
     <div id="sectionUserInfo" class="space-y-6">
-      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-xl relative overflow-hidden">
+      <div class="bg-slate-900/85 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-md shadow-2xl relative overflow-hidden">
         <div class="absolute -top-24 -right-24 w-48 h-48 bg-rose-600/10 rounded-full blur-3xl pointer-events-none"></div>
         
         <div class="text-center max-w-xl mx-auto mb-8 space-y-2">
@@ -106,7 +110,7 @@
               <i class="fa-solid fa-user text-rose-500 mr-1.5"></i> Nombre Completo / Nombre IC
             </label>
             <input type="text" id="inputFullName" required placeholder="Ej. Carlos Mendoza" 
-              class="w-full bg-slate-950 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all">
+              class="w-full bg-slate-950/90 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all">
           </div>
 
           <div>
@@ -114,7 +118,7 @@
               <i class="fa-solid fa-envelope text-rose-500 mr-1.5"></i> Correo Electrónico
             </label>
             <input type="email" id="inputEmail" required placeholder="tuemail@ejemplo.com" 
-              class="w-full bg-slate-950 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all">
+              class="w-full bg-slate-950/90 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all">
           </div>
 
           <div>
@@ -122,7 +126,7 @@
               <i class="fa-brands fa-discord text-rose-500 mr-1.5"></i> Usuario de Discord
             </label>
             <input type="text" id="inputDiscord" required placeholder="ejemplo: @carlitos_rp o Carlitos#1234" 
-              class="w-full bg-slate-950 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all">
+              class="w-full bg-slate-950/90 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all">
           </div>
 
           <div>
@@ -130,7 +134,7 @@
               <i class="fa-solid fa-cake-candles text-rose-500 mr-1.5"></i> Edad OOC (Real)
             </label>
             <input type="number" id="inputAge" min="14" max="99" required placeholder="Ej. 18" 
-              class="w-full bg-slate-950 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all">
+              class="w-full bg-slate-950/90 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all">
           </div>
 
           <button type="submit" class="w-full bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-rose-950/50 hover:shadow-rose-900/80 transition-all flex items-center justify-center gap-2 group mt-6">
@@ -143,9 +147,7 @@
 
     <!-- SECCIÓN 2: CUESTIONARIO Y BARRA DE PROGRESO -->
     <div id="sectionQuestionnaire" class="hidden space-y-6">
-      
-      <!-- Barra de Progreso Superior -->
-      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 sm:p-5 backdrop-blur-sm shadow-xl">
+      <div class="bg-slate-900/85 border border-slate-800/80 rounded-2xl p-4 sm:p-5 backdrop-blur-md shadow-xl">
         <div class="flex items-center justify-between text-xs sm:text-sm font-semibold mb-2">
           <span class="text-slate-300 flex items-center gap-2">
             <i class="fa-solid fa-list-check text-rose-500"></i>
@@ -158,8 +160,7 @@
         </div>
       </div>
 
-      <!-- Contenedor de la Pregunta Activa -->
-      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-xl relative">
+      <div class="bg-slate-900/85 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-md shadow-2xl relative">
         <div class="flex items-center justify-between text-xs font-semibold text-rose-400 uppercase tracking-wider mb-2">
           <span id="questionCategory">Conceptos Roleplay</span>
           <span id="questionCounter">Pregunta 1</span>
@@ -169,19 +170,15 @@
           Cargando pregunta...
         </h3>
 
-        <!-- Opciones de Respuesta Opcional (Múltiple / Abierta) -->
-        <div id="optionsContainer" class="space-y-3 mb-6">
-          <!-- Opciones inyectadas por JS -->
-        </div>
+        <div id="optionsContainer" class="space-y-3 mb-6"></div>
 
         <div id="textContainer" class="hidden mb-6">
           <textarea id="openAnswerInput" rows="4" placeholder="Escribe tu respuesta detallada aquí con tus propias palabras..." 
-            class="w-full bg-slate-950 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl p-4 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all custom-scrollbar"></textarea>
+            class="w-full bg-slate-950/90 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl p-4 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all custom-scrollbar"></textarea>
         </div>
 
-        <!-- Botones de Navegación -->
         <div class="flex items-center justify-between pt-4 border-t border-slate-800/80">
-          <button id="prevBtn" type="button" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs sm:text-sm font-semibold border border-slate-700 transition-all flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
+          <button id="prevBtn" type="button" class="px-4 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs sm:text-sm font-semibold border border-slate-700 transition-all flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
             <i class="fa-solid fa-chevron-left"></i> Anterior
           </button>
 
@@ -194,7 +191,7 @@
 
     <!-- SECCIÓN 3: PANTALLA FINAL DE CONFIRMACIÓN -->
     <div id="sectionSummary" class="hidden space-y-6">
-      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-xl text-center space-y-6">
+      <div class="bg-slate-900/85 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-md shadow-2xl text-center space-y-6">
         <div class="w-20 h-20 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center text-emerald-400 text-3xl mx-auto shadow-inner">
           <i class="fa-solid fa-circle-check"></i>
         </div>
@@ -206,14 +203,14 @@
           </p>
         </div>
 
-        <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-4 max-w-md mx-auto text-left text-xs space-y-2">
+        <div class="bg-slate-950/90 border border-slate-800/80 rounded-xl p-4 max-w-md mx-auto text-left text-xs space-y-2">
           <p class="text-slate-400"><strong class="text-slate-200">Postulante:</strong> <span id="sumName">---</span></p>
           <p class="text-slate-400"><strong class="text-slate-200">Discord:</strong> <span id="sumDiscord" class="text-rose-400 font-mono">---</span></p>
           <p class="text-slate-400"><strong class="text-slate-200">Preguntas Respondidas:</strong> <span id="sumScore" class="text-emerald-400 font-bold">100%</span></p>
         </div>
 
         <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
-          <button id="downloadJsonBtn" type="button" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold border border-slate-700 transition-all flex items-center justify-center gap-2">
+          <button id="downloadJsonBtn" type="button" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold border border-slate-700 transition-all flex items-center justify-center gap-2">
             <i class="fa-solid fa-download text-rose-400"></i> Descargar Copia (JSON)
           </button>
           <button id="restartBtn" type="button" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs sm:text-sm font-bold shadow-lg transition-all flex items-center justify-center gap-2">
@@ -231,7 +228,7 @@
             <i class="fa-solid fa-user-shield text-rose-500"></i>
             Panel de Whitelist
           </h2>
-          <p class="text-xs text-slate-400">Gestión de solicitudes y configuración del cuestionario</p>
+          <p class="text-xs text-slate-400">Gestión de solicitudes, preguntas y personalización visual</p>
         </div>
         <button id="closeAdminBtn" type="button" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700">
           <i class="fa-solid fa-xmark mr-1"></i> Cerrar
@@ -239,16 +236,19 @@
       </div>
 
       <!-- Pestañas de Navegación Admin -->
-      <div class="flex border-b border-slate-800 gap-4">
-        <button id="tabSubmissionsBtn" type="button" class="py-2.5 px-4 font-semibold text-xs border-b-2 border-rose-500 text-rose-400 transition-all flex items-center gap-2">
+      <div class="flex border-b border-slate-800 gap-4 overflow-x-auto">
+        <button id="tabSubmissionsBtn" type="button" class="py-2.5 px-4 font-semibold text-xs border-b-2 border-rose-500 text-rose-400 transition-all flex items-center gap-2 whitespace-nowrap">
           <i class="fa-solid fa-inbox"></i> Postulaciones Recibidas
         </button>
-        <button id="tabQuestionsBtn" type="button" class="py-2.5 px-4 font-semibold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-2">
+        <button id="tabQuestionsBtn" type="button" class="py-2.5 px-4 font-semibold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-2 whitespace-nowrap">
           <i class="fa-solid fa-pen-to-square"></i> Gestor de Preguntas
+        </button>
+        <button id="tabBgBtn" type="button" class="py-2.5 px-4 font-semibold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-2 whitespace-nowrap">
+          <i class="fa-solid fa-image"></i> Personalizar Fondo
         </button>
       </div>
 
-      <!-- CONTENIDO PESTAÑA 1: POSTULACIONES -->
+      <!-- PESTAÑA 1: POSTULACIONES -->
       <div id="tabSubmissionsContent" class="space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
           <div class="flex items-center gap-2">
@@ -268,7 +268,7 @@
         </div>
       </div>
 
-      <!-- CONTENIDO PESTAÑA 2: GESTOR DE PREGUNTAS -->
+      <!-- PESTAÑA 2: GESTOR DE PREGUNTAS -->
       <div id="tabQuestionsContent" class="hidden space-y-6">
         <div class="flex justify-between items-center bg-slate-900/60 p-4 rounded-xl border border-slate-800">
           <div>
@@ -280,10 +280,88 @@
           </button>
         </div>
 
-        <div id="questionsEditorList" class="space-y-4">
-          <!-- Lista de preguntas editable -->
+        <div id="questionsEditorList" class="space-y-4"></div>
+      </div>
+
+      <!-- PESTAÑA 3: PERSONALIZAR FONDO -->
+      <div id="tabBgContent" class="hidden space-y-6">
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 space-y-6 backdrop-blur-md">
+          
+          <div class="border-b border-slate-800 pb-4">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-wand-magic-sparkles text-rose-500"></i>
+              Configuración de Fondo de Pantalla
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Cambia la imagen principal y ajusta el nivel de oscurecimiento.</p>
+          </div>
+
+          <!-- Medidas Recomendadas -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-start gap-3">
+            <i class="fa-solid fa-circle-info text-rose-400 text-lg mt-0.5"></i>
+            <div class="text-xs space-y-1">
+              <p class="font-bold text-slate-200">Especificaciones Recomendadas:</p>
+              <ul class="list-disc list-inside text-slate-400 space-y-0.5">
+                <li><strong>Resolución Ideal:</strong> <code>1920 x 1080 px</code> (Full HD) o <code>3840 x 2160 px</code> (4K).</li>
+                <li><strong>Relación de Aspecto:</strong> Horizontal 16:9.</li>
+                <li><strong>Formatos Soportados:</strong> PNG, JPG, WEBP. (Formatos ligeros &lt; 2MB aseguran carga ultra rápida).</li>
+              </ul>
+            </div>
+          </div>
+
+          <form id="bgConfigForm" class="space-y-5">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Enlace / URL de la Imagen</label>
+              <input type="url" id="bgUrlInput" placeholder="https://ejemplo.com/mi-imagen-rp.jpg" 
+                class="w-full bg-slate-950 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
+            </div>
+
+            <div class="flex items-center gap-4">
+              <div class="h-px bg-slate-800 flex-1"></div>
+              <span class="text-[10px] text-slate-500 uppercase font-semibold">O sube una local</span>
+              <div class="h-px bg-slate-800 flex-1"></div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Cargar Archivo Local</label>
+              <input type="file" id="bgFileInput" accept="image/*" 
+                class="block w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700">
+            </div>
+
+            <!-- Ajuste de Opacidad de la Capa Oscura -->
+            <div class="space-y-2 pt-2">
+              <div class="flex justify-between items-center text-xs">
+                <label class="font-semibold text-slate-300">Nivel de Opacidad Oscura (Overlay)</label>
+                <span id="opacityValDisplay" class="font-mono text-rose-400 font-bold">80%</span>
+              </div>
+              <input type="range" id="opacitySlider" min="10" max="95" value="80" 
+                class="w-full accent-rose-600 cursor-pointer">
+              <p class="text-[11px] text-slate-500">Aumenta el porcentaje si las letras se dificultan de leer con la imagen elegida.</p>
+            </div>
+
+            <!-- Vista Previa -->
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-300">Vista Previa de la Imagen</label>
+              <div class="w-full h-40 rounded-xl overflow-hidden border border-slate-800 bg-slate-950 relative">
+                <div id="bgPreviewImg" class="w-full h-full bg-cover bg-center"></div>
+                <div id="bgPreviewOverlay" class="absolute inset-0 bg-slate-950/80 flex items-center justify-center text-slate-400 text-xs font-semibold">
+                  Vista Previa del Fondo
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-2">
+              <button id="resetBgBtn" type="button" class="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700">
+                Restaurar Predeterminado
+              </button>
+              <button type="submit" class="px-5 py-2.5 rounded-xl bg-rose-600 text-white text-xs font-bold hover:bg-rose-500 shadow-lg">
+                <i class="fa-solid fa-floppy-disk mr-1"></i> Guardar Fondo
+              </button>
+            </div>
+          </form>
+
         </div>
       </div>
+
     </div>
 
   </main>
@@ -336,7 +414,7 @@
   </div>
 
   <!-- PIE DE PÁGINA -->
-  <footer class="border-t border-slate-800/80 bg-slate-950 py-4 text-center text-xs text-slate-500">
+  <footer class="border-t border-slate-800/80 bg-slate-950/90 backdrop-blur-md py-4 text-center text-xs text-slate-500 relative z-10">
     <p>© 2026 Caracas Vibes2 RP. Todos los derechos reservados. Desarrollado para gestión de comunidad FiveM.</p>
   </footer>
 
@@ -348,11 +426,11 @@
       collection, 
       addDoc, 
       setDoc,
+      doc,
       query, 
       orderBy, 
       limit, 
       onSnapshot, 
-      doc, 
       updateDoc, 
       deleteDoc, 
       serverTimestamp 
@@ -371,6 +449,7 @@
     };
 
     const ADMIN_PASSWORD = "CaracasVibes2026";
+    const DEFAULT_BG = "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80";
 
     let app, db;
     let firebaseReady = false;
@@ -385,7 +464,6 @@
       console.warn("Firebase no configurado o usando claves de demostración.", e);
     }
 
-    // LISTA DE PREGUNTAS DEFAULT
     let defaultQuestions = [
       {
         id: "q1",
@@ -462,7 +540,6 @@
     ];
 
     let questions = [...defaultQuestions];
-
     let userData = { fullName: "", email: "", discordUser: "", age: "" };
     let userAnswers = {};
     let currentQuestionIndex = 0;
@@ -491,7 +568,16 @@
     const adminBtn = document.getElementById('adminBtn');
     const closeAdminBtn = document.getElementById('closeAdminBtn');
 
-    // Modal de preguntas
+    // Capas de Fondo
+    const bgLayer = document.getElementById('bgLayer');
+    const bgOverlay = document.getElementById('bgOverlay');
+    const bgUrlInput = document.getElementById('bgUrlInput');
+    const bgFileInput = document.getElementById('bgFileInput');
+    const opacitySlider = document.getElementById('opacitySlider');
+    const opacityValDisplay = document.getElementById('opacityValDisplay');
+    const bgPreviewImg = document.getElementById('bgPreviewImg');
+    const bgPreviewOverlay = document.getElementById('bgPreviewOverlay');
+
     const questionModal = document.getElementById('questionModal');
     const questionForm = document.getElementById('questionForm');
     const modalType = document.getElementById('modalType');
@@ -499,11 +585,35 @@
     const modalOptionsList = document.getElementById('modalOptionsList');
 
     window.addEventListener('DOMContentLoaded', () => {
+      listenSettingsRealtime();
       listenQuestionsRealtime();
       setupEvents();
     });
 
-    // Escuchar cambios de preguntas en Firestore
+    // Escuchar cambios de configuración de Fondo
+    function listenSettingsRealtime() {
+      if (firebaseReady && db) {
+        onSnapshot(doc(db, "whitelist_settings", "theme"), (docSnap) => {
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            applyBackground(data.bgUrl || DEFAULT_BG, data.opacity || 80);
+          }
+        });
+      }
+    }
+
+    function applyBackground(url, opacity) {
+      bgLayer.style.backgroundImage = `url('${url}')`;
+      bgOverlay.style.backgroundColor = `rgba(11, 15, 25, ${opacity / 100})`;
+      
+      bgUrlInput.value = url.startsWith('data:') ? '' : url;
+      opacitySlider.value = opacity;
+      opacityValDisplay.textContent = `${opacity}%`;
+
+      bgPreviewImg.style.backgroundImage = `url('${url}')`;
+      bgPreviewOverlay.style.backgroundColor = `rgba(11, 15, 25, ${opacity / 100})`;
+    }
+
     function listenQuestionsRealtime() {
       if (firebaseReady && db) {
         onSnapshot(collection(db, "whitelist_questions"), (snapshot) => {
@@ -517,8 +627,6 @@
             currentQuestionIndex = Math.max(0, questions.length - 1);
           }
           renderQuestionsEditor();
-        }, (err) => {
-          console.warn("Error cargando preguntas de Firestore:", err);
         });
       }
     }
@@ -581,25 +689,78 @@
       // Pestañas Admin
       const tabSubmissionsBtn = document.getElementById('tabSubmissionsBtn');
       const tabQuestionsBtn = document.getElementById('tabQuestionsBtn');
+      const tabBgBtn = document.getElementById('tabBgBtn');
       const tabSubmissionsContent = document.getElementById('tabSubmissionsContent');
       const tabQuestionsContent = document.getElementById('tabQuestionsContent');
+      const tabBgContent = document.getElementById('tabBgContent');
 
       tabSubmissionsBtn.addEventListener('click', () => {
-        tabSubmissionsBtn.className = "py-2.5 px-4 font-semibold text-xs border-b-2 border-rose-500 text-rose-400 transition-all flex items-center gap-2";
-        tabQuestionsBtn.className = "py-2.5 px-4 font-semibold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-2";
-        tabSubmissionsContent.classList.remove('hidden');
-        tabQuestionsContent.classList.add('hidden');
+        setTabActive(tabSubmissionsBtn, tabSubmissionsContent);
       });
-
       tabQuestionsBtn.addEventListener('click', () => {
-        tabQuestionsBtn.className = "py-2.5 px-4 font-semibold text-xs border-b-2 border-rose-500 text-rose-400 transition-all flex items-center gap-2";
-        tabSubmissionsBtn.className = "py-2.5 px-4 font-semibold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-2";
-        tabQuestionsContent.classList.remove('hidden');
-        tabSubmissionsContent.classList.add('hidden');
+        setTabActive(tabQuestionsBtn, tabQuestionsContent);
         renderQuestionsEditor();
       });
+      tabBgBtn.addEventListener('click', () => {
+        setTabActive(tabBgBtn, tabBgContent);
+      });
 
-      // Eventos del Modal de Preguntas
+      function setTabActive(activeBtn, activeContent) {
+        [tabSubmissionsBtn, tabQuestionsBtn, tabBgBtn].forEach(b => {
+          b.className = "py-2.5 px-4 font-semibold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-2 whitespace-nowrap";
+        });
+        activeBtn.className = "py-2.5 px-4 font-semibold text-xs border-b-2 border-rose-500 text-rose-400 transition-all flex items-center gap-2 whitespace-nowrap";
+
+        [tabSubmissionsContent, tabQuestionsContent, tabBgContent].forEach(c => c.classList.add('hidden'));
+        activeContent.classList.remove('hidden');
+      }
+
+      // Eventos del Formulario de Fondo
+      opacitySlider.addEventListener('input', () => {
+        const val = opacitySlider.value;
+        opacityValDisplay.textContent = `${val}%`;
+        bgOverlay.style.backgroundColor = `rgba(11, 15, 25, ${val / 100})`;
+        bgPreviewOverlay.style.backgroundColor = `rgba(11, 15, 25, ${val / 100})`;
+      });
+
+      bgUrlInput.addEventListener('input', () => {
+        const url = bgUrlInput.value.trim() || DEFAULT_BG;
+        bgPreviewImg.style.backgroundImage = `url('${url}')`;
+      });
+
+      bgFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            bgPreviewImg.style.backgroundImage = `url('${evt.target.result}')`;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      document.getElementById('bgConfigForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        let targetUrl = bgUrlInput.value.trim();
+        const file = bgFileInput.files[0];
+
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = async (evt) => {
+            await saveBgSettings(evt.target.result, opacitySlider.value);
+          };
+          reader.readAsDataURL(file);
+        } else {
+          await saveBgSettings(targetUrl || DEFAULT_BG, opacitySlider.value);
+        }
+      });
+
+      document.getElementById('resetBgBtn').addEventListener('click', async () => {
+        await saveBgSettings(DEFAULT_BG, 80);
+        showToast("Fondo restaurado", "info");
+      });
+
+      // Modal de Preguntas
       document.getElementById('addQuestionBtn').addEventListener('click', () => openQuestionModal());
       document.getElementById('closeModalBtn').addEventListener('click', closeQuestionModal);
       document.getElementById('cancelModalBtn').addEventListener('click', closeQuestionModal);
@@ -617,7 +778,6 @@
       });
 
       document.getElementById('addOptionInputBtn').addEventListener('click', () => addOptionInputField());
-
       questionForm.addEventListener('submit', handleSaveQuestion);
 
       document.querySelectorAll('.admin-filter-btn').forEach(btn => {
@@ -632,6 +792,21 @@
           renderSubmissions(allSubmissions);
         });
       });
+    }
+
+    async function saveBgSettings(url, opacity) {
+      applyBackground(url, opacity);
+      if (firebaseReady && db) {
+        try {
+          await setDoc(doc(db, "whitelist_settings", "theme"), { bgUrl: url, opacity: Number(opacity) });
+          showToast("¡Fondo guardado en Firebase!", "success");
+        } catch (err) {
+          console.error("Error guardando fondo:", err);
+          showToast("Fondo aplicado en este navegador", "info");
+        }
+      } else {
+        showToast("Fondo aplicado localmente", "info");
+      }
     }
 
     function loadQuestion(index) {
@@ -654,8 +829,8 @@
           btn.type = 'button';
           btn.className = `w-full text-left p-4 rounded-xl border transition-all text-sm flex items-start gap-3 ${
             isSelected 
-              ? 'bg-rose-950/40 border-rose-500 text-white shadow-md' 
-              : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-900'
+              ? 'bg-rose-950/50 border-rose-500 text-white shadow-md' 
+              : 'bg-slate-950/80 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-900'
           }`;
           
           btn.innerHTML = `
@@ -832,7 +1007,7 @@
 
       filtered.forEach((item) => {
         const card = document.createElement('div');
-        card.className = "bg-slate-900/90 border border-slate-800 rounded-2xl p-5 space-y-4 shadow-md";
+        card.className = "bg-slate-900/90 border border-slate-800 rounded-2xl p-5 space-y-4 shadow-md backdrop-blur-md";
 
         const statusBadge = item.status === 'approved' 
           ? '<span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-semibold">Aprobado</span>'
@@ -922,7 +1097,6 @@
       });
     }
 
-    // GESTOR DE PREGUNTAS (ADMIN)
     function renderQuestionsEditor() {
       const container = document.getElementById('questionsEditorList');
       container.innerHTML = '';
