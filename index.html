@@ -57,7 +57,7 @@
             background-position: center;
             background-repeat: no-repeat;
             transition: all 0.5s ease;
-            background-image: url('https://cdn.discordapp.com/attachments/1542022410814099546/1549052687348408390/50369d70d9ce783dffe4a038956f569a.png?ex=6aa94b3c&is=6aa7f9bc&hm=55f9c971ad716bb9216b7f6f6687480da3728ebfded871d33e5bf0ad8c4f1727&');
+            background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80');
         }
 
         #bgOverlay {
@@ -75,7 +75,6 @@
         ::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.4); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-purple); }
 
-        /* Navbar */
         header {
             position: sticky;
             top: 0;
@@ -137,7 +136,6 @@
             gap: 0.75rem;
         }
 
-        /* Botones */
         .btn {
             padding: 0.75rem 1.5rem;
             border-radius: 12px;
@@ -246,7 +244,6 @@
             margin-top: 4px;
         }
 
-        /* Main Container */
         main {
             max-width: 900px;
             width: 100%;
@@ -260,7 +257,6 @@
             z-index: 10;
         }
 
-        /* Card Container */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-glow);
@@ -292,7 +288,6 @@
             font-size: 0.95rem;
         }
 
-        /* Form Controls */
         .form-group {
             margin-bottom: 1.25rem;
         }
@@ -329,7 +324,6 @@
             box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
         }
 
-        /* Progress Bar */
         .progress-box {
             background: var(--bg-card);
             border: 1px solid var(--border-glow);
@@ -364,7 +358,6 @@
             width: 0%;
         }
 
-        /* Option Buttons */
         .option-btn {
             width: 100%;
             text-align: left;
@@ -410,7 +403,6 @@
             background: var(--accent-purple);
         }
 
-        /* Tabs Admin */
         .admin-tabs {
             display: flex;
             gap: 1rem;
@@ -437,7 +429,6 @@
             border-bottom-color: var(--accent-purple);
         }
 
-        /* Toast notifications */
         #toastContainer {
             position: fixed;
             bottom: 20px;
@@ -465,7 +456,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Modal */
         .modal {
             position: fixed;
             inset: 0;
@@ -519,7 +509,6 @@
     <!-- NOTIFICACIONES TOAST -->
     <div id="toastContainer"></div>
 
-    <!-- HEADER / NAVBAR -->
     <header>
         <div class="nav-container">
             <a href="#" class="logo">
@@ -542,7 +531,6 @@
         </div>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <main>
 
         <!-- SECCIÓN 1: FORMULARIO INICIAL DE DATOS & SELECCIÓN DE WHITELIST -->
@@ -645,7 +633,6 @@
             </div>
         </div>
 
-        <!-- SECCIÓN 3: CONFIRMACIÓN Y RESULTADO -->
         <div id="sectionSummary" class="hidden">
             <div class="card" style="text-align: center;">
                 <div style="width: 70px; height: 70px; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--accent-emerald); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--accent-emerald); margin: 0 auto 1.5rem;">
@@ -856,7 +843,6 @@
         <p>© 2026 Caracas Vibes2 RP. Todos los derechos reservados. Plataforma oficial Whitelist.</p>
     </footer>
 
-    <!-- FIREBASE SDK & APP LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { 
@@ -1085,10 +1071,18 @@
                             questions.push({ id: docSnap.id, ...docSnap.data() });
                         });
                         persistQuestionsLocally();
+                    } else {
+                        // Si Firebase no devuelve datos, mantén y carga las preguntas locales guardadas
+                        questions = loadSavedQuestions();
                     }
+                    renderQuestionsEditor();
+                }, (err) => {
+                    console.warn("Firestore inalcanzable, usando LocalStorage:", err);
+                    questions = loadSavedQuestions();
                     renderQuestionsEditor();
                 });
             } else {
+                questions = loadSavedQuestions();
                 renderQuestionsEditor();
             }
         }
@@ -1154,7 +1148,6 @@
 
                 document.getElementById('displayWlType').textContent = selectedWlType;
 
-                // CORRECCIÓN DE FILTRADO DE PREGUNTAS POR CATEGORÍA SELECCIONADA
                 activeExamQuestions = questions.filter(q => {
                     const scope = q.wlScope || 'all';
                     return scope === 'all' || scope === selectedWlType;
