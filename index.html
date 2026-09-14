@@ -1,1261 +1,1847 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proceso de Whitelist - Caracas Vibes2 RP</title>
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50: '#fff1f2',
-              100: '#ffe4e6',
-              500: '#f43f5e',
-              600: '#e11d48',
-              700: '#be123c',
-              900: '#881337',
-              950: '#4c0519',
-            }
-          }
-        }
-      }
-    }
-  </script>
-  
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts: Inter & Montserrat -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proceso de Whitelist | Caracas Vibes2 RP</title>
 
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #0b0f19;
-      color: #f3f4f6;
-    }
-    h1, h2, h3, .font-heading {
-      font-family: 'Montserrat', sans-serif;
-    }
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #111827;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #374151;
-      border-radius: 3px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: #e11d48;
-    }
-  </style>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #070810;
+            --bg-card: rgba(18, 16, 38, 0.75);
+            --bg-card-hover: rgba(28, 24, 58, 0.85);
+            --bg-input: rgba(7, 8, 16, 0.9);
+            --border-glow: rgba(168, 85, 247, 0.25);
+            --border-focus: #a855f7;
+            --accent-purple: #a855f7;
+            --accent-purple-glow: #8b5cf6;
+            --accent-cyan: #06b6d4;
+            --accent-pink: #ec4899;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Capa de fondo dinámico */
+        #bgLayer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: all 0.5s ease;
+            background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80');
+        }
+
+        #bgOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-color: rgba(7, 8, 16, 0.82);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.4); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-purple); }
+
+        /* Navbar */
+        header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(7, 8, 16, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-glow);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+        }
+
+        .logo span { color: var(--accent-purple); }
+
+        .badge-tag {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--accent-purple);
+            padding: 3px 10px;
+            border-radius: 50px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Botones */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-purple {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-purple-glow));
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+        }
+
+        .btn-purple:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(168, 85, 247, 0.6);
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+            border: 1px solid var(--border-glow);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-outline:hover {
+            background: rgba(168, 85, 247, 0.15);
+            border-color: var(--accent-purple);
+        }
+
+        .btn-danger {
+            background: rgba(236, 72, 153, 0.2);
+            border: 1px solid rgba(236, 72, 153, 0.4);
+            color: var(--accent-pink);
+        }
+
+        .btn-danger:hover {
+            background: rgba(236, 72, 153, 0.4);
+            color: #fff;
+        }
+
+        .btn-success {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: var(--accent-emerald);
+        }
+
+        .btn-success:hover {
+            background: rgba(16, 185, 129, 0.4);
+            color: #fff;
+        }
+
+        /* Selector de Tipo de Whitelist */
+        .type-selector-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .type-card {
+            background: var(--bg-input);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .type-card:hover {
+            border-color: var(--accent-purple);
+            background: var(--bg-card-hover);
+        }
+
+        .type-card.selected {
+            border-color: var(--accent-purple);
+            background: rgba(168, 85, 247, 0.2);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+
+        .type-card i {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-purple);
+            display: block;
+        }
+
+        .type-card h4 {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: #fff;
+        }
+
+        .type-card p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Main Container */
+        main {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Card Container */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 24px;
+            padding: 2.5rem;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .card-header h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #d1d5db 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-label i {
+            color: var(--accent-purple);
+            margin-right: 6px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 0.85rem 1.2rem;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+
+        /* Progress Bar */
+        .progress-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 1.25rem;
+            backdrop-filter: blur(12px);
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            height: 10px;
+            border-radius: 50px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+            border-radius: 50px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        /* Option Buttons */
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.25rem;
+            border-radius: 14px;
+            border: 1px solid var(--border-glow);
+            background: var(--bg-input);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 0.75rem;
+        }
+
+        .option-btn:hover {
+            border-color: var(--accent-purple);
+            background: var(--bg-card-hover);
+        }
+
+        .option-btn.selected {
+            border-color: var(--accent-purple);
+            background: rgba(168, 85, 247, 0.2);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+        }
+
+        .radio-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid var(--text-muted);
+            margin-top: 3px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option-btn.selected .radio-dot {
+            border-color: var(--accent-purple);
+            background: var(--accent-purple);
+        }
+
+        /* Tabs Admin */
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            border-bottom: 1px solid var(--border-glow);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .admin-tab-btn {
+            padding: 0.75rem 1.2rem;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+
+        .admin-tab-btn.active {
+            color: var(--accent-purple);
+            border-bottom-color: var(--accent-purple);
+        }
+
+        /* Toast notifications */
+        #toastContainer {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            padding: 1rem 1.25rem;
+            border-radius: 14px;
+            border: 1px solid var(--border-glow);
+            background: var(--bg-dark);
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            pointer-events: auto;
+            transition: all 0.3s ease;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(7, 8, 16, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: #121026;
+            border: 1px solid var(--border-glow);
+            border-radius: 24px;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.25);
+        }
+
+        footer {
+            border-top: 1px solid var(--border-glow);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            background: rgba(7, 8, 16, 0.95);
+            position: relative;
+            z-index: 10;
+        }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 768px) {
+            .nav-container { padding: 1rem; flex-wrap: wrap; gap: 0.8rem; }
+            .card { padding: 1.5rem; }
+            .card-header h2 { font-size: 1.75rem; }
+            .type-selector-grid { grid-template-columns: 1fr; }
+            .nav-actions { width: 100%; justify-content: space-between; }
+        }
+    </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between custom-scrollbar text-slate-100 antialiased selection:bg-rose-600 selection:text-white relative bg-slate-950">
+<body>
 
-  <!-- CAPA DE FONDO DINÁMICO Y OVERLAY -->
-  <div id="bgLayer" class="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat transition-all duration-500" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80');"></div>
-  <div id="bgOverlay" class="fixed inset-0 z-0 bg-slate-950/80 backdrop-blur-sm transition-all duration-300"></div>
+    <!-- CAPA DE FONDO DINÁMICO -->
+    <div id="bgLayer"></div>
+    <div id="bgOverlay"></div>
 
-  <!-- CAPA DE NOTIFICACIÓN TOAST -->
-  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+    <!-- NOTIFICACIONES TOAST -->
+    <div id="toastContainer"></div>
 
-  <!-- ENCABEZADO PRINCIPAL -->
-  <header class="border-b border-slate-800/80 bg-slate-900/70 backdrop-blur-md sticky top-0 z-30">
-    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-amber-500 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-rose-950/50">
-          CV
-        </div>
-        <div>
-          <h1 class="text-base sm:text-lg font-bold tracking-tight text-white flex items-center gap-2">
-            Caracas Vibes2
-            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30">Whitelist RP</span>
-          </h1>
-          <p class="text-xs text-slate-400 hidden sm:block">Plataforma oficial de evaluación e ingreso al servidor</p>
-        </div>
-      </div>
+    <!-- HEADER / NAVBAR -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-gamepad"></i></div>
+                CARACAS <span>VIBES2</span>
+                <span class="badge-tag">Whitelist RP</span>
+            </a>
 
-      <div class="flex items-center gap-2">
-        <button id="adminBtn" type="button" class="text-xs font-semibold px-3 py-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-all flex items-center gap-2 backdrop-blur-sm">
-          <i class="fa-solid fa-lock text-rose-500"></i>
-          <span class="hidden sm:inline">Panel Admin</span>
-        </button>
-      </div>
-    </div>
-  </header>
+            <div class="nav-actions">
+                <button id="openStatusModalBtn" type="button" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                    <i class="fa-solid fa-magnifying-glass" style="color: var(--accent-cyan);"></i>
+                    <span>Consultar Estatus</span>
+                </button>
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <main class="max-w-4xl w-full mx-auto px-4 py-8 flex-1 flex flex-col justify-center relative z-10">
-
-    <!-- SECCIÓN 1: FORMULARIO DE DATOS INICIALES -->
-    <div id="sectionUserInfo" class="space-y-6">
-      <div class="bg-slate-900/85 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-md shadow-2xl relative overflow-hidden">
-        <div class="absolute -top-24 -right-24 w-48 h-48 bg-rose-600/10 rounded-full blur-3xl pointer-events-none"></div>
-        
-        <div class="text-center max-w-xl mx-auto mb-8 space-y-2">
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Proceso de Whitelist</h2>
-          <p class="text-slate-400 text-sm">Completa tus datos de contacto para vincular tu postulación de Roleplay en Caracas Vibes2.</p>
-        </div>
-
-        <form id="userForm" class="space-y-5 max-w-md mx-auto">
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
-              <i class="fa-solid fa-user text-rose-500 mr-1.5"></i> Nombre Completo / Nombre IC
-            </label>
-            <input type="text" id="inputFullName" required placeholder="Ej. Carlos Mendoza" 
-              class="w-full bg-slate-950/90 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all">
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
-              <i class="fa-solid fa-envelope text-rose-500 mr-1.5"></i> Correo Electrónico
-            </label>
-            <input type="email" id="inputEmail" required placeholder="tuemail@ejemplo.com" 
-              class="w-full bg-slate-950/90 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all">
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
-              <i class="fa-brands fa-discord text-rose-500 mr-1.5"></i> Usuario de Discord
-            </label>
-            <input type="text" id="inputDiscord" required placeholder="ejemplo: @carlitos_rp o Carlitos#1234" 
-              class="w-full bg-slate-950/90 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all">
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
-              <i class="fa-solid fa-cake-candles text-rose-500 mr-1.5"></i> Edad OOC (Real)
-            </label>
-            <input type="number" id="inputAge" min="14" max="99" required placeholder="Ej. 18" 
-              class="w-full bg-slate-950/90 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all">
-          </div>
-
-          <button type="submit" class="w-full bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-rose-950/50 hover:shadow-rose-900/80 transition-all flex items-center justify-center gap-2 group mt-6">
-            <span>Iniciar Examen de Whitelist</span>
-            <i class="fa-solid fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <!-- SECCIÓN 2: CUESTIONARIO Y BARRA DE PROGRESO -->
-    <div id="sectionQuestionnaire" class="hidden space-y-6">
-      <div class="bg-slate-900/85 border border-slate-800/80 rounded-2xl p-4 sm:p-5 backdrop-blur-md shadow-xl">
-        <div class="flex items-center justify-between text-xs sm:text-sm font-semibold mb-2">
-          <span class="text-slate-300 flex items-center gap-2">
-            <i class="fa-solid fa-list-check text-rose-500"></i>
-            Progreso de Evaluación
-          </span>
-          <span id="progressText" class="text-rose-400 font-bold">0% (0 respondidas)</span>
-        </div>
-        <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden p-0.5 border border-slate-800">
-          <div id="progressBar" class="bg-gradient-to-r from-rose-600 to-amber-500 h-full rounded-full transition-all duration-300 w-0"></div>
-        </div>
-      </div>
-
-      <div class="bg-slate-900/85 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-md shadow-2xl relative">
-        <div class="flex items-center justify-between text-xs font-semibold text-rose-400 uppercase tracking-wider mb-2">
-          <span id="questionCategory">Conceptos Roleplay</span>
-          <span id="questionCounter">Pregunta 1</span>
-        </div>
-
-        <h3 id="questionTitle" class="text-lg sm:text-xl font-bold text-white mb-6 leading-relaxed">
-          Cargando pregunta...
-        </h3>
-
-        <div id="optionsContainer" class="space-y-3 mb-6"></div>
-
-        <div id="textContainer" class="hidden mb-6">
-          <textarea id="openAnswerInput" rows="4" placeholder="Escribe tu respuesta detallada aquí con tus propias palabras..." 
-            class="w-full bg-slate-950/90 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl p-4 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all custom-scrollbar"></textarea>
-        </div>
-
-        <div class="flex items-center justify-between pt-4 border-t border-slate-800/80">
-          <button id="prevBtn" type="button" class="px-4 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs sm:text-sm font-semibold border border-slate-700 transition-all flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
-            <i class="fa-solid fa-chevron-left"></i> Anterior
-          </button>
-
-          <button id="nextBtn" type="button" class="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs sm:text-sm font-bold shadow-lg shadow-rose-950/50 transition-all flex items-center gap-2">
-            <span>Siguiente</span> <i class="fa-solid fa-chevron-right"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN 3: PANTALLA FINAL DE CONFIRMACIÓN -->
-    <div id="sectionSummary" class="hidden space-y-6">
-      <div class="bg-slate-900/85 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-md shadow-2xl text-center space-y-6">
-        <div class="w-20 h-20 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center text-emerald-400 text-3xl mx-auto shadow-inner">
-          <i class="fa-solid fa-circle-check"></i>
-        </div>
-
-        <div class="space-y-2">
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-white">¡Postulación Enviada con Éxito!</h2>
-          <p class="text-slate-400 text-sm max-w-lg mx-auto">
-            Tus respuestas han sido registradas. El equipo de administración de <span class="text-rose-400 font-semibold">Caracas Vibes2</span> revisará tu formulario brevemente.
-          </p>
-        </div>
-
-        <div class="bg-slate-950/90 border border-slate-800/80 rounded-xl p-4 max-w-md mx-auto text-left text-xs space-y-2">
-          <p class="text-slate-400"><strong class="text-slate-200">Postulante:</strong> <span id="sumName">---</span></p>
-          <p class="text-slate-400"><strong class="text-slate-200">Discord:</strong> <span id="sumDiscord" class="text-rose-400 font-mono">---</span></p>
-          <p class="text-slate-400"><strong class="text-slate-200">Preguntas Respondidas:</strong> <span id="sumScore" class="text-emerald-400 font-bold">100%</span></p>
-        </div>
-
-        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
-          <button id="downloadJsonBtn" type="button" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold border border-slate-700 transition-all flex items-center justify-center gap-2">
-            <i class="fa-solid fa-download text-rose-400"></i> Descargar Copia (JSON)
-          </button>
-          <button id="restartBtn" type="button" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs sm:text-sm font-bold shadow-lg transition-all flex items-center justify-center gap-2">
-            <i class="fa-solid fa-rotate-right"></i> Enviar Otra Postulación
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN 4: PANEL ADMINISTRADOR -->
-    <div id="sectionAdmin" class="hidden space-y-6">
-      <div class="flex items-center justify-between bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sm:p-6 backdrop-blur-md">
-        <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-user-shield text-rose-500"></i>
-            Panel de Whitelist
-          </h2>
-          <p class="text-xs text-slate-400">Gestión de solicitudes, preguntas y personalización visual</p>
-        </div>
-        <button id="closeAdminBtn" type="button" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700">
-          <i class="fa-solid fa-xmark mr-1"></i> Cerrar
-        </button>
-      </div>
-
-      <!-- Pestañas de Navegación Admin -->
-      <div class="flex border-b border-slate-800 gap-4 overflow-x-auto">
-        <button id="tabSubmissionsBtn" type="button" class="py-2.5 px-4 font-semibold text-xs border-b-2 border-rose-500 text-rose-400 transition-all flex items-center gap-2 whitespace-nowrap">
-          <i class="fa-solid fa-inbox"></i> Postulaciones Recibidas
-        </button>
-        <button id="tabQuestionsBtn" type="button" class="py-2.5 px-4 font-semibold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-2 whitespace-nowrap">
-          <i class="fa-solid fa-pen-to-square"></i> Gestor de Preguntas
-        </button>
-        <button id="tabBgBtn" type="button" class="py-2.5 px-4 font-semibold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-2 whitespace-nowrap">
-          <i class="fa-solid fa-image"></i> Personalizar Fondo
-        </button>
-      </div>
-
-      <!-- PESTAÑA 1: POSTULACIONES -->
-      <div id="tabSubmissionsContent" class="space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-          <div class="flex items-center gap-2">
-            <button data-filter="all" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600 text-white transition-all">Todos</button>
-            <button data-filter="pending" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-all">Pendientes</button>
-            <button data-filter="approved" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-all">Aprobados</button>
-            <button data-filter="rejected" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-all">Rechazados</button>
-          </div>
-          <span id="submissionCount" class="text-xs text-slate-400 font-mono">0 postulaciones</span>
-        </div>
-
-        <div id="submissionsList" class="space-y-4">
-          <div class="text-center py-12 text-slate-400">
-            <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-rose-500"></i>
-            <p class="text-sm">Cargando postulaciones...</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- PESTAÑA 2: GESTOR DE PREGUNTAS -->
-      <div id="tabQuestionsContent" class="hidden space-y-6">
-        <div class="flex justify-between items-center bg-slate-900/60 p-4 rounded-xl border border-slate-800">
-          <div>
-            <h3 class="text-sm font-bold text-white">Preguntas Activas</h3>
-            <p class="text-xs text-slate-400">Edita, elimina o agrega nuevas preguntas para el formulario.</p>
-          </div>
-          <button id="addQuestionBtn" type="button" class="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition-all flex items-center gap-2">
-            <i class="fa-solid fa-plus"></i> Nueva Pregunta
-          </button>
-        </div>
-
-        <div id="questionsEditorList" class="space-y-4"></div>
-      </div>
-
-      <!-- PESTAÑA 3: PERSONALIZAR FONDO -->
-      <div id="tabBgContent" class="hidden space-y-6">
-        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 space-y-6 backdrop-blur-md">
-          
-          <div class="border-b border-slate-800 pb-4">
-            <h3 class="text-base font-bold text-white flex items-center gap-2">
-              <i class="fa-solid fa-wand-magic-sparkles text-rose-500"></i>
-              Configuración de Fondo de Pantalla
-            </h3>
-            <p class="text-xs text-slate-400 mt-1">Cambia la imagen principal y ajusta el nivel de oscurecimiento.</p>
-          </div>
-
-          <!-- Medidas Recomendadas -->
-          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-start gap-3">
-            <i class="fa-solid fa-circle-info text-rose-400 text-lg mt-0.5"></i>
-            <div class="text-xs space-y-1">
-              <p class="font-bold text-slate-200">Especificaciones Recomendadas:</p>
-              <ul class="list-disc list-inside text-slate-400 space-y-0.5">
-                <li><strong>Resolución Ideal:</strong> <code>1920 x 1080 px</code> (Full HD) o <code>3840 x 2160 px</code> (4K).</li>
-                <li><strong>Relación de Aspecto:</strong> Horizontal 16:9.</li>
-                <li><strong>Formatos Soportados:</strong> PNG, JPG, WEBP. (Formatos ligeros &lt; 2MB aseguran carga ultra rápida).</li>
-              </ul>
+                <button id="adminBtn" type="button" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                    <i class="fa-solid fa-lock" style="color: var(--accent-purple);"></i>
+                    <span>Panel Admin</span>
+                </button>
             </div>
-          </div>
+        </div>
+    </header>
 
-          <form id="bgConfigForm" class="space-y-5">
-            <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Enlace / URL de la Imagen</label>
-              <input type="url" id="bgUrlInput" placeholder="https://ejemplo.com/mi-imagen-rp.jpg" 
-                class="w-full bg-slate-950 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 rounded-xl px-4 py-2.5 text-xs text-white outline-none">
-            </div>
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
 
-            <div class="flex items-center gap-4">
-              <div class="h-px bg-slate-800 flex-1"></div>
-              <span class="text-[10px] text-slate-500 uppercase font-semibold">O sube una local</span>
-              <div class="h-px bg-slate-800 flex-1"></div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Cargar Archivo Local</label>
-              <input type="file" id="bgFileInput" accept="image/*" 
-                class="block w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700">
-            </div>
-
-            <!-- Ajuste de Opacidad de la Capa Oscura -->
-            <div class="space-y-2 pt-2">
-              <div class="flex justify-between items-center text-xs">
-                <label class="font-semibold text-slate-300">Nivel de Opacidad Oscura (Overlay)</label>
-                <span id="opacityValDisplay" class="font-mono text-rose-400 font-bold">80%</span>
-              </div>
-              <input type="range" id="opacitySlider" min="10" max="95" value="80" 
-                class="w-full accent-rose-600 cursor-pointer">
-              <p class="text-[11px] text-slate-500">Aumenta el porcentaje si las letras se dificultan de leer con la imagen elegida.</p>
-            </div>
-
-            <!-- Vista Previa -->
-            <div class="space-y-2">
-              <label class="block text-xs font-semibold text-slate-300">Vista Previa de la Imagen</label>
-              <div class="w-full h-40 rounded-xl overflow-hidden border border-slate-800 bg-slate-950 relative">
-                <div id="bgPreviewImg" class="w-full h-full bg-cover bg-center"></div>
-                <div id="bgPreviewOverlay" class="absolute inset-0 bg-slate-950/80 flex items-center justify-center text-slate-400 text-xs font-semibold">
-                  Vista Previa del Fondo
+        <!-- SECCIÓN 1: FORMULARIO INICIAL DE DATOS & SELECCIÓN DE WHITELIST -->
+        <div id="sectionUserInfo">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Proceso de Whitelist</h2>
+                    <p>Selecciona tu modalidad de rol y completa tus datos para iniciar la evaluación.</p>
                 </div>
-              </div>
-            </div>
 
-            <div class="flex justify-end gap-3 pt-2">
-              <button id="resetBgBtn" type="button" class="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700">
-                Restaurar Predeterminado
-              </button>
-              <button type="submit" class="px-5 py-2.5 rounded-xl bg-rose-600 text-white text-xs font-bold hover:bg-rose-500 shadow-lg">
-                <i class="fa-solid fa-floppy-disk mr-1"></i> Guardar Fondo
-              </button>
-            </div>
-          </form>
+                <form id="userForm">
 
+                    <!-- SELECTOR DE MODALIDAD WHITELIST -->
+                    <div class="form-group">
+                        <label class="form-label"><i class="fa-solid fa-layer-group"></i> Elige tu Tipo de Whitelist</label>
+                        <div class="type-selector-grid">
+                            <div class="type-card selected" onclick="selectWhitelistType('general', this)">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <h4>General</h4>
+                                <p>Normativa global y rol polivalente</p>
+                            </div>
+                            <div class="type-card" onclick="selectWhitelistType('delictivo', this)">
+                                <i class="fa-solid fa-mask"></i>
+                                <h4>Delictivo</h4>
+                                <p>Bandas, mafias e ilícitos</p>
+                            </div>
+                            <div class="type-card" onclick="selectWhitelistType('legal', this)">
+                                <i class="fa-solid fa-briefcase"></i>
+                                <h4>Legal</h4>
+                                <p>Policía, médicos y negocios</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label"><i class="fa-solid fa-user"></i> Nombre Completo / Nombre IC</label>
+                        <input type="text" id="inputFullName" required placeholder="Ej. Carlos Mendoza" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label"><i class="fa-solid fa-envelope"></i> Correo Electrónico</label>
+                        <input type="email" id="inputEmail" required placeholder="tuemail@ejemplo.com" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label"><i class="fa-brands fa-discord"></i> Usuario de Discord</label>
+                        <input type="text" id="inputDiscord" required placeholder="Ej. @carlitos_rp o Carlitos#1234" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label"><i class="fa-solid fa-cake-candles"></i> Edad OOC (Real)</label>
+                        <input type="number" id="inputAge" min="14" max="99" required placeholder="Ej. 18" class="form-input">
+                    </div>
+
+                    <button type="submit" class="btn btn-purple" style="width: 100%; margin-top: 1rem; padding: 1rem;">
+                        <span>Iniciar Examen de Whitelist</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
         </div>
-      </div>
 
+        <!-- SECCIÓN 2: CUESTIONARIO EXAMEN -->
+        <div id="sectionQuestionnaire" class="hidden">
+            <div class="progress-box">
+                <div class="progress-info">
+                    <span style="color: var(--text-main);"><i class="fa-solid fa-list-check" style="color: var(--accent-purple);"></i> Examen: <span id="displayWlType" style="color: var(--accent-cyan); text-transform: uppercase;">GENERAL</span></span>
+                    <span id="progressText" style="color: var(--accent-purple);">0% (0 respondidas)</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="progressBar" class="progress-bar-fill"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 800; color: var(--accent-purple); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">
+                    <span id="questionCategory">Conceptos Roleplay</span>
+                    <span id="questionCounter">Pregunta 1</span>
+                </div>
+
+                <h3 id="questionTitle" style="font-size: 1.3rem; font-weight: 800; margin-bottom: 1.5rem; color: #fff;">
+                    Cargando pregunta...
+                </h3>
+
+                <div id="optionsContainer"></div>
+
+                <div id="textContainer" class="hidden" style="margin-bottom: 1.5rem;">
+                    <textarea id="openAnswerInput" rows="5" placeholder="Escribe tu respuesta detallada aquí con tus propias palabras..." class="form-textarea"></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border-glow);">
+                    <button id="prevBtn" type="button" class="btn btn-outline" style="padding: 0.6rem 1.2rem;">
+                        <i class="fa-solid fa-chevron-left"></i> Anterior
+                    </button>
+
+                    <button id="nextBtn" type="button" class="btn btn-purple" style="padding: 0.6rem 1.4rem;">
+                        <span>Siguiente</span> <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 3: CONFIRMACIÓN Y RESULTADO -->
+        <div id="sectionSummary" class="hidden">
+            <div class="card" style="text-align: center;">
+                <div style="width: 70px; height: 70px; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--accent-emerald); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--accent-emerald); margin: 0 auto 1.5rem;">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+
+                <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">¡Postulación Enviada!</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                    Tus respuestas han sido registradas. El equipo administrativo de <strong style="color: var(--accent-purple);">Caracas Vibes2</strong> evaluará tu perfil a la brevedad.
+                </p>
+
+                <div style="background: var(--bg-input); border: 1px solid var(--border-glow); border-radius: 16px; padding: 1.25rem; text-align: left; font-size: 0.85rem; margin-bottom: 1.5rem;">
+                    <p style="margin-bottom: 0.4rem; color: var(--text-muted);"><strong style="color: var(--text-main);">Modalidad Whitelist:</strong> <span id="sumWlType" style="color: var(--accent-cyan); font-weight: 800; text-transform: uppercase;">GENERAL</span></p>
+                    <p style="margin-bottom: 0.4rem; color: var(--text-muted);"><strong style="color: var(--text-main);">Postulante:</strong> <span id="sumName">---</span></p>
+                    <p style="margin-bottom: 0.4rem; color: var(--text-muted);"><strong style="color: var(--text-main);">Discord:</strong> <span id="sumDiscord" style="color: var(--accent-purple); font-family: monospace;">---</span></p>
+                    <p style="color: var(--text-muted);"><strong style="color: var(--text-main);">Completado:</strong> <span id="sumScore" style="color: var(--accent-emerald); font-weight: 700;">100%</span></p>
+                </div>
+
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button id="downloadJsonBtn" type="button" class="btn btn-outline">
+                        <i class="fa-solid fa-download" style="color: var(--accent-purple);"></i> Descargar Copia (JSON)
+                    </button>
+                    <button id="restartBtn" type="button" class="btn btn-purple">
+                        <i class="fa-solid fa-rotate-right"></i> Enviar Otra Postulación
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 4: PANEL DE ADMINISTRACIÓN -->
+        <div id="sectionAdmin" class="hidden">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div>
+                        <h2 style="font-size: 1.5rem; font-weight: 800;"><i class="fa-solid fa-user-shield" style="color: var(--accent-purple);"></i> Panel Whitelist</h2>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">Gestión de postulaciones, preguntas y personalización</p>
+                    </div>
+                    <button id="closeAdminBtn" type="button" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                        <i class="fa-solid fa-xmark"></i> Cerrar
+                    </button>
+                </div>
+
+                <!-- Tabs Admin -->
+                <div class="admin-tabs">
+                    <button id="tabSubmissionsBtn" class="admin-tab-btn active"><i class="fa-solid fa-inbox"></i> Postulaciones</button>
+                    <button id="tabQuestionsBtn" class="admin-tab-btn"><i class="fa-solid fa-pen-to-square"></i> Gestor de Preguntas</button>
+                    <button id="tabBgBtn" class="admin-tab-btn"><i class="fa-solid fa-image"></i> Personalizar Fondo</button>
+                </div>
+
+                <!-- PESTAÑA 1: SUBMISSIONS -->
+                <div id="tabSubmissionsContent">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button data-filter="all" class="admin-filter-btn btn btn-purple" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Todos</button>
+                            <button data-filter="pending" class="admin-filter-btn btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Pendientes</button>
+                            <button data-filter="approved" class="admin-filter-btn btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Aprobados</button>
+                            <button data-filter="rejected" class="admin-filter-btn btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Rechazados</button>
+                            
+                            <!-- Filtros por Modalidad -->
+                            <span style="color: var(--border-glow);">|</span>
+                            <button data-wlfilter="all" class="admin-wlfilter-btn btn btn-purple" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Todas Mod.</button>
+                            <button data-wlfilter="general" class="admin-wlfilter-btn btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">General</button>
+                            <button data-wlfilter="delictivo" class="admin-wlfilter-btn btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Delictivo</button>
+                            <button data-wlfilter="legal" class="admin-wlfilter-btn btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Legal</button>
+                        </div>
+                        <span id="submissionCount" style="font-size: 0.8rem; color: var(--text-muted); font-family: monospace;">0 postulaciones</span>
+                    </div>
+
+                    <div id="submissionsList" style="display: flex; flex-direction: column; gap: 1rem;"></div>
+                </div>
+
+                <!-- PESTAÑA 2: GESTOR PREGUNTAS -->
+                <div id="tabQuestionsContent" class="hidden">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h3 style="font-size: 1.1rem; font-weight: 700;">Preguntas Activas</h3>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button id="resetDefaultQuestionsBtn" type="button" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                                <i class="fa-solid fa-rotate-left"></i> Restaurar Predeterminadas
+                            </button>
+                            <button id="addQuestionBtn" type="button" class="btn btn-purple" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                                <i class="fa-solid fa-plus"></i> Nueva Pregunta
+                            </button>
+                        </div>
+                    </div>
+                    <div id="questionsEditorList" style="display: flex; flex-direction: column; gap: 0.8rem;"></div>
+                </div>
+
+                <!-- PESTAÑA 3: PERSONALIZAR FONDO -->
+                <div id="tabBgContent" class="hidden">
+                    <form id="bgConfigForm">
+                        <div class="form-group">
+                            <label class="form-label">URL de Imagen de Fondo</label>
+                            <input type="url" id="bgUrlInput" placeholder="https://ejemplo.com/mi-imagen.jpg" class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">O Cargar Archivo Local</label>
+                            <input type="file" id="bgFileInput" accept="image/*" class="form-input" style="padding: 0.5rem;">
+                        </div>
+
+                        <div class="form-group">
+                            <div style="display: flex; justify-content: space-between;" class="form-label">
+                                <span>Opacidad Oscura (Overlay)</span>
+                                <span id="opacityValDisplay" style="color: var(--accent-purple);">82%</span>
+                            </div>
+                            <input type="range" id="opacitySlider" min="10" max="95" value="82" style="width: 100%; accent-color: var(--accent-purple);">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Vista Previa</label>
+                            <div style="width: 100%; height: 160px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-glow); position: relative;">
+                                <div id="bgPreviewImg" style="width: 100%; height: 100%; background-size: cover; background-position: center;"></div>
+                                <div id="bgPreviewOverlay" style="position: absolute; inset: 0; background: rgba(7,8,16,0.82); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: var(--text-muted);">
+                                    Vista Previa
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem;">
+                            <button id="resetBgBtn" type="button" class="btn btn-outline">Restaurar</button>
+                            <button type="submit" class="btn btn-purple"><i class="fa-solid fa-floppy-disk"></i> Guardar Fondo</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- MODAL DE CONSULTA DE ESTATUS (PARA USUARIOS) -->
+    <div id="statusModal" class="modal hidden">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.2rem; font-weight: 800;"><i class="fa-solid fa-magnifying-glass" style="color: var(--accent-cyan);"></i> Consultar Estado de Whitelist</h3>
+                <button id="closeStatusModalBtn" type="button" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="searchStatusForm" style="margin-bottom: 1.5rem;">
+                <div class="form-group">
+                    <label class="form-label">Introduce tu Usuario de Discord o Correo</label>
+                    <input type="text" id="statusSearchQuery" required placeholder="Ej. @carlitos_rp o miemail@ejemplo.com" class="form-input">
+                </div>
+                <button type="submit" class="btn btn-purple" style="width: 100%;"><i class="fa-solid fa-search"></i> Buscar Postulación</button>
+            </form>
+
+            <div id="statusResultContainer" class="hidden"></div>
+        </div>
     </div>
 
-  </main>
+    <!-- MODAL PREGUNTAS (ADMIN) -->
+    <div id="questionModal" class="modal hidden">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 id="modalTitle" style="font-size: 1.2rem; font-weight: 800;">Agregar Pregunta</h3>
+                <button id="closeModalBtn" type="button" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
 
-  <!-- MODAL: CREAR / EDITAR PREGUNTA -->
-  <div id="questionModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h3 id="modalTitle" class="text-lg font-bold text-white">Agregar Pregunta</h3>
-        <button id="closeModalBtn" type="button" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
-      </div>
+            <form id="questionForm">
+                <input type="hidden" id="editQuestionId">
 
-      <form id="questionForm" class="space-y-4">
-        <input type="hidden" id="editQuestionId">
+                <div class="form-group">
+                    <label class="form-label">Asignar a Whitelist</label>
+                    <select id="modalWlScope" class="form-select">
+                        <option value="all">Todas (General / Global)</option>
+                        <option value="general">Exclusiva General</option>
+                        <option value="delictivo">Exclusiva Delictivo</option>
+                        <option value="legal">Exclusiva Legal</option>
+                    </select>
+                </div>
 
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Categoría</label>
-          <input type="text" id="modalCategory" required placeholder="Ej. Reglamento General" 
-            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-rose-500">
+                <div class="form-group">
+                    <label class="form-label">Categoría</label>
+                    <input type="text" id="modalCategory" required placeholder="Ej. Reglamento General" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Pregunta / Enunciado</label>
+                    <input type="text" id="modalTitleInput" required placeholder="Ej. ¿Qué es MetaGaming (MG)?" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Tipo de Respuesta</label>
+                    <select id="modalType" class="form-select">
+                        <option value="text">Texto Abierto (Larga)</option>
+                        <option value="choice">Opción Múltiple (Selección)</option>
+                    </select>
+                </div>
+
+                <div id="modalOptionsWrapper" class="hidden form-group">
+                    <label class="form-label">Opciones de Selección</label>
+                    <div id="modalOptionsList" style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.5rem;"></div>
+                    <button id="addOptionInputBtn" type="button" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">
+                        <i class="fa-solid fa-plus"></i> Añadir Opción
+                    </button>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem;">
+                    <button id="cancelModalBtn" type="button" class="btn btn-outline">Cancelar</button>
+                    <button type="submit" class="btn btn-purple">Guardar Pregunta</button>
+                </div>
+            </form>
         </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Enunciado / Pregunta</label>
-          <input type="text" id="modalTitleInput" required placeholder="Ej. ¿Qué entiendes por MetaGaming (MG)?" 
-            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-rose-500">
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Tipo de Respuesta</label>
-          <select id="modalType" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-rose-500">
-            <option value="text">Texto Abierto (Larga)</option>
-            <option value="choice">Opción Múltiple (Selección)</option>
-          </select>
-        </div>
-
-        <div id="modalOptionsWrapper" class="hidden space-y-2">
-          <label class="block text-xs font-semibold text-slate-300">Opciones de Selección</label>
-          <div id="modalOptionsList" class="space-y-2"></div>
-          <button id="addOptionInputBtn" type="button" class="text-xs text-rose-400 hover:underline font-semibold flex items-center gap-1 mt-1">
-            <i class="fa-solid fa-plus text-[10px]"></i> Añadir Opción
-          </button>
-        </div>
-
-        <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
-          <button id="cancelModalBtn" type="button" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700">Cancelar</button>
-          <button type="submit" class="px-5 py-2 rounded-xl bg-rose-600 text-white text-xs font-bold hover:bg-rose-500">Guardar Pregunta</button>
-        </div>
-      </form>
     </div>
-  </div>
 
-  <!-- PIE DE PÁGINA -->
-  <footer class="border-t border-slate-800/80 bg-slate-950/90 backdrop-blur-md py-4 text-center text-xs text-slate-500 relative z-10">
-    <p>© 2026 Caracas Vibes2 RP. Todos los derechos reservados. Desarrollado para gestión de comunidad FiveM.</p>
-  </footer>
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 Caracas Vibes2 RP. Todos los derechos reservados. Plataforma oficial Whitelist.</p>
+    </footer>
 
-  <!-- SCRIPT DE FIREBASE SDK & LÓGICA DE APLICACIÓN -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { 
-      getFirestore, 
-      collection, 
-      addDoc, 
-      setDoc,
-      doc,
-      query, 
-      orderBy, 
-      limit, 
-      onSnapshot, 
-      updateDoc, 
-      deleteDoc, 
-      serverTimestamp 
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <!-- FIREBASE SDK & APP LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            addDoc, 
+            setDoc, 
+            doc, 
+            query, 
+            orderBy, 
+            limit, 
+            getDocs,
+            onSnapshot, 
+            updateDoc, 
+            deleteDoc, 
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // -------------------------------------------------------------
-    // CONFIGURACIÓN DE FIREBASE (Reemplaza con tus claves reales)
-    // -------------------------------------------------------------
-    const firebaseConfig = {
-      apiKey: "AIzaSyC4MsYStfYJCfScNY3UuDz9zfnb_JN5Q6I",
-      authDomain: "carasvibes-whitelist.firebaseapp.com",
-      projectId: "carasvibes-whitelist",
-      storageBucket: "carasvibes-whitelist.firebasestorage.app",
-      messagingSenderId: "208939321301",
-      appId: "1:208939321301:web:070354ae84a07bbd271f5c"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyC4MsYStfYJCfScNY3UuDz9zfnb_JN5Q6I",
+            authDomain: "carasvibes-whitelist.firebaseapp.com",
+            projectId: "carasvibes-whitelist",
+            storageBucket: "carasvibes-whitelist.firebasestorage.app",
+            messagingSenderId: "208939321301",
+            appId: "1:208939321301:web:070354ae84a07bbd271f5c"
+        };
 
-    const ADMIN_PASSWORD = "CaracasVibes2026";
-    const DEFAULT_BG = "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80";
+        const ADMIN_PASSWORD = "CaracasVibes2026";
+        const DEFAULT_BG = "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80";
+        const LOCAL_STORAGE_QUESTIONS_KEY = "caracas_vibes_questions_v1";
+        const LOCAL_STORAGE_SUBMISSIONS_KEY = "caracas_vibes_submissions_v1";
 
-    let app, db;
-    let firebaseReady = false;
+        let app, db;
+        let firebaseReady = false;
 
-    try {
-      if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("YOUR_API_KEY")) {
-        app = initializeApp(firebaseConfig);
-        db = getFirestore(app);
-        firebaseReady = true;
-      }
-    } catch (e) {
-      console.warn("Firebase no configurado o usando claves de demostración.", e);
-    }
-
-    let defaultQuestions = [
-      {
-        id: "q1",
-        category: "Conceptos Fundamentales",
-        title: "¿Qué es el In Character (IC) y Out Of Character (OOC)?",
-        type: "choice",
-        options: [
-          "IC es todo lo que ocurre con tu personaje dentro del juego; OOC es todo lo relativo a tu persona real fuera del juego.",
-          "IC es cuando hablas por Discord y OOC cuando hablas por el micrófono de FiveM.",
-          "IC significa hacer trucos en el juego y OOC es respetar a los administradores.",
-          "No hay diferencia, ambos términos significan lo mismo dentro del servidor."
-        ]
-      },
-      {
-        id: "q2",
-        category: "Reglamento General",
-        title: "¿Qué entiendes por MetaGaming (MG)? Proporciona un ejemplo breve.",
-        type: "text"
-      },
-      {
-        id: "q3",
-        category: "Reglamento General",
-        title: "¿Qué es el PowerGaming (PG)? Selecciona la opción correcta:",
-        type: "choice",
-        options: [
-          "Realizar acciones que serían físicamente imposibles en la vida real o forzar el rol de otros jugadores sin darles opción a responder.",
-          "Tener un vehículo de alta gama y conducir a máxima velocidad por la autopista.",
-          "Usar armas pesadas durante un tiroteo con la policía.",
-          "Rol de hablar con acento extranjero durante una conversación."
-        ]
-      },
-      {
-        id: "q4",
-        category: "Normativa de Vida",
-        title: "¿En qué consiste la regla de Valorar la Vida (NVHQ/VLV)?",
-        type: "text"
-      },
-      {
-        id: "q5",
-        category: "Entorno y Zonas",
-        title: "¿Cómo definirías el concepto de 'Zona Segura' en Caracas Vibes2?",
-        type: "choice",
-        options: [
-          "Lugares donde está prohibido iniciar actos delictivos, agresiones o robos (ej. Hospitales, Comisaría, Banco Central).",
-          "Cualquier zona del mapa donde no haya policías cerca.",
-          "Tu casa o propiedad privada comprada en el servidor.",
-          "Lugares donde la velocidad de los coches está limitada automáticamente."
-        ]
-      },
-      {
-        id: "q6",
-        category: "Normativa de Muerte",
-        title: "¿Qué consecuencias tiene un Player Kill (PK) y en qué se diferencia de un Character Kill (CK)?",
-        type: "text"
-      },
-      {
-        id: "q7",
-        category: "Interpretación de Personaje",
-        title: "Describe brevemente la historia de tu personaje, su personalidad y sus metas en Caracas Vibes2:",
-        type: "text"
-      },
-      {
-        id: "q8",
-        category: "Comandos de Rol",
-        title: "¿Para qué sirve el comando /me y el comando /do en FiveM?",
-        type: "choice",
-        options: [
-          "/me se utiliza para describir acciones físicas de tu personaje; /do se usa para describir el entorno o responder preguntas sobre la situación.",
-          "/me es para enviar mensajes privados y /do para hablar por radio.",
-          "/me es para llamar a un admin y /do para pedir auxilio médico.",
-          "Ambos sirven exactamente para lo mismo."
-        ]
-      }
-    ];
-
-    let questions = [...defaultQuestions];
-    let userData = { fullName: "", email: "", discordUser: "", age: "" };
-    let userAnswers = {};
-    let currentQuestionIndex = 0;
-    let allSubmissions = [];
-    let currentFilter = "all";
-    let unsubscribeAdminListener = null;
-
-    const sectionUserInfo = document.getElementById('sectionUserInfo');
-    const sectionQuestionnaire = document.getElementById('sectionQuestionnaire');
-    const sectionSummary = document.getElementById('sectionSummary');
-    const sectionAdmin = document.getElementById('sectionAdmin');
-
-    const userForm = document.getElementById('userForm');
-    const progressBar = document.getElementById('progressBar');
-    const progressText = document.getElementById('progressText');
-
-    const questionCategory = document.getElementById('questionCategory');
-    const questionCounter = document.getElementById('questionCounter');
-    const questionTitle = document.getElementById('questionTitle');
-    const optionsContainer = document.getElementById('optionsContainer');
-    const textContainer = document.getElementById('textContainer');
-    const openAnswerInput = document.getElementById('openAnswerInput');
-
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const adminBtn = document.getElementById('adminBtn');
-    const closeAdminBtn = document.getElementById('closeAdminBtn');
-
-    // Capas de Fondo
-    const bgLayer = document.getElementById('bgLayer');
-    const bgOverlay = document.getElementById('bgOverlay');
-    const bgUrlInput = document.getElementById('bgUrlInput');
-    const bgFileInput = document.getElementById('bgFileInput');
-    const opacitySlider = document.getElementById('opacitySlider');
-    const opacityValDisplay = document.getElementById('opacityValDisplay');
-    const bgPreviewImg = document.getElementById('bgPreviewImg');
-    const bgPreviewOverlay = document.getElementById('bgPreviewOverlay');
-
-    const questionModal = document.getElementById('questionModal');
-    const questionForm = document.getElementById('questionForm');
-    const modalType = document.getElementById('modalType');
-    const modalOptionsWrapper = document.getElementById('modalOptionsWrapper');
-    const modalOptionsList = document.getElementById('modalOptionsList');
-
-    window.addEventListener('DOMContentLoaded', () => {
-      listenSettingsRealtime();
-      listenQuestionsRealtime();
-      setupEvents();
-    });
-
-    // Escuchar cambios de configuración de Fondo
-    function listenSettingsRealtime() {
-      if (firebaseReady && db) {
-        onSnapshot(doc(db, "whitelist_settings", "theme"), (docSnap) => {
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            applyBackground(data.bgUrl || DEFAULT_BG, data.opacity || 80);
-          }
-        });
-      }
-    }
-
-    function applyBackground(url, opacity) {
-      bgLayer.style.backgroundImage = `url('${url}')`;
-      bgOverlay.style.backgroundColor = `rgba(11, 15, 25, ${opacity / 100})`;
-      
-      bgUrlInput.value = url.startsWith('data:') ? '' : url;
-      opacitySlider.value = opacity;
-      opacityValDisplay.textContent = `${opacity}%`;
-
-      bgPreviewImg.style.backgroundImage = `url('${url}')`;
-      bgPreviewOverlay.style.backgroundColor = `rgba(11, 15, 25, ${opacity / 100})`;
-    }
-
-    function listenQuestionsRealtime() {
-      if (firebaseReady && db) {
-        onSnapshot(collection(db, "whitelist_questions"), (snapshot) => {
-          if (!snapshot.empty) {
-            questions = [];
-            snapshot.forEach((docSnap) => {
-              questions.push({ id: docSnap.id, ...docSnap.data() });
-            });
-          }
-          if (currentQuestionIndex >= questions.length) {
-            currentQuestionIndex = Math.max(0, questions.length - 1);
-          }
-          renderQuestionsEditor();
-        });
-      }
-    }
-
-    function setupEvents() {
-      userForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        userData.fullName = document.getElementById('inputFullName').value.trim();
-        userData.email = document.getElementById('inputEmail').value.trim();
-        userData.discordUser = document.getElementById('inputDiscord').value.trim();
-        userData.age = document.getElementById('inputAge').value.trim();
-
-        showToast("Perfil registrado. ¡Comenzando examen!", "success");
-        sectionUserInfo.classList.add('hidden');
-        sectionQuestionnaire.classList.remove('hidden');
-        loadQuestion(0);
-      });
-
-      prevBtn.addEventListener('click', () => {
-        saveCurrentAnswer();
-        if (currentQuestionIndex > 0) {
-          loadQuestion(currentQuestionIndex - 1);
-        }
-      });
-
-      nextBtn.addEventListener('click', () => {
-        saveCurrentAnswer();
-        if (currentQuestionIndex < questions.length - 1) {
-          loadQuestion(currentQuestionIndex + 1);
-        } else {
-          finishQuestionnaire();
-        }
-      });
-
-      openAnswerInput.addEventListener('input', () => {
-        if (!questions[currentQuestionIndex]) return;
-        const q = questions[currentQuestionIndex];
-        const val = openAnswerInput.value.trim();
-        if (val) userAnswers[q.id] = val;
-        else delete userAnswers[q.id];
-        updateProgressBar();
-      });
-
-      document.getElementById('restartBtn').addEventListener('click', () => {
-        userAnswers = {};
-        currentQuestionIndex = 0;
-        userForm.reset();
-        sectionSummary.classList.add('hidden');
-        sectionUserInfo.classList.remove('hidden');
-      });
-
-      document.getElementById('downloadJsonBtn').addEventListener('click', downloadJSON);
-      adminBtn.addEventListener('click', openAdminPanel);
-      closeAdminBtn.addEventListener('click', () => {
-        if (unsubscribeAdminListener) unsubscribeAdminListener();
-        sectionAdmin.classList.add('hidden');
-        sectionUserInfo.classList.remove('hidden');
-      });
-
-      // Pestañas Admin
-      const tabSubmissionsBtn = document.getElementById('tabSubmissionsBtn');
-      const tabQuestionsBtn = document.getElementById('tabQuestionsBtn');
-      const tabBgBtn = document.getElementById('tabBgBtn');
-      const tabSubmissionsContent = document.getElementById('tabSubmissionsContent');
-      const tabQuestionsContent = document.getElementById('tabQuestionsContent');
-      const tabBgContent = document.getElementById('tabBgContent');
-
-      tabSubmissionsBtn.addEventListener('click', () => {
-        setTabActive(tabSubmissionsBtn, tabSubmissionsContent);
-      });
-      tabQuestionsBtn.addEventListener('click', () => {
-        setTabActive(tabQuestionsBtn, tabQuestionsContent);
-        renderQuestionsEditor();
-      });
-      tabBgBtn.addEventListener('click', () => {
-        setTabActive(tabBgBtn, tabBgContent);
-      });
-
-      function setTabActive(activeBtn, activeContent) {
-        [tabSubmissionsBtn, tabQuestionsBtn, tabBgBtn].forEach(b => {
-          b.className = "py-2.5 px-4 font-semibold text-xs border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-2 whitespace-nowrap";
-        });
-        activeBtn.className = "py-2.5 px-4 font-semibold text-xs border-b-2 border-rose-500 text-rose-400 transition-all flex items-center gap-2 whitespace-nowrap";
-
-        [tabSubmissionsContent, tabQuestionsContent, tabBgContent].forEach(c => c.classList.add('hidden'));
-        activeContent.classList.remove('hidden');
-      }
-
-      // Eventos del Formulario de Fondo
-      opacitySlider.addEventListener('input', () => {
-        const val = opacitySlider.value;
-        opacityValDisplay.textContent = `${val}%`;
-        bgOverlay.style.backgroundColor = `rgba(11, 15, 25, ${val / 100})`;
-        bgPreviewOverlay.style.backgroundColor = `rgba(11, 15, 25, ${val / 100})`;
-      });
-
-      bgUrlInput.addEventListener('input', () => {
-        const url = bgUrlInput.value.trim() || DEFAULT_BG;
-        bgPreviewImg.style.backgroundImage = `url('${url}')`;
-      });
-
-      bgFileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = (evt) => {
-            bgPreviewImg.style.backgroundImage = `url('${evt.target.result}')`;
-          };
-          reader.readAsDataURL(file);
-        }
-      });
-
-      document.getElementById('bgConfigForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        let targetUrl = bgUrlInput.value.trim();
-        const file = bgFileInput.files[0];
-
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = async (evt) => {
-            await saveBgSettings(evt.target.result, opacitySlider.value);
-          };
-          reader.readAsDataURL(file);
-        } else {
-          await saveBgSettings(targetUrl || DEFAULT_BG, opacitySlider.value);
-        }
-      });
-
-      document.getElementById('resetBgBtn').addEventListener('click', async () => {
-        await saveBgSettings(DEFAULT_BG, 80);
-        showToast("Fondo restaurado", "info");
-      });
-
-      // Modal de Preguntas
-      document.getElementById('addQuestionBtn').addEventListener('click', () => openQuestionModal());
-      document.getElementById('closeModalBtn').addEventListener('click', closeQuestionModal);
-      document.getElementById('cancelModalBtn').addEventListener('click', closeQuestionModal);
-
-      modalType.addEventListener('change', () => {
-        if (modalType.value === 'choice') {
-          modalOptionsWrapper.classList.remove('hidden');
-          if (modalOptionsList.children.length === 0) {
-            addOptionInputField();
-            addOptionInputField();
-          }
-        } else {
-          modalOptionsWrapper.classList.add('hidden');
-        }
-      });
-
-      document.getElementById('addOptionInputBtn').addEventListener('click', () => addOptionInputField());
-      questionForm.addEventListener('submit', handleSaveQuestion);
-
-      document.querySelectorAll('.admin-filter-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          document.querySelectorAll('.admin-filter-btn').forEach(b => {
-            b.classList.remove('bg-rose-600', 'text-white');
-            b.classList.add('bg-slate-800', 'text-slate-400');
-          });
-          e.target.classList.remove('bg-slate-800', 'text-slate-400');
-          e.target.classList.add('bg-rose-600', 'text-white');
-          currentFilter = e.target.dataset.filter;
-          renderSubmissions(allSubmissions);
-        });
-      });
-    }
-
-    async function saveBgSettings(url, opacity) {
-      applyBackground(url, opacity);
-      if (firebaseReady && db) {
         try {
-          await setDoc(doc(db, "whitelist_settings", "theme"), { bgUrl: url, opacity: Number(opacity) });
-          showToast("¡Fondo guardado en Firebase!", "success");
-        } catch (err) {
-          console.error("Error guardando fondo:", err);
-          showToast("Fondo aplicado en este navegador", "info");
-        }
-      } else {
-        showToast("Fondo aplicado localmente", "info");
-      }
-    }
-
-    function loadQuestion(index) {
-      if (!questions[index]) return;
-      currentQuestionIndex = index;
-      const q = questions[index];
-
-      questionCategory.textContent = q.category;
-      questionCounter.textContent = `Pregunta ${index + 1} de ${questions.length}`;
-      questionTitle.textContent = q.title;
-      optionsContainer.innerHTML = '';
-      
-      if (q.type === 'choice') {
-        optionsContainer.classList.remove('hidden');
-        textContainer.classList.add('hidden');
-
-        (q.options || []).forEach((optText) => {
-          const isSelected = userAnswers[q.id] === optText;
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = `w-full text-left p-4 rounded-xl border transition-all text-sm flex items-start gap-3 ${
-            isSelected 
-              ? 'bg-rose-950/50 border-rose-500 text-white shadow-md' 
-              : 'bg-slate-950/80 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-900'
-          }`;
-          
-          btn.innerHTML = `
-            <div class="mt-0.5 w-4 h-4 rounded-full border ${isSelected ? 'border-rose-500 bg-rose-500' : 'border-slate-600'} flex items-center justify-center flex-shrink-0">
-              ${isSelected ? '<i class="fa-solid fa-check text-white text-[10px]"></i>' : ''}
-            </div>
-            <span>${optText}</span>
-          `;
-
-          btn.addEventListener('click', () => {
-            userAnswers[q.id] = optText;
-            loadQuestion(currentQuestionIndex);
-            updateProgressBar();
-          });
-
-          optionsContainer.appendChild(btn);
-        });
-      } else {
-        optionsContainer.classList.add('hidden');
-        textContainer.classList.remove('hidden');
-        openAnswerInput.value = userAnswers[q.id] || '';
-      }
-
-      prevBtn.disabled = index === 0;
-      if (index === questions.length - 1) {
-        nextBtn.innerHTML = `<span>Finalizar Postulación</span> <i class="fa-solid fa-paper-plane"></i>`;
-      } else {
-        nextBtn.innerHTML = `<span>Siguiente</span> <i class="fa-solid fa-chevron-right"></i>`;
-      }
-
-      updateProgressBar();
-    }
-
-    function saveCurrentAnswer() {
-      if (!questions[currentQuestionIndex]) return;
-      const q = questions[currentQuestionIndex];
-      if (q.type === 'text') {
-        const val = openAnswerInput.value.trim();
-        if (val) userAnswers[q.id] = val;
-        else delete userAnswers[q.id];
-      }
-      updateProgressBar();
-    }
-
-    function updateProgressBar() {
-      const answeredCount = Object.keys(userAnswers).length;
-      const total = questions.length || 1;
-      const percentage = Math.round((answeredCount / total) * 100);
-
-      progressBar.style.width = `${percentage}%`;
-      progressText.textContent = `${percentage}% (${answeredCount}/${total} respondidas)`;
-    }
-
-    async function finishQuestionnaire() {
-      saveCurrentAnswer();
-      const answeredCount = Object.keys(userAnswers).length;
-      const total = questions.length || 1;
-      const scorePercentage = Math.round((answeredCount / total) * 100);
-
-      document.getElementById('sumName').textContent = userData.fullName || 'N/A';
-      document.getElementById('sumDiscord').textContent = userData.discordUser || 'N/A';
-      document.getElementById('sumScore').textContent = `${scorePercentage}% (${answeredCount}/${total})`;
-
-      sectionQuestionnaire.classList.add('hidden');
-      sectionSummary.classList.remove('hidden');
-
-      if (firebaseReady && db) {
-        try {
-          const payload = {
-            userInfo: userData,
-            answers: userAnswers,
-            scorePercentage: scorePercentage,
-            status: "pending",
-            createdAt: serverTimestamp()
-          };
-          await addDoc(collection(db, "whitelist_submissions"), payload);
-          showToast("¡Postulación guardada en Firebase!", "success");
-        } catch (err) {
-          console.error("Error enviando a Firestore:", err);
-          showToast("Guardado completado (Local)", "info");
-        }
-      } else {
-        showToast("Postulación completada localmente", "info");
-      }
-    }
-
-    function downloadJSON() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
-        usuario: userData,
-        respuestas: userAnswers,
-        fecha: new Date().toLocaleString()
-      }, null, 2));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `Whitelist_${(userData.discordUser || 'usuario').replace(/[^a-z0-9]/gi, '_')}.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-    }
-
-    function openAdminPanel() {
-      const pwd = prompt("Introduce la contraseña de Administrador:");
-      if (pwd !== ADMIN_PASSWORD) {
-        showToast("Contraseña incorrecta", "error");
-        return;
-      }
-
-      sectionUserInfo.classList.add('hidden');
-      sectionQuestionnaire.classList.add('hidden');
-      sectionSummary.classList.add('hidden');
-      sectionAdmin.classList.remove('hidden');
-
-      loadSubmissionsRealtime();
-      renderQuestionsEditor();
-    }
-
-    function loadSubmissionsRealtime() {
-      const container = document.getElementById('submissionsList');
-      container.innerHTML = `
-        <div class="text-center py-12 text-slate-400">
-          <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-rose-500"></i>
-          <p class="text-sm">Cargando postulaciones en tiempo real...</p>
-        </div>`;
-
-      if (!firebaseReady || !db) {
-        container.innerHTML = `
-          <div class="bg-amber-950/40 border border-amber-800/80 p-6 rounded-2xl text-center space-y-3">
-            <i class="fa-solid fa-triangle-exclamation text-amber-400 text-3xl"></i>
-            <h4 class="font-bold text-amber-200">Firebase no configurado</h4>
-            <p class="text-xs text-amber-300/80 max-w-md mx-auto">
-              Reemplaza la variable <code>firebaseConfig</code> con las claves de tu proyecto de Firebase.
-            </p>
-          </div>`;
-        return;
-      }
-
-      if (unsubscribeAdminListener) unsubscribeAdminListener();
-
-      const q = query(
-        collection(db, "whitelist_submissions"), 
-        orderBy("createdAt", "desc"),
-        limit(50)
-      );
-
-      unsubscribeAdminListener = onSnapshot(q, (snapshot) => {
-        allSubmissions = [];
-        snapshot.forEach((docSnap) => {
-          allSubmissions.push({ id: docSnap.id, ...docSnap.data() });
-        });
-        renderSubmissions(allSubmissions);
-      }, (error) => {
-        console.error("Error al escuchar postulaciones:", error);
-      });
-    }
-
-    function renderSubmissions(list) {
-      const container = document.getElementById('submissionsList');
-      const filtered = list.filter(item => {
-        if (currentFilter === 'all') return true;
-        return item.status === currentFilter;
-      });
-
-      document.getElementById('submissionCount').textContent = `${filtered.length} postulaciones`;
-
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="bg-slate-900/40 border border-slate-800 p-8 rounded-2xl text-center text-slate-500 text-sm">
-            No hay postulaciones en esta categoría.
-          </div>`;
-        return;
-      }
-
-      container.innerHTML = '';
-
-      filtered.forEach((item) => {
-        const card = document.createElement('div');
-        card.className = "bg-slate-900/90 border border-slate-800 rounded-2xl p-5 space-y-4 shadow-md backdrop-blur-md";
-
-        const statusBadge = item.status === 'approved' 
-          ? '<span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-semibold">Aprobado</span>'
-          : item.status === 'rejected'
-          ? '<span class="px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-semibold">Rechazado</span>'
-          : '<span class="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs font-semibold">Pendiente</span>';
-
-        const u = item.userInfo || {};
-        const answers = item.answers || {};
-
-        let answersHtml = '';
-        questions.forEach(q => {
-          const ans = answers[q.id] || '<em class="text-slate-600">Sin responder</em>';
-          answersHtml += `
-            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800/80 text-xs space-y-1">
-              <p class="font-semibold text-rose-400">${q.title}</p>
-              <p class="text-slate-300 leading-relaxed">${ans}</p>
-            </div>
-          `;
-        });
-
-        card.innerHTML = `
-          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
-            <div>
-              <h3 class="font-bold text-white text-base flex items-center gap-2">
-                ${u.fullName || 'Usuario'}
-                <span class="text-xs font-normal text-slate-400">(${u.age || '?'} años)</span>
-              </h3>
-              <p class="text-xs text-slate-400 font-mono flex items-center gap-2 mt-0.5">
-                <i class="fa-brands fa-discord text-rose-500"></i> ${u.discordUser || 'N/A'} 
-                <span class="text-slate-600">•</span> 
-                <i class="fa-solid fa-envelope text-slate-500"></i> ${u.email || 'N/A'}
-              </p>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="text-xs font-bold text-amber-400 bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-800">
-                ${item.scorePercentage || 0}% Completado
-              </span>
-              ${statusBadge}
-            </div>
-          </div>
-
-          <details class="group">
-            <summary class="cursor-pointer text-xs font-semibold text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 py-1 select-none">
-              <i class="fa-solid fa-chevron-right group-open:rotate-90 transition-transform"></i>
-              Ver Formulario y Respuestas
-            </summary>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3 pt-2">
-              ${answersHtml}
-            </div>
-          </details>
-
-          <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800/60">
-            <button data-id="${item.id}" data-action="approve" class="action-btn px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition-all flex items-center gap-1.5">
-              <i class="fa-solid fa-check"></i> Aprobar
-            </button>
-            <button data-id="${item.id}" data-action="reject" class="action-btn px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold transition-all flex items-center gap-1.5">
-              <i class="fa-solid fa-xmark"></i> Rechazar
-            </button>
-            <button data-id="${item.id}" data-action="delete" class="action-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-rose-400 text-xs transition-all">
-              <i class="fa-solid fa-trash-can"></i>
-            </button>
-          </div>
-        `;
-
-        card.querySelectorAll('.action-btn').forEach(btn => {
-          btn.addEventListener('click', async () => {
-            const docId = btn.dataset.id;
-            const action = btn.dataset.action;
-
-            if (action === 'approve') {
-              await updateDoc(doc(db, "whitelist_submissions", docId), { status: "approved" });
-              showToast("Postulación APROBADA", "success");
-            } else if (action === 'reject') {
-              await updateDoc(doc(db, "whitelist_submissions", docId), { status: "rejected" });
-              showToast("Postulación RECHAZADA", "info");
-            } else if (action === 'delete') {
-              if (confirm("¿Eliminar esta postulación permanentemente?")) {
-                await deleteDoc(doc(db, "whitelist_submissions", docId));
-                showToast("Postulación eliminada", "info");
-              }
+            if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("YOUR_API_KEY")) {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                firebaseReady = true;
             }
-          });
+        } catch (e) {
+            console.warn("Firebase operando en modo fallback local.", e);
+        }
+
+        let defaultQuestions = [
+            {
+                id: "q1",
+                wlScope: "all",
+                category: "Conceptos Fundamentales",
+                title: "¿Qué es el In Character (IC) y Out Of Character (OOC)?",
+                type: "choice",
+                options: [
+                    "IC es todo lo que ocurre con tu personaje dentro del juego; OOC es todo lo relativo a tu persona real fuera del juego.",
+                    "IC es cuando hablas por Discord y OOC cuando hablas por el micrófono de FiveM.",
+                    "IC significa hacer trucos en el juego y OOC es respetar a los administradores.",
+                    "No hay diferencia, ambos términos significan lo mismo dentro del servidor."
+                ]
+            },
+            {
+                id: "q2",
+                wlScope: "all",
+                category: "Reglamento General",
+                title: "¿Qué entiendes por MetaGaming (MG)? Proporciona un ejemplo breve.",
+                type: "text"
+            },
+            {
+                id: "q3",
+                wlScope: "delictivo",
+                category: "Rol Delictivo",
+                title: "¿Cómo debes actuar en un secuestro a un funcionario policial o civil siendo una banda?",
+                type: "text"
+            },
+            {
+                id: "q4",
+                wlScope: "legal",
+                category: "Rol Legal / Servicios",
+                title: "¿Cuál es el protocolo prioritario al atender un aviso de emergencia estando en servicio?",
+                type: "text"
+            },
+            {
+                id: "q5",
+                wlScope: "all",
+                category: "Normativa de Vida",
+                title: "¿En qué consiste la regla de Valorar la Vida (NVHQ/VLV)?",
+                type: "text"
+            }
+        ];
+
+        let questions = loadSavedQuestions();
+        let activeExamQuestions = [];
+        let selectedWlType = "general";
+        let userData = { fullName: "", email: "", discordUser: "", age: "", wlType: "general" };
+        let userAnswers = {};
+        let currentQuestionIndex = 0;
+        let allSubmissions = loadSavedSubmissions();
+        let currentFilter = "all";
+        let currentWlFilter = "all";
+        let unsubscribeAdminListener = null;
+
+        const sectionUserInfo = document.getElementById('sectionUserInfo');
+        const sectionQuestionnaire = document.getElementById('sectionQuestionnaire');
+        const sectionSummary = document.getElementById('sectionSummary');
+        const sectionAdmin = document.getElementById('sectionAdmin');
+
+        const userForm = document.getElementById('userForm');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+
+        const questionCategory = document.getElementById('questionCategory');
+        const questionCounter = document.getElementById('questionCounter');
+        const questionTitle = document.getElementById('questionTitle');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const textContainer = document.getElementById('textContainer');
+        const openAnswerInput = document.getElementById('openAnswerInput');
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const adminBtn = document.getElementById('adminBtn');
+        const closeAdminBtn = document.getElementById('closeAdminBtn');
+
+        const bgLayer = document.getElementById('bgLayer');
+        const bgOverlay = document.getElementById('bgOverlay');
+        const bgUrlInput = document.getElementById('bgUrlInput');
+        const bgFileInput = document.getElementById('bgFileInput');
+        const opacitySlider = document.getElementById('opacitySlider');
+        const opacityValDisplay = document.getElementById('opacityValDisplay');
+        const bgPreviewImg = document.getElementById('bgPreviewImg');
+        const bgPreviewOverlay = document.getElementById('bgPreviewOverlay');
+
+        const questionModal = document.getElementById('questionModal');
+        const questionForm = document.getElementById('questionForm');
+        const modalType = document.getElementById('modalType');
+        const modalOptionsWrapper = document.getElementById('modalOptionsWrapper');
+        const modalOptionsList = document.getElementById('modalOptionsList');
+
+        const statusModal = document.getElementById('statusModal');
+        const openStatusModalBtn = document.getElementById('openStatusModalBtn');
+        const closeStatusModalBtn = document.getElementById('closeStatusModalBtn');
+        const searchStatusForm = document.getElementById('searchStatusForm');
+        const statusResultContainer = document.getElementById('statusResultContainer');
+
+        function loadSavedQuestions() {
+            try {
+                const stored = localStorage.getItem(LOCAL_STORAGE_QUESTIONS_KEY);
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch (e) {
+                console.warn("No se pudieron cargar las preguntas del LocalStorage", e);
+            }
+            return [...defaultQuestions];
+        }
+
+        function persistQuestionsLocally() {
+            try {
+                localStorage.setItem(LOCAL_STORAGE_QUESTIONS_KEY, JSON.stringify(questions));
+            } catch (e) {
+                console.error("Error guardando preguntas en LocalStorage", e);
+            }
+        }
+
+        function loadSavedSubmissions() {
+            try {
+                const stored = localStorage.getItem(LOCAL_STORAGE_SUBMISSIONS_KEY);
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) return parsed;
+                }
+            } catch (e) {
+                console.warn("No se pudieron cargar postulaciones del LocalStorage", e);
+            }
+            return [];
+        }
+
+        function persistSubmissionsLocally() {
+            try {
+                localStorage.setItem(LOCAL_STORAGE_SUBMISSIONS_KEY, JSON.stringify(allSubmissions));
+            } catch (e) {
+                console.error("Error guardando postulaciones en LocalStorage", e);
+            }
+        }
+
+        window.selectWhitelistType = function(type, element) {
+            selectedWlType = type;
+            document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            listenSettingsRealtime();
+            listenQuestionsRealtime();
+            setupEvents();
         });
 
-        container.appendChild(card);
-      });
-    }
-
-    function renderQuestionsEditor() {
-      const container = document.getElementById('questionsEditorList');
-      container.innerHTML = '';
-
-      if (questions.length === 0) {
-        container.innerHTML = '<p class="text-center text-xs text-slate-500 py-6">No hay preguntas creadas.</p>';
-        return;
-      }
-
-      questions.forEach((q, idx) => {
-        const item = document.createElement('div');
-        item.className = "bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm";
-
-        item.innerHTML = `
-          <div class="space-y-1">
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-mono font-bold text-rose-400">#${idx + 1}</span>
-              <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-950 text-slate-400 border border-slate-800">${q.category}</span>
-              <span class="text-[10px] font-semibold px-2 py-0.5 rounded ${q.type === 'choice' ? 'bg-amber-500/20 text-amber-300' : 'bg-sky-500/20 text-sky-300'}">${q.type === 'choice' ? 'Selección Múltiple' : 'Texto Abierto'}</span>
-            </div>
-            <h4 class="text-sm font-semibold text-white">${q.title}</h4>
-            ${q.type === 'choice' && q.options ? `<p class="text-xs text-slate-400">${q.options.length} opciones configuradas</p>` : ''}
-          </div>
-
-          <div class="flex items-center gap-2 self-end sm:self-center">
-            <button data-idx="${idx}" class="edit-q-btn px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition-all flex items-center gap-1.5">
-              <i class="fa-solid fa-pen"></i> Editar
-            </button>
-            <button data-idx="${idx}" class="delete-q-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-950 text-xs text-slate-400 hover:text-rose-400 transition-all">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-          </div>
-        `;
-
-        item.querySelector('.edit-q-btn').addEventListener('click', () => openQuestionModal(q));
-        item.querySelector('.delete-q-btn').addEventListener('click', () => deleteQuestion(q));
-
-        container.appendChild(item);
-      });
-    }
-
-    function openQuestionModal(q = null) {
-      document.getElementById('editQuestionId').value = q ? q.id : '';
-      document.getElementById('modalTitle').textContent = q ? 'Editar Pregunta' : 'Agregar Nueva Pregunta';
-      document.getElementById('modalCategory').value = q ? q.category : '';
-      document.getElementById('modalTitleInput').value = q ? q.title : '';
-      modalType.value = q ? q.type : 'text';
-
-      modalOptionsList.innerHTML = '';
-      if (q && q.type === 'choice' && q.options) {
-        modalOptionsWrapper.classList.remove('hidden');
-        q.options.forEach(opt => addOptionInputField(opt));
-      } else {
-        modalOptionsWrapper.classList.add('hidden');
-      }
-
-      questionModal.classList.remove('hidden');
-    }
-
-    function closeQuestionModal() {
-      questionForm.reset();
-      modalOptionsList.innerHTML = '';
-      questionModal.classList.add('hidden');
-    }
-
-    function addOptionInputField(value = '') {
-      const div = document.createElement('div');
-      div.className = "flex items-center gap-2";
-      div.innerHTML = `
-        <input type="text" value="${value}" placeholder="Texto de la opción" required
-          class="modal-option-val w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500">
-        <button type="button" class="text-slate-500 hover:text-rose-400 text-xs p-1"><i class="fa-solid fa-xmark"></i></button>
-      `;
-      div.querySelector('button').addEventListener('click', () => div.remove());
-      modalOptionsList.appendChild(div);
-    }
-
-    async function handleSaveQuestion(e) {
-      e.preventDefault();
-      const id = document.getElementById('editQuestionId').value || 'q_' + Date.now();
-      const category = document.getElementById('modalCategory').value.trim();
-      const title = document.getElementById('modalTitleInput').value.trim();
-      const type = modalType.value;
-
-      let optionsArray = [];
-      if (type === 'choice') {
-        const optionInputs = modalOptionsList.querySelectorAll('.modal-option-val');
-        optionInputs.forEach(input => {
-          if (input.value.trim()) optionsArray.push(input.value.trim());
-        });
-        if (optionsArray.length < 2) {
-          showToast("Debes añadir al menos 2 opciones", "error");
-          return;
+        function listenSettingsRealtime() {
+            if (firebaseReady && db) {
+                onSnapshot(doc(db, "whitelist_settings", "theme"), (docSnap) => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        applyBackground(data.bgUrl || DEFAULT_BG, data.opacity || 82);
+                    }
+                });
+            }
         }
-      }
 
-      const questionObj = { id, category, title, type };
-      if (type === 'choice') questionObj.options = optionsArray;
+        function applyBackground(url, opacity) {
+            bgLayer.style.backgroundImage = `url('${url}')`;
+            bgOverlay.style.backgroundColor = `rgba(7, 8, 16, ${opacity / 100})`;
+            
+            bgUrlInput.value = url.startsWith('data:') ? '' : url;
+            opacitySlider.value = opacity;
+            opacityValDisplay.textContent = `${opacity}%`;
 
-      if (firebaseReady && db) {
-        try {
-          await setDoc(doc(db, "whitelist_questions", id), questionObj);
-          showToast("Pregunta guardada en Firebase", "success");
-        } catch (err) {
-          console.error("Error al guardar pregunta:", err);
+            bgPreviewImg.style.backgroundImage = `url('${url}')`;
+            bgPreviewOverlay.style.backgroundColor = `rgba(7, 8, 16, ${opacity / 100})`;
         }
-      } else {
-        const existingIdx = questions.findIndex(item => item.id === id);
-        if (existingIdx >= 0) questions[existingIdx] = questionObj;
-        else questions.push(questionObj);
-        showToast("Pregunta guardada localmente", "info");
-      }
 
-      closeQuestionModal();
-      renderQuestionsEditor();
-    }
-
-    async function deleteQuestion(q) {
-      if (!confirm(`¿Deseas borrar la pregunta "${q.title}"?`)) return;
-
-      if (firebaseReady && db) {
-        try {
-          await deleteDoc(doc(db, "whitelist_questions", q.id));
-          showToast("Pregunta eliminada de Firebase", "info");
-        } catch (err) {
-          console.error("Error al eliminar pregunta:", err);
+        function listenQuestionsRealtime() {
+            if (firebaseReady && db) {
+                onSnapshot(collection(db, "whitelist_questions"), (snapshot) => {
+                    if (!snapshot.empty) {
+                        questions = [];
+                        snapshot.forEach((docSnap) => {
+                            questions.push({ id: docSnap.id, ...docSnap.data() });
+                        });
+                        persistQuestionsLocally();
+                    }
+                    renderQuestionsEditor();
+                });
+            } else {
+                renderQuestionsEditor();
+            }
         }
-      } else {
-        questions = questions.filter(item => item.id !== q.id);
-        showToast("Pregunta eliminada localmente", "info");
-      }
-      renderQuestionsEditor();
-    }
 
-    function showToast(message, type = "info") {
-      const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
+        function setupEvents() {
+            openStatusModalBtn.addEventListener('click', () => {
+                statusResultContainer.classList.add('hidden');
+                statusResultContainer.innerHTML = '';
+                searchStatusForm.reset();
+                statusModal.classList.remove('hidden');
+            });
 
-      const bgClass = type === 'success' ? 'bg-emerald-950 border-emerald-600 text-emerald-200' :
-                      type === 'error' ? 'bg-rose-950 border-rose-600 text-rose-200' :
-                      'bg-slate-900 border-slate-700 text-slate-200';
+            closeStatusModalBtn.addEventListener('click', () => {
+                statusModal.classList.add('hidden');
+            });
 
-      toast.className = `px-4 py-3 rounded-xl border shadow-2xl text-xs font-medium flex items-center gap-2 pointer-events-auto transition-all transform translate-y-2 opacity-0 ${bgClass}`;
-      toast.innerHTML = `
-        <i class="fa-solid ${type === 'success' ? 'fa-circle-check text-emerald-400' : type === 'error' ? 'fa-circle-xmark text-rose-400' : 'fa-circle-info text-sky-400'}"></i>
-        <span>${message}</span>
-      `;
+            searchStatusForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const queryVal = document.getElementById('statusSearchQuery').value.trim().toLowerCase();
+                if (!queryVal) return;
 
-      container.appendChild(toast);
+                statusResultContainer.classList.remove('hidden');
+                statusResultContainer.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 0.85rem;"><i class="fa-solid fa-spin fa-circle-notch" style="color: var(--accent-purple);"></i> Buscando tu solicitud...</div>`;
 
-      setTimeout(() => {
-        toast.classList.remove('translate-y-2', 'opacity-0');
-      }, 10);
+                let matches = [];
 
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'translate-y-2');
-        setTimeout(() => toast.remove(), 300);
-      }, 3500);
-    }
-  </script>
+                if (firebaseReady && db) {
+                    try {
+                        const snapshot = await getDocs(collection(db, "whitelist_submissions"));
+                        snapshot.forEach(docSnap => {
+                            const data = docSnap.data();
+                            const u = data.userInfo || {};
+                            if ((u.discordUser && u.discordUser.toLowerCase().includes(queryVal)) || 
+                                (u.email && u.email.toLowerCase().includes(queryVal))) {
+                                matches.push({ id: docSnap.id, ...data });
+                            }
+                        });
+                    } catch (err) {
+                        console.error("Error buscando e-status:", err);
+                    }
+                }
+                
+                if (matches.length === 0) {
+                    allSubmissions.forEach(item => {
+                        const u = item.userInfo || {};
+                        if ((u.discordUser && u.discordUser.toLowerCase().includes(queryVal)) || 
+                            (u.email && u.email.toLowerCase().includes(queryVal))) {
+                            matches.push(item);
+                        }
+                    });
+                }
+
+                renderUserStatusResult(matches);
+            });
+
+            userForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                userData.fullName = document.getElementById('inputFullName').value.trim();
+                userData.email = document.getElementById('inputEmail').value.trim();
+                userData.discordUser = document.getElementById('inputDiscord').value.trim();
+                userData.age = document.getElementById('inputAge').value.trim();
+                userData.wlType = selectedWlType;
+
+                document.getElementById('displayWlType').textContent = selectedWlType;
+
+                // CORRECCIÓN DE FILTRADO DE PREGUNTAS POR CATEGORÍA SELECCIONADA
+                activeExamQuestions = questions.filter(q => {
+                    const scope = q.wlScope || 'all';
+                    return scope === 'all' || scope === selectedWlType;
+                });
+
+                if (activeExamQuestions.length === 0) {
+                    showToast("No hay preguntas disponibles para esta modalidad", "error");
+                    return;
+                }
+
+                showToast(`Whitelist ${selectedWlType.toUpperCase()} seleccionada (${activeExamQuestions.length} preguntas)`, "success");
+                sectionUserInfo.classList.add('hidden');
+                sectionQuestionnaire.classList.remove('hidden');
+                loadQuestion(0);
+            });
+
+            prevBtn.addEventListener('click', () => {
+                saveCurrentAnswer();
+                if (currentQuestionIndex > 0) loadQuestion(currentQuestionIndex - 1);
+            });
+
+            nextBtn.addEventListener('click', () => {
+                saveCurrentAnswer();
+                if (currentQuestionIndex < activeExamQuestions.length - 1) {
+                    loadQuestion(currentQuestionIndex + 1);
+                } else {
+                    finishQuestionnaire();
+                }
+            });
+
+            openAnswerInput.addEventListener('input', () => {
+                if (!activeExamQuestions[currentQuestionIndex]) return;
+                const q = activeExamQuestions[currentQuestionIndex];
+                const val = openAnswerInput.value.trim();
+                if (val) userAnswers[q.id] = val;
+                else delete userAnswers[q.id];
+                updateProgressBar();
+            });
+
+            document.getElementById('restartBtn').addEventListener('click', () => {
+                userAnswers = {};
+                currentQuestionIndex = 0;
+                userForm.reset();
+                sectionSummary.classList.add('hidden');
+                sectionUserInfo.classList.remove('hidden');
+            });
+
+            document.getElementById('downloadJsonBtn').addEventListener('click', downloadJSON);
+            adminBtn.addEventListener('click', openAdminPanel);
+            closeAdminBtn.addEventListener('click', () => {
+                if (unsubscribeAdminListener) unsubscribeAdminListener();
+                sectionAdmin.classList.add('hidden');
+                sectionUserInfo.classList.remove('hidden');
+            });
+
+            const tabSubmissionsBtn = document.getElementById('tabSubmissionsBtn');
+            const tabQuestionsBtn = document.getElementById('tabQuestionsBtn');
+            const tabBgBtn = document.getElementById('tabBgBtn');
+            const tabSubmissionsContent = document.getElementById('tabSubmissionsContent');
+            const tabQuestionsContent = document.getElementById('tabQuestionsContent');
+            const tabBgContent = document.getElementById('tabBgContent');
+
+            tabSubmissionsBtn.addEventListener('click', () => setTabActive(tabSubmissionsBtn, tabSubmissionsContent));
+            tabQuestionsBtn.addEventListener('click', () => {
+                setTabActive(tabQuestionsBtn, tabQuestionsContent);
+                renderQuestionsEditor();
+            });
+            tabBgBtn.addEventListener('click', () => setTabActive(tabBgBtn, tabBgContent));
+
+            function setTabActive(activeBtn, activeContent) {
+                [tabSubmissionsBtn, tabQuestionsBtn, tabBgBtn].forEach(b => b.classList.remove('active'));
+                activeBtn.classList.add('active');
+
+                [tabSubmissionsContent, tabQuestionsContent, tabBgContent].forEach(c => c.classList.add('hidden'));
+                activeContent.classList.remove('hidden');
+            }
+
+            opacitySlider.addEventListener('input', () => {
+                const val = opacitySlider.value;
+                opacityValDisplay.textContent = `${val}%`;
+                bgOverlay.style.backgroundColor = `rgba(7, 8, 16, ${val / 100})`;
+                bgPreviewOverlay.style.backgroundColor = `rgba(7, 8, 16, ${val / 100})`;
+            });
+
+            bgUrlInput.addEventListener('input', () => {
+                const url = bgUrlInput.value.trim() || DEFAULT_BG;
+                bgPreviewImg.style.backgroundImage = `url('${url}')`;
+            });
+
+            bgFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (evt) => {
+                        bgPreviewImg.style.backgroundImage = `url('${evt.target.result}')`;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            document.getElementById('bgConfigForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                let targetUrl = bgUrlInput.value.trim();
+                const file = bgFileInput.files[0];
+
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = async (evt) => {
+                        await saveBgSettings(evt.target.result, opacitySlider.value);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    await saveBgSettings(targetUrl || DEFAULT_BG, opacitySlider.value);
+                }
+            });
+
+            document.getElementById('resetBgBtn').addEventListener('click', async () => {
+                await saveBgSettings(DEFAULT_BG, 82);
+                showToast("Fondo restaurado", "info");
+            });
+
+            document.getElementById('addQuestionBtn').addEventListener('click', () => openQuestionModal());
+            document.getElementById('resetDefaultQuestionsBtn').addEventListener('click', () => {
+                if (confirm("¿Restaurar las preguntas predeterminadas de fábrica? Esto sobrescribirá tus preguntas guardadas.")) {
+                    questions = [...defaultQuestions];
+                    persistQuestionsLocally();
+                    renderQuestionsEditor();
+                    showToast("Preguntas restauradas por defecto", "info");
+                }
+            });
+
+            document.getElementById('closeModalBtn').addEventListener('click', closeQuestionModal);
+            document.getElementById('cancelModalBtn').addEventListener('click', closeQuestionModal);
+
+            modalType.addEventListener('change', () => {
+                if (modalType.value === 'choice') {
+                    modalOptionsWrapper.classList.remove('hidden');
+                    if (modalOptionsList.children.length === 0) {
+                        addOptionInputField();
+                        addOptionInputField();
+                    }
+                } else {
+                    modalOptionsWrapper.classList.add('hidden');
+                }
+            });
+
+            document.getElementById('addOptionInputBtn').addEventListener('click', () => addOptionInputField());
+            questionForm.addEventListener('submit', handleSaveQuestion);
+
+            document.querySelectorAll('.admin-filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.admin-filter-btn').forEach(b => {
+                        b.classList.remove('btn-purple');
+                        b.classList.add('btn-outline');
+                    });
+                    e.target.classList.remove('btn-outline');
+                    e.target.classList.add('btn-purple');
+                    currentFilter = e.target.dataset.filter;
+                    renderSubmissions(allSubmissions);
+                });
+            });
+
+            document.querySelectorAll('.admin-wlfilter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.admin-wlfilter-btn').forEach(b => {
+                        b.classList.remove('btn-purple');
+                        b.classList.add('btn-outline');
+                    });
+                    e.target.classList.remove('btn-outline');
+                    e.target.classList.add('btn-purple');
+                    currentWlFilter = e.target.dataset.wlfilter;
+                    renderSubmissions(allSubmissions);
+                });
+            });
+        }
+
+        function renderUserStatusResult(matches) {
+            if (matches.length === 0) {
+                statusResultContainer.innerHTML = `
+                    <div style="background: rgba(236,72,153,0.1); border: 1px solid var(--accent-pink); padding: 1.25rem; border-radius: 16px; text-align: center;">
+                        <i class="fa-solid fa-circle-xmark" style="color: var(--accent-pink); font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                        <p style="font-size: 0.85rem; font-weight: 700; color: #fff;">No se encontraron postulaciones</p>
+                        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Verifica que hayas introducido correctamente tu usuario de Discord o correo registrado.</p>
+                    </div>`;
+                return;
+            }
+
+            let html = '<div style="display: flex; flex-direction: column; gap: 1rem;">';
+
+            matches.forEach(item => {
+                const u = item.userInfo || {};
+                const isApproved = item.status === 'approved';
+                const isRejected = item.status === 'rejected';
+
+                const statusColor = isApproved ? 'var(--accent-emerald)' : isRejected ? 'var(--accent-pink)' : 'var(--accent-amber)';
+                const statusBg = isApproved ? 'rgba(16, 185, 129, 0.12)' : isRejected ? 'rgba(236, 72, 153, 0.12)' : 'rgba(245, 158, 11, 0.12)';
+                const statusIcon = isApproved ? 'fa-circle-check' : isRejected ? 'fa-circle-xmark' : 'fa-clock';
+                const statusText = isApproved ? 'ACEPTADO / APROBADO' : isRejected ? 'RECHAZADO / DENEGADO' : 'EN REVISIÓN (PENDIENTE)';
+
+                html += `
+                    <div style="background: var(--bg-input); border: 1px solid ${statusColor}; border-radius: 16px; padding: 1.25rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase;">
+                                Modalidad: ${u.wlType || 'GENERAL'}
+                            </span>
+                            <span style="background: ${statusBg}; color: ${statusColor}; border: 1px solid ${statusColor}; padding: 3px 10px; border-radius: 50px; font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; gap: 5px;">
+                                <i class="fa-solid ${statusIcon}"></i> ${statusText}
+                            </span>
+                        </div>
+
+                        <p style="font-size: 0.9rem; font-weight: 700; color: #fff; margin-bottom: 0.25rem;">${u.fullName || 'Postulante'}</p>
+                        <p style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace; margin-bottom: 0.75rem;">Discord: ${u.discordUser || 'N/A'}</p>
+
+                        <div style="background: rgba(0,0,0,0.3); padding: 0.75rem; border-radius: 10px; font-size: 0.75rem; color: var(--text-main);">
+                            ${isApproved 
+                                ? '<p style="color: var(--accent-emerald); font-weight: 700;">¡Enhorabuena! Tu solicitud ha sido aprobada. Ya puedes solicitar tus roles en nuestro Discord oficial.</p>' 
+                                : isRejected 
+                                ? '<p style="color: var(--accent-pink); font-weight: 700;">Tu postulación no ha sido aprobada esta vez. Te recomendamos repasar la normativa e intentarlo nuevamente.</p>' 
+                                : '<p style="color: var(--accent-amber); font-weight: 700;">Tu solicitud está actualmente siendo evaluada por el equipo de administración. Vuelve a consultar en unas horas.</p>'
+                            }
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            statusResultContainer.innerHTML = html;
+        }
+
+        async function saveBgSettings(url, opacity) {
+            applyBackground(url, opacity);
+            if (firebaseReady && db) {
+                try {
+                    await setDoc(doc(db, "whitelist_settings", "theme"), { bgUrl: url, opacity: Number(opacity) });
+                    showToast("¡Fondo sincronizado en Firebase!", "success");
+                } catch (err) {
+                    showToast("Fondo aplicado localmente", "info");
+                }
+            } else {
+                showToast("Fondo aplicado localmente", "info");
+            }
+        }
+
+        function loadQuestion(index) {
+            if (!activeExamQuestions[index]) return;
+            currentQuestionIndex = index;
+            const q = activeExamQuestions[index];
+
+            questionCategory.textContent = `${q.category} ${q.wlScope && q.wlScope !== 'all' ? `[${q.wlScope.toUpperCase()}]` : ''}`;
+            questionCounter.textContent = `Pregunta ${index + 1} de ${activeExamQuestions.length}`;
+            questionTitle.textContent = q.title;
+            optionsContainer.innerHTML = '';
+
+            if (q.type === 'choice') {
+                optionsContainer.classList.remove('hidden');
+                textContainer.classList.add('hidden');
+
+                (q.options || []).forEach((optText) => {
+                    const isSelected = userAnswers[q.id] === optText;
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = `option-btn ${isSelected ? 'selected' : ''}`;
+                    
+                    btn.innerHTML = `
+                        <div class="radio-dot">${isSelected ? '<i class="fa-solid fa-check" style="font-size: 10px; color: #fff;"></i>' : ''}</div>
+                        <span>${optText}</span>
+                    `;
+
+                    btn.addEventListener('click', () => {
+                        userAnswers[q.id] = optText;
+                        loadQuestion(currentQuestionIndex);
+                        updateProgressBar();
+                    });
+
+                    optionsContainer.appendChild(btn);
+                });
+            } else {
+                optionsContainer.classList.add('hidden');
+                textContainer.classList.remove('hidden');
+                openAnswerInput.value = userAnswers[q.id] || '';
+            }
+
+            prevBtn.disabled = index === 0;
+            if (index === activeExamQuestions.length - 1) {
+                nextBtn.innerHTML = `<span>Finalizar Postulación</span> <i class="fa-solid fa-paper-plane"></i>`;
+            } else {
+                nextBtn.innerHTML = `<span>Siguiente</span> <i class="fa-solid fa-chevron-right"></i>`;
+            }
+
+            updateProgressBar();
+        }
+
+        function saveCurrentAnswer() {
+            if (!activeExamQuestions[currentQuestionIndex]) return;
+            const q = activeExamQuestions[currentQuestionIndex];
+            if (q.type === 'text') {
+                const val = openAnswerInput.value.trim();
+                if (val) userAnswers[q.id] = val;
+                else delete userAnswers[q.id];
+            }
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const answeredCount = Object.keys(userAnswers).length;
+            const total = activeExamQuestions.length || 1;
+            const percentage = Math.round((answeredCount / total) * 100);
+
+            progressBar.style.width = `${percentage}%`;
+            progressText.textContent = `${percentage}% (${answeredCount}/${total} respondidas)`;
+        }
+
+        async function finishQuestionnaire() {
+            saveCurrentAnswer();
+            const answeredCount = Object.keys(userAnswers).length;
+            const total = activeExamQuestions.length || 1;
+            const scorePercentage = Math.round((answeredCount / total) * 100);
+
+            document.getElementById('sumWlType').textContent = (userData.wlType || 'GENERAL').toUpperCase();
+            document.getElementById('sumName').textContent = userData.fullName || 'N/A';
+            document.getElementById('sumDiscord').textContent = userData.discordUser || 'N/A';
+            document.getElementById('sumScore').textContent = `${scorePercentage}% (${answeredCount}/${total})`;
+
+            sectionQuestionnaire.classList.add('hidden');
+            sectionSummary.classList.remove('hidden');
+
+            const payload = {
+                id: 'sub_' + Date.now(),
+                userInfo: userData,
+                answers: userAnswers,
+                scorePercentage: scorePercentage,
+                status: "pending",
+                createdAt: new Date().toISOString()
+            };
+
+            if (firebaseReady && db) {
+                try {
+                    await addDoc(collection(db, "whitelist_submissions"), {
+                        ...payload,
+                        createdAt: serverTimestamp ? serverTimestamp() : new Date().toISOString()
+                    });
+                    showToast("¡Postulación enviada con éxito!", "success");
+                } catch (err) {
+                    showToast("Postulación guardada localmente", "info");
+                }
+            } else {
+                showToast("Postulación guardada localmente", "info");
+            }
+
+            allSubmissions.unshift(payload);
+            persistSubmissionsLocally();
+        }
+
+        function downloadJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
+                usuario: userData,
+                respuestas: userAnswers,
+                fecha: new Date().toLocaleString()
+            }, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `Whitelist_${(userData.wlType || 'general')}_${(userData.discordUser || 'usuario').replace(/[^a-z0-9]/gi, '_')}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function openAdminPanel() {
+            const pwd = prompt("Introduce la contraseña de Administrador:");
+            if (pwd !== ADMIN_PASSWORD) {
+                showToast("Contraseña incorrecta", "error");
+                return;
+            }
+
+            sectionUserInfo.classList.add('hidden');
+            sectionQuestionnaire.classList.add('hidden');
+            sectionSummary.classList.add('hidden');
+            sectionAdmin.classList.remove('hidden');
+
+            loadSubmissionsRealtime();
+            renderQuestionsEditor();
+        }
+
+        function loadSubmissionsRealtime() {
+            const container = document.getElementById('submissionsList');
+            container.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--text-muted);"><i class="fa-solid fa-spin fa-circle-notch" style="color: var(--accent-purple);"></i> Cargando...</div>`;
+
+            if (!firebaseReady || !db) {
+                renderSubmissions(allSubmissions);
+                return;
+            }
+
+            if (unsubscribeAdminListener) unsubscribeAdminListener();
+
+            const q = query(collection(db, "whitelist_submissions"), orderBy("createdAt", "desc"), limit(50));
+
+            unsubscribeAdminListener = onSnapshot(q, (snapshot) => {
+                if (!snapshot.empty) {
+                    allSubmissions = [];
+                    snapshot.forEach((docSnap) => {
+                        allSubmissions.push({ id: docSnap.id, ...docSnap.data() });
+                    });
+                    persistSubmissionsLocally();
+                }
+                renderSubmissions(allSubmissions);
+            }, (err) => {
+                console.warn("Firestore inaccesible, usando LocalStorage:", err);
+                renderSubmissions(allSubmissions);
+            });
+        }
+
+        function renderSubmissions(list) {
+            const container = document.getElementById('submissionsList');
+
+            const filtered = list.filter(item => {
+                const matchStatus = currentFilter === 'all' ? true : item.status === currentFilter;
+                const matchWl = currentWlFilter === 'all' ? true : (item.userInfo?.wlType || 'general') === currentWlFilter;
+                return matchStatus && matchWl;
+            });
+
+            document.getElementById('submissionCount').textContent = `${filtered.length} postulaciones`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem;">No hay solicitudes en esta categoría.</div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+
+            filtered.forEach((item) => {
+                const card = document.createElement('div');
+                card.style.cssText = "background: var(--bg-input); border: 1px solid var(--border-glow); border-radius: 16px; padding: 1.25rem;";
+
+                const statusBadge = item.status === 'approved' 
+                    ? '<span style="color: var(--accent-emerald); background: rgba(16, 185, 129, 0.15); padding: 2px 8px; border-radius: 50px; font-size: 0.75rem; font-weight: 700;">Aprobado</span>'
+                    : item.status === 'rejected'
+                    ? '<span style="color: var(--accent-pink); background: rgba(236, 72, 153, 0.15); padding: 2px 8px; border-radius: 50px; font-size: 0.75rem; font-weight: 700;">Rechazado</span>'
+                    : '<span style="color: #f59e0b; background: rgba(245, 158, 11, 0.15); padding: 2px 8px; border-radius: 50px; font-size: 0.75rem; font-weight: 700;">Pendiente</span>';
+
+                const u = item.userInfo || {};
+                const answers = item.answers || {};
+
+                let answersHtml = '';
+                questions.forEach(q => {
+                    if (answers[q.id]) {
+                        answersHtml += `
+                            <div style="background: rgba(255,255,255,0.02); padding: 0.75rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; margin-bottom: 0.5rem;">
+                                <p style="color: var(--accent-purple); font-weight: 700;">${q.title}</p>
+                                <p style="color: var(--text-main);">${answers[q.id]}</p>
+                            </div>
+                        `;
+                    }
+                });
+
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glow); padding-bottom: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div>
+                            <h4 style="font-weight: 800; font-size: 1rem;">
+                                ${u.fullName || 'Usuario'} 
+                                <span style="font-weight: 400; font-size: 0.8rem; color: var(--text-muted);">(${u.age || '?'} años)</span>
+                                <span style="background: rgba(6,182,212,0.15); color: var(--accent-cyan); border: 1px solid rgba(6,182,212,0.3); padding: 2px 6px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; margin-left: 6px;">
+                                    ${u.wlType || 'general'}
+                                </span>
+                            </h4>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">
+                                <i class="fa-brands fa-discord" style="color: var(--accent-purple);"></i> ${u.discordUser || 'N/A'} • ${u.email || 'N/A'}
+                            </p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 0.75rem; font-weight: 700; color: var(--accent-cyan);">${item.scorePercentage || 0}% Completado</span>
+                            ${statusBadge}
+                        </div>
+                    </div>
+
+                    <details style="margin-bottom: 0.75rem;">
+                        <summary style="cursor: pointer; font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">Ver Respuestas</summary>
+                        <div style="margin-top: 0.75rem;">${answersHtml || '<p style="font-size:0.75rem; color: var(--text-muted);">Sin respuestas asociadas.</p>'}</div>
+                    </details>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--border-glow); padding-top: 0.75rem;">
+                        <button data-id="${item.id}" data-action="approve" class="action-btn btn btn-success" style="padding: 0.3rem 0.7rem; font-size: 0.75rem;"><i class="fa-solid fa-check"></i> Aprobar</button>
+                        <button data-id="${item.id}" data-action="reject" class="action-btn btn btn-danger" style="padding: 0.3rem 0.7rem; font-size: 0.75rem;"><i class="fa-solid fa-xmark"></i> Rechazar</button>
+                        <button data-id="${item.id}" data-action="delete" class="action-btn btn btn-outline" style="padding: 0.3rem 0.7rem; font-size: 0.75rem;"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+
+                card.querySelectorAll('.action-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const docId = btn.dataset.id;
+                        const action = btn.dataset.action;
+
+                        const idx = allSubmissions.findIndex(s => s.id === docId);
+                        if (idx >= 0) {
+                            if (action === 'approve') allSubmissions[idx].status = 'approved';
+                            else if (action === 'reject') allSubmissions[idx].status = 'rejected';
+                            else if (action === 'delete') allSubmissions.splice(idx, 1);
+                            
+                            persistSubmissionsLocally();
+                            renderSubmissions(allSubmissions);
+                        }
+
+                        if (firebaseReady && db) {
+                            try {
+                                if (action === 'approve') {
+                                    await updateDoc(doc(db, "whitelist_submissions", docId), { status: "approved" });
+                                    showToast("Postulación APROBADA", "success");
+                                } else if (action === 'reject') {
+                                    await updateDoc(doc(db, "whitelist_submissions", docId), { status: "rejected" });
+                                    showToast("Postulación RECHAZADA", "info");
+                                } else if (action === 'delete') {
+                                    if (confirm("¿Borrar postulación permanentemente?")) {
+                                        await deleteDoc(doc(db, "whitelist_submissions", docId));
+                                        showToast("Postulación eliminada", "info");
+                                    }
+                                }
+                            } catch (err) {
+                                console.warn("Modificado solo localmente:", err);
+                            }
+                        }
+                    });
+                });
+
+                container.appendChild(card);
+            });
+        }
+
+        function renderQuestionsEditor() {
+            const container = document.getElementById('questionsEditorList');
+            container.innerHTML = '';
+
+            if (questions.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">No hay preguntas creadas.</p>';
+                return;
+            }
+
+            questions.forEach((q, idx) => {
+                const item = document.createElement('div');
+                item.style.cssText = "background: var(--bg-input); border: 1px solid var(--border-glow); border-radius: 12px; padding: 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem;";
+
+                item.innerHTML = `
+                    <div>
+                        <span style="font-size: 0.7rem; font-weight: 800; color: var(--accent-purple); uppercase; letter-spacing: 0.5px;">
+                            #${idx + 1} | ${q.category} 
+                            <strong style="color: var(--accent-cyan);">[${(q.wlScope || 'all').toUpperCase()}]</strong>
+                        </span>
+                        <h4 style="font-size: 0.95rem; font-weight: 700; color: #fff;">${q.title}</h4>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);">${q.type === 'choice' ? 'Selección Múltiple' : 'Texto Abierto'}</span>
+                    </div>
+
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button data-idx="${idx}" class="edit-q-btn btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;"><i class="fa-solid fa-pen"></i></button>
+                        <button data-idx="${idx}" class="delete-q-btn btn btn-danger" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+
+                item.querySelector('.edit-q-btn').addEventListener('click', () => openQuestionModal(q));
+                item.querySelector('.delete-q-btn').addEventListener('click', () => deleteQuestion(q));
+
+                container.appendChild(item);
+            });
+        }
+
+        function openQuestionModal(q = null) {
+            document.getElementById('editQuestionId').value = q ? q.id : '';
+            document.getElementById('modalTitle').textContent = q ? 'Editar Pregunta' : 'Agregar Pregunta';
+            document.getElementById('modalWlScope').value = q ? (q.wlScope || 'all') : 'all';
+            document.getElementById('modalCategory').value = q ? q.category : '';
+            document.getElementById('modalTitleInput').value = q ? q.title : '';
+            modalType.value = q ? q.type : 'text';
+
+            modalOptionsList.innerHTML = '';
+            if (q && q.type === 'choice' && q.options) {
+                modalOptionsWrapper.classList.remove('hidden');
+                q.options.forEach(opt => addOptionInputField(opt));
+            } else {
+                modalOptionsWrapper.classList.add('hidden');
+            }
+
+            questionModal.classList.remove('hidden');
+        }
+
+        function closeQuestionModal() {
+            questionForm.reset();
+            modalOptionsList.innerHTML = '';
+            questionModal.classList.add('hidden');
+        }
+
+        function addOptionInputField(value = '') {
+            const div = document.createElement('div');
+            div.style.cssText = "display: flex; gap: 0.5rem; align-items: center;";
+            div.innerHTML = `
+                <input type="text" value="${value}" placeholder="Texto de la opción" required class="modal-option-val form-input" style="padding: 0.5rem;">
+                <button type="button" class="btn btn-danger" style="padding: 0.5rem;"><i class="fa-solid fa-xmark"></i></button>
+            `;
+            div.querySelector('button').addEventListener('click', () => div.remove());
+            modalOptionsList.appendChild(div);
+        }
+
+        async function handleSaveQuestion(e) {
+            e.preventDefault();
+            const id = document.getElementById('editQuestionId').value || 'q_' + Date.now();
+            const wlScope = document.getElementById('modalWlScope').value;
+            const category = document.getElementById('modalCategory').value.trim();
+            const title = document.getElementById('modalTitleInput').value.trim();
+            const type = modalType.value;
+
+            let optionsArray = [];
+            if (type === 'choice') {
+                const optionInputs = modalOptionsList.querySelectorAll('.modal-option-val');
+                optionInputs.forEach(input => {
+                    if (input.value.trim()) optionsArray.push(input.value.trim());
+                });
+                if (optionsArray.length < 2) {
+                    showToast("Agrega al menos 2 opciones", "error");
+                    return;
+                }
+            }
+
+            const questionObj = { id, wlScope, category, title, type };
+            if (type === 'choice') questionObj.options = optionsArray;
+
+            // Actualización inmediata en memoria y LocalStorage
+            const existingIdx = questions.findIndex(item => item.id === id);
+            if (existingIdx >= 0) {
+                questions[existingIdx] = questionObj;
+            } else {
+                questions.push(questionObj);
+            }
+
+            persistQuestionsLocally();
+
+            if (firebaseReady && db) {
+                try {
+                    await setDoc(doc(db, "whitelist_questions", id), questionObj);
+                    showToast("Pregunta guardada en Firebase y Local Storage", "success");
+                } catch (err) {
+                    console.warn("Firestore inaccesible, guardado en LocalStorage:", err);
+                    showToast("Pregunta guardada localmente", "success");
+                }
+            } else {
+                showToast("Pregunta guardada en navegador (Local Storage)", "success");
+            }
+
+            closeQuestionModal();
+            renderQuestionsEditor();
+        }
+
+        async function deleteQuestion(q) {
+            if (!confirm(`¿Borrar la pregunta "${q.title}"?`)) return;
+
+            questions = questions.filter(item => item.id !== q.id);
+            persistQuestionsLocally();
+
+            if (firebaseReady && db) {
+                try {
+                    await deleteDoc(doc(db, "whitelist_questions", q.id));
+                    showToast("Pregunta eliminada de Firebase", "info");
+                } catch (err) {
+                    console.warn("Firestore inaccesible, borrado local:", err);
+                    showToast("Pregunta eliminada del almacenamiento local", "info");
+                }
+            } else {
+                showToast("Pregunta eliminada localmente", "info");
+            }
+            renderQuestionsEditor();
+        }
+
+        function showToast(message, type = "info") {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+
+            const color = type === 'success' ? 'var(--accent-emerald)' : type === 'error' ? 'var(--accent-pink)' : 'var(--accent-purple)';
+            
+            toast.innerHTML = `
+                <i class="fa-solid ${type === 'success' ? 'fa-circle-check' : type === 'error' ? 'fa-circle-xmark' : 'fa-circle-info'}" style="color: ${color}; font-size: 1.1rem;"></i>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+    </script>
 </body>
 </html>
