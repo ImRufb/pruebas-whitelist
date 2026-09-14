@@ -722,6 +722,9 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                         <h3 style="font-size: 1.1rem; font-weight: 700;">Preguntas Activas</h3>
                         <div style="display: flex; gap: 0.5rem;">
+                            <button id="resetDefaultQuestionsBtn" type="button" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                                <i class="fa-solid fa-rotate-left"></i> Restaurar Predeterminadas
+                            </button>
                             <button id="addQuestionBtn" type="button" class="btn btn-purple" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
                                 <i class="fa-solid fa-plus"></i> Nueva Pregunta
                             </button>
@@ -736,6 +739,11 @@
                         <div class="form-group">
                             <label class="form-label">URL de Imagen de Fondo</label>
                             <input type="url" id="bgUrlInput" placeholder="https://ejemplo.com/mi-imagen.jpg" class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">O Cargar Archivo Local</label>
+                            <input type="file" id="bgFileInput" accept="image/*" class="form-input" style="padding: 0.5rem;">
                         </div>
 
                         <div class="form-group">
@@ -757,7 +765,7 @@
                         </div>
 
                         <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem;">
-                            <button id="resetBgBtn" type="button" class="btn btn-outline">Restaurar Predeterminado</button>
+                            <button id="resetBgBtn" type="button" class="btn btn-outline">Restaurar</button>
                             <button type="submit" class="btn btn-purple"><i class="fa-solid fa-floppy-disk"></i> Guardar Fondo</button>
                         </div>
                     </form>
@@ -848,7 +856,7 @@
         <p>© 2026 Caracas Vibes2 RP. Todos los derechos reservados. Plataforma oficial Whitelist.</p>
     </footer>
 
-    <!-- FIREBASE SDK & APP LOGIC (SOLO TIEMPO REAL - SÍNCRONO CON FIRESTORE) -->
+    <!-- FIREBASE SDK & APP LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { 
@@ -870,7 +878,6 @@
         const firebaseConfig = {
             apiKey: "AIzaSyC4MsYStfYJCfScNY3UuDz9zfnb_JN5Q6I",
             authDomain: "carasvibes-whitelist.firebaseapp.com",
-            databaseURL: "https://carasvibes-whitelist-default-rtdb.firebaseio.com",
             projectId: "carasvibes-whitelist",
             storageBucket: "carasvibes-whitelist.firebasestorage.app",
             messagingSenderId: "208939321301",
@@ -879,17 +886,73 @@
 
         const ADMIN_PASSWORD = "CaracasVibes2026";
         const DEFAULT_BG = "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80";
+        const LOCAL_STORAGE_QUESTIONS_KEY = "caracas_vibes_questions_v1";
+        const LOCAL_STORAGE_SUBMISSIONS_KEY = "caracas_vibes_submissions_v1";
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        let app, db;
+        let firebaseReady = false;
 
-        let questions = [];
+        try {
+            if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("YOUR_API_KEY")) {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                firebaseReady = true;
+            }
+        } catch (e) {
+            console.warn("Firebase operando en modo fallback local.", e);
+        }
+
+        let defaultQuestions = [
+            {
+                id: "q1",
+                wlScope: "all",
+                category: "Conceptos Fundamentales",
+                title: "¿Qué es el In Character (IC) y Out Of Character (OOC)?",
+                type: "choice",
+                options: [
+                    "IC es todo lo que ocurre con tu personaje dentro del juego; OOC es todo lo relativo a tu persona real fuera del juego.",
+                    "IC es cuando hablas por Discord y OOC cuando hablas por el micrófono de FiveM.",
+                    "IC significa hacer trucos en el juego y OOC es respetar a los administradores.",
+                    "No hay diferencia, ambos términos significan lo mismo dentro del servidor."
+                ]
+            },
+            {
+                id: "q2",
+                wlScope: "all",
+                category: "Reglamento General",
+                title: "¿Qué entiendes por MetaGaming (MG)? Proporciona un ejemplo breve.",
+                type: "text"
+            },
+            {
+                id: "q3",
+                wlScope: "delictivo",
+                category: "Rol Delictivo",
+                title: "¿Cómo debes actuar en un secuestro a un funcionario policial o civil siendo una banda?",
+                type: "text"
+            },
+            {
+                id: "q4",
+                wlScope: "legal",
+                category: "Rol Legal / Servicios",
+                title: "¿Cuál es el protocolo prioritario al atender un aviso de emergencia estando en servicio?",
+                type: "text"
+            },
+            {
+                id: "q5",
+                wlScope: "all",
+                category: "Normativa de Vida",
+                title: "¿En qué consiste la regla de Valorar la Vida (NVHQ/VLV)?",
+                type: "text"
+            }
+        ];
+
+        let questions = loadSavedQuestions();
         let activeExamQuestions = [];
         let selectedWlType = "general";
         let userData = { fullName: "", email: "", discordUser: "", age: "", wlType: "general" };
         let userAnswers = {};
         let currentQuestionIndex = 0;
-        let allSubmissions = [];
+        let allSubmissions = loadSavedSubmissions();
         let currentFilter = "all";
         let currentWlFilter = "all";
         let unsubscribeAdminListener = null;
@@ -918,6 +981,7 @@
         const bgLayer = document.getElementById('bgLayer');
         const bgOverlay = document.getElementById('bgOverlay');
         const bgUrlInput = document.getElementById('bgUrlInput');
+        const bgFileInput = document.getElementById('bgFileInput');
         const opacitySlider = document.getElementById('opacitySlider');
         const opacityValDisplay = document.getElementById('opacityValDisplay');
         const bgPreviewImg = document.getElementById('bgPreviewImg');
@@ -935,6 +999,48 @@
         const searchStatusForm = document.getElementById('searchStatusForm');
         const statusResultContainer = document.getElementById('statusResultContainer');
 
+        function loadSavedQuestions() {
+            try {
+                const stored = localStorage.getItem(LOCAL_STORAGE_QUESTIONS_KEY);
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch (e) {
+                console.warn("No se pudieron cargar las preguntas del LocalStorage", e);
+            }
+            return [...defaultQuestions];
+        }
+
+        function persistQuestionsLocally() {
+            try {
+                localStorage.setItem(LOCAL_STORAGE_QUESTIONS_KEY, JSON.stringify(questions));
+            } catch (e) {
+                console.error("Error guardando preguntas en LocalStorage", e);
+            }
+        }
+
+        function loadSavedSubmissions() {
+            try {
+                const stored = localStorage.getItem(LOCAL_STORAGE_SUBMISSIONS_KEY);
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) return parsed;
+                }
+            } catch (e) {
+                console.warn("No se pudieron cargar postulaciones del LocalStorage", e);
+            }
+            return [];
+        }
+
+        function persistSubmissionsLocally() {
+            try {
+                localStorage.setItem(LOCAL_STORAGE_SUBMISSIONS_KEY, JSON.stringify(allSubmissions));
+            } catch (e) {
+                console.error("Error guardando postulaciones en LocalStorage", e);
+            }
+        }
+
         window.selectWhitelistType = function(type, element) {
             selectedWlType = type;
             document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
@@ -947,23 +1053,22 @@
             setupEvents();
         });
 
-        // 1. CONFIGURACIÓN DE FONDO EN TIEMPO REAL DESDE FIREBASE
         function listenSettingsRealtime() {
-            onSnapshot(doc(db, "whitelist_settings", "theme"), (docSnap) => {
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    applyBackground(data.bgUrl || DEFAULT_BG, data.opacity || 82);
-                } else {
-                    applyBackground(DEFAULT_BG, 82);
-                }
-            }, (err) => console.error("Error cargando configuración de tema:", err));
+            if (firebaseReady && db) {
+                onSnapshot(doc(db, "whitelist_settings", "theme"), (docSnap) => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        applyBackground(data.bgUrl || DEFAULT_BG, data.opacity || 82);
+                    }
+                });
+            }
         }
 
         function applyBackground(url, opacity) {
             bgLayer.style.backgroundImage = `url('${url}')`;
             bgOverlay.style.backgroundColor = `rgba(7, 8, 16, ${opacity / 100})`;
             
-            bgUrlInput.value = url;
+            bgUrlInput.value = url.startsWith('data:') ? '' : url;
             opacitySlider.value = opacity;
             opacityValDisplay.textContent = `${opacity}%`;
 
@@ -971,15 +1076,21 @@
             bgPreviewOverlay.style.backgroundColor = `rgba(7, 8, 16, ${opacity / 100})`;
         }
 
-        // 2. ESCUCHA DE PREGUNTAS EN TIEMPO REAL DESDE FIREBASE
         function listenQuestionsRealtime() {
-            onSnapshot(collection(db, "whitelist_questions"), (snapshot) => {
-                questions = [];
-                snapshot.forEach((docSnap) => {
-                    questions.push({ id: docSnap.id, ...docSnap.data() });
+            if (firebaseReady && db) {
+                onSnapshot(collection(db, "whitelist_questions"), (snapshot) => {
+                    if (!snapshot.empty) {
+                        questions = [];
+                        snapshot.forEach((docSnap) => {
+                            questions.push({ id: docSnap.id, ...docSnap.data() });
+                        });
+                        persistQuestionsLocally();
+                    }
+                    renderQuestionsEditor();
                 });
+            } else {
                 renderQuestionsEditor();
-            }, (err) => console.error("Error escuchando preguntas de Firestore:", err));
+            }
         }
 
         function setupEvents() {
@@ -994,29 +1105,40 @@
                 statusModal.classList.add('hidden');
             });
 
-            // CONSULTA EN TIEMPO REAL DE POSTULACIONES DE USUARIO
             searchStatusForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const queryVal = document.getElementById('statusSearchQuery').value.trim().toLowerCase();
                 if (!queryVal) return;
 
                 statusResultContainer.classList.remove('hidden');
-                statusResultContainer.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 0.85rem;"><i class="fa-solid fa-spin fa-circle-notch" style="color: var(--accent-purple);"></i> Buscando tu solicitud en Firebase...</div>`;
+                statusResultContainer.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 0.85rem;"><i class="fa-solid fa-spin fa-circle-notch" style="color: var(--accent-purple);"></i> Buscando tu solicitud...</div>`;
 
                 let matches = [];
-                try {
-                    const snapshot = await getDocs(collection(db, "whitelist_submissions"));
-                    snapshot.forEach(docSnap => {
-                        const data = docSnap.data();
-                        const u = data.userInfo || {};
+
+                if (firebaseReady && db) {
+                    try {
+                        const snapshot = await getDocs(collection(db, "whitelist_submissions"));
+                        snapshot.forEach(docSnap => {
+                            const data = docSnap.data();
+                            const u = data.userInfo || {};
+                            if ((u.discordUser && u.discordUser.toLowerCase().includes(queryVal)) || 
+                                (u.email && u.email.toLowerCase().includes(queryVal))) {
+                                matches.push({ id: docSnap.id, ...data });
+                            }
+                        });
+                    } catch (err) {
+                        console.error("Error buscando e-status:", err);
+                    }
+                }
+                
+                if (matches.length === 0) {
+                    allSubmissions.forEach(item => {
+                        const u = item.userInfo || {};
                         if ((u.discordUser && u.discordUser.toLowerCase().includes(queryVal)) || 
                             (u.email && u.email.toLowerCase().includes(queryVal))) {
-                            matches.push({ id: docSnap.id, ...data });
+                            matches.push(item);
                         }
                     });
-                } catch (err) {
-                    console.error("Error consultando estatus:", err);
-                    showToast("Error consultando la base de datos", "error");
                 }
 
                 renderUserStatusResult(matches);
@@ -1032,13 +1154,14 @@
 
                 document.getElementById('displayWlType').textContent = selectedWlType;
 
+                // CORRECCIÓN DE FILTRADO DE PREGUNTAS POR CATEGORÍA SELECCIONADA
                 activeExamQuestions = questions.filter(q => {
                     const scope = q.wlScope || 'all';
                     return scope === 'all' || scope === selectedWlType;
                 });
 
                 if (activeExamQuestions.length === 0) {
-                    showToast("No hay preguntas registradas en Firebase para esta modalidad", "error");
+                    showToast("No hay preguntas disponibles para esta modalidad", "error");
                     return;
                 }
 
@@ -1121,34 +1244,48 @@
                 bgPreviewImg.style.backgroundImage = `url('${url}')`;
             });
 
+            bgFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (evt) => {
+                        bgPreviewImg.style.backgroundImage = `url('${evt.target.result}')`;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
             document.getElementById('bgConfigForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const targetUrl = bgUrlInput.value.trim() || DEFAULT_BG;
-                const targetOpacity = opacitySlider.value;
+                let targetUrl = bgUrlInput.value.trim();
+                const file = bgFileInput.files[0];
 
-                try {
-                    await setDoc(doc(db, "whitelist_settings", "theme"), { 
-                        bgUrl: targetUrl, 
-                        opacity: Number(targetOpacity) 
-                    });
-                    showToast("Fondo guardado en Firebase", "success");
-                } catch (err) {
-                    console.error(err);
-                    showToast("Error guardando el fondo en Firebase", "error");
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = async (evt) => {
+                        await saveBgSettings(evt.target.result, opacitySlider.value);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    await saveBgSettings(targetUrl || DEFAULT_BG, opacitySlider.value);
                 }
             });
 
             document.getElementById('resetBgBtn').addEventListener('click', async () => {
-                try {
-                    await setDoc(doc(db, "whitelist_settings", "theme"), { bgUrl: DEFAULT_BG, opacity: 82 });
-                    showToast("Fondo restaurado en Firebase", "info");
-                } catch (err) {
-                    console.error(err);
-                    showToast("Error restaurando fondo", "error");
-                }
+                await saveBgSettings(DEFAULT_BG, 82);
+                showToast("Fondo restaurado", "info");
             });
 
             document.getElementById('addQuestionBtn').addEventListener('click', () => openQuestionModal());
+            document.getElementById('resetDefaultQuestionsBtn').addEventListener('click', () => {
+                if (confirm("¿Restaurar las preguntas predeterminadas de fábrica? Esto sobrescribirá tus preguntas guardadas.")) {
+                    questions = [...defaultQuestions];
+                    persistQuestionsLocally();
+                    renderQuestionsEditor();
+                    showToast("Preguntas restauradas por defecto", "info");
+                }
+            });
+
             document.getElementById('closeModalBtn').addEventListener('click', closeQuestionModal);
             document.getElementById('cancelModalBtn').addEventListener('click', closeQuestionModal);
 
@@ -1247,6 +1384,20 @@
             statusResultContainer.innerHTML = html;
         }
 
+        async function saveBgSettings(url, opacity) {
+            applyBackground(url, opacity);
+            if (firebaseReady && db) {
+                try {
+                    await setDoc(doc(db, "whitelist_settings", "theme"), { bgUrl: url, opacity: Number(opacity) });
+                    showToast("¡Fondo sincronizado en Firebase!", "success");
+                } catch (err) {
+                    showToast("Fondo aplicado localmente", "info");
+                }
+            } else {
+                showToast("Fondo aplicado localmente", "info");
+            }
+        }
+
         function loadQuestion(index) {
             if (!activeExamQuestions[index]) return;
             currentQuestionIndex = index;
@@ -1316,7 +1467,6 @@
             progressText.textContent = `${percentage}% (${answeredCount}/${total} respondidas)`;
         }
 
-        // 3. ENVÍO DIRECTO A FIRESTORE
         async function finishQuestionnaire() {
             saveCurrentAnswer();
             const answeredCount = Object.keys(userAnswers).length;
@@ -1331,19 +1481,31 @@
             sectionQuestionnaire.classList.add('hidden');
             sectionSummary.classList.remove('hidden');
 
-            try {
-                await addDoc(collection(db, "whitelist_submissions"), {
-                    userInfo: userData,
-                    answers: userAnswers,
-                    scorePercentage: scorePercentage,
-                    status: "pending",
-                    createdAt: serverTimestamp()
-                });
-                showToast("¡Postulación enviada con éxito a Firebase!", "success");
-            } catch (err) {
-                console.error("Error guardando postulación en Firebase:", err);
-                showToast("Error de conexión al enviar la postulación", "error");
+            const payload = {
+                id: 'sub_' + Date.now(),
+                userInfo: userData,
+                answers: userAnswers,
+                scorePercentage: scorePercentage,
+                status: "pending",
+                createdAt: new Date().toISOString()
+            };
+
+            if (firebaseReady && db) {
+                try {
+                    await addDoc(collection(db, "whitelist_submissions"), {
+                        ...payload,
+                        createdAt: serverTimestamp ? serverTimestamp() : new Date().toISOString()
+                    });
+                    showToast("¡Postulación enviada con éxito!", "success");
+                } catch (err) {
+                    showToast("Postulación guardada localmente", "info");
+                }
+            } else {
+                showToast("Postulación guardada localmente", "info");
             }
+
+            allSubmissions.unshift(payload);
+            persistSubmissionsLocally();
         }
 
         function downloadJSON() {
@@ -1376,24 +1538,31 @@
             renderQuestionsEditor();
         }
 
-        // 4. SUSCRIPCIÓN EN TIEMPO REAL AL PANEL ADMIN PARA SUBMISSIONS
         function loadSubmissionsRealtime() {
             const container = document.getElementById('submissionsList');
-            container.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--text-muted);"><i class="fa-solid fa-spin fa-circle-notch" style="color: var(--accent-purple);"></i> Cargando solicitudes en tiempo real...</div>`;
+            container.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--text-muted);"><i class="fa-solid fa-spin fa-circle-notch" style="color: var(--accent-purple);"></i> Cargando...</div>`;
+
+            if (!firebaseReady || !db) {
+                renderSubmissions(allSubmissions);
+                return;
+            }
 
             if (unsubscribeAdminListener) unsubscribeAdminListener();
 
             const q = query(collection(db, "whitelist_submissions"), orderBy("createdAt", "desc"), limit(50));
 
             unsubscribeAdminListener = onSnapshot(q, (snapshot) => {
-                allSubmissions = [];
-                snapshot.forEach((docSnap) => {
-                    allSubmissions.push({ id: docSnap.id, ...docSnap.data() });
-                });
+                if (!snapshot.empty) {
+                    allSubmissions = [];
+                    snapshot.forEach((docSnap) => {
+                        allSubmissions.push({ id: docSnap.id, ...docSnap.data() });
+                    });
+                    persistSubmissionsLocally();
+                }
                 renderSubmissions(allSubmissions);
             }, (err) => {
-                console.error("Error obteniendo solicitudes en tiempo real:", err);
-                container.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--accent-pink);">Error al conectar con Firestore. Comprueba las reglas de tu base de datos.</div>`;
+                console.warn("Firestore inaccesible, usando LocalStorage:", err);
+                renderSubmissions(allSubmissions);
             });
         }
 
@@ -1472,28 +1641,38 @@
                     </div>
                 `;
 
-                // 5. OPERACIONES EXCLUSIVAMENTE SÍNCRONAS CON FIRESTORE
                 card.querySelectorAll('.action-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const docId = btn.dataset.id;
                         const action = btn.dataset.action;
 
-                        try {
-                            if (action === 'approve') {
-                                await updateDoc(doc(db, "whitelist_submissions", docId), { status: "approved" });
-                                showToast("Postulación APROBADA en Firebase", "success");
-                            } else if (action === 'reject') {
-                                await updateDoc(doc(db, "whitelist_submissions", docId), { status: "rejected" });
-                                showToast("Postulación RECHAZADA en Firebase", "info");
-                            } else if (action === 'delete') {
-                                if (confirm("¿Borrar permanentemente esta postulación de la base de datos?")) {
-                                    await deleteDoc(doc(db, "whitelist_submissions", docId));
-                                    showToast("Postulación eliminada de Firebase", "info");
+                        const idx = allSubmissions.findIndex(s => s.id === docId);
+                        if (idx >= 0) {
+                            if (action === 'approve') allSubmissions[idx].status = 'approved';
+                            else if (action === 'reject') allSubmissions[idx].status = 'rejected';
+                            else if (action === 'delete') allSubmissions.splice(idx, 1);
+                            
+                            persistSubmissionsLocally();
+                            renderSubmissions(allSubmissions);
+                        }
+
+                        if (firebaseReady && db) {
+                            try {
+                                if (action === 'approve') {
+                                    await updateDoc(doc(db, "whitelist_submissions", docId), { status: "approved" });
+                                    showToast("Postulación APROBADA", "success");
+                                } else if (action === 'reject') {
+                                    await updateDoc(doc(db, "whitelist_submissions", docId), { status: "rejected" });
+                                    showToast("Postulación RECHAZADA", "info");
+                                } else if (action === 'delete') {
+                                    if (confirm("¿Borrar postulación permanentemente?")) {
+                                        await deleteDoc(doc(db, "whitelist_submissions", docId));
+                                        showToast("Postulación eliminada", "info");
+                                    }
                                 }
+                            } catch (err) {
+                                console.warn("Modificado solo localmente:", err);
                             }
-                        } catch (err) {
-                            console.error("Error al actualizar estado en Firestore:", err);
-                            showToast("Error ejecutando acción en Firestore", "error");
                         }
                     });
                 });
@@ -1507,7 +1686,7 @@
             container.innerHTML = '';
 
             if (questions.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">No hay preguntas creadas en Firebase.</p>';
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">No hay preguntas creadas.</p>';
                 return;
             }
 
@@ -1574,7 +1753,6 @@
             modalOptionsList.appendChild(div);
         }
 
-        // 6. CREACIÓN / EDICIÓN EXCLUSIVA EN FIRESTORE
         async function handleSaveQuestion(e) {
             e.preventDefault();
             const id = document.getElementById('editQuestionId').value || 'q_' + Date.now();
@@ -1595,30 +1773,53 @@
                 }
             }
 
-            const questionObj = { wlScope, category, title, type };
+            const questionObj = { id, wlScope, category, title, type };
             if (type === 'choice') questionObj.options = optionsArray;
 
-            try {
-                await setDoc(doc(db, "whitelist_questions", id), questionObj);
-                showToast("Pregunta guardada en Firebase", "success");
-                closeQuestionModal();
-            } catch (err) {
-                console.error("Error guardando pregunta en Firestore:", err);
-                showToast("Error al guardar en Firebase", "error");
+            // Actualización inmediata en memoria y LocalStorage
+            const existingIdx = questions.findIndex(item => item.id === id);
+            if (existingIdx >= 0) {
+                questions[existingIdx] = questionObj;
+            } else {
+                questions.push(questionObj);
             }
+
+            persistQuestionsLocally();
+
+            if (firebaseReady && db) {
+                try {
+                    await setDoc(doc(db, "whitelist_questions", id), questionObj);
+                    showToast("Pregunta guardada en Firebase y Local Storage", "success");
+                } catch (err) {
+                    console.warn("Firestore inaccesible, guardado en LocalStorage:", err);
+                    showToast("Pregunta guardada localmente", "success");
+                }
+            } else {
+                showToast("Pregunta guardada en navegador (Local Storage)", "success");
+            }
+
+            closeQuestionModal();
+            renderQuestionsEditor();
         }
 
-        // 7. ELIMINACIÓN EXCLUSIVA EN FIRESTORE
         async function deleteQuestion(q) {
-            if (!confirm(`¿Borrar permanentemente la pregunta "${q.title}" de Firebase?`)) return;
+            if (!confirm(`¿Borrar la pregunta "${q.title}"?`)) return;
 
-            try {
-                await deleteDoc(doc(db, "whitelist_questions", q.id));
-                showToast("Pregunta eliminada de Firebase", "info");
-            } catch (err) {
-                console.error("Error eliminando pregunta de Firestore:", err);
-                showToast("Error al eliminar la pregunta en Firebase", "error");
+            questions = questions.filter(item => item.id !== q.id);
+            persistQuestionsLocally();
+
+            if (firebaseReady && db) {
+                try {
+                    await deleteDoc(doc(db, "whitelist_questions", q.id));
+                    showToast("Pregunta eliminada de Firebase", "info");
+                } catch (err) {
+                    console.warn("Firestore inaccesible, borrado local:", err);
+                    showToast("Pregunta eliminada del almacenamiento local", "info");
+                }
+            } else {
+                showToast("Pregunta eliminada localmente", "info");
             }
+            renderQuestionsEditor();
         }
 
         function showToast(message, type = "info") {
